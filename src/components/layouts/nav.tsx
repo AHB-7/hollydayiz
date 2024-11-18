@@ -10,7 +10,7 @@ import { FiLogIn } from "react-icons/fi";
 import { MdOutlineMenu } from "react-icons/md";
 import { LogOut } from "../../styles/auth/auth";
 import { Login } from "../auth/login";
-import { useStore } from "../../util/global/local-storage";
+import { useStore } from "../../util/global/zustand-store";
 
 export function Navbar() {
     const {
@@ -39,6 +39,7 @@ export function Navbar() {
         setNavbarState(false);
         initializeFromStorage();
         setMail(null);
+        window.location.href = "/";
     };
 
     const verified = Boolean(accessToken);

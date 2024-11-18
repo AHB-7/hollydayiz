@@ -1,17 +1,18 @@
+import { useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
     Error,
     Form,
     FormInput,
-    RegBtn,
-    RegisterationContainer,
+    RegistrationContainer,
     SubmitBtn,
+    SuccessMessage,
     TwoInputsInRow,
 } from "../../styles/auth/auth";
 import { useApi } from "../../util/hooks/use-fetch";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { ApiResponseRegister } from "../../types/global.types";
-import { useStore } from "../../util/global/local-storage";
+import { useStore } from "../../util/global/zustand-store";
 
 type RegistrationFormData = {
     name: string;
@@ -36,18 +37,22 @@ export function Register() {
         "https://v2.api.noroff.dev/auth/register"
     );
 
-    const onSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
-        const response = await request("POST", formData);
-        if (data) {
-            alert("Registration successful!");
-            useStore.getState().setMail(data.email);
-        } else {
-            console.error("Failed to register:", response);
+    const setMail = useStore((state) => state.setMail);
+
+    // Redirect after successful registration
+    useEffect(() => {
+        if (data && data.email) {
+            setMail(data.email); // Update the global store
+            window.location.href = "/"; // Redirect to the desired page
         }
+    }, [data, setMail]); // Runs only when `data` changes
+
+    const onSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
+        await request("POST", formData); // Send the registration request
     };
 
     return (
-        <RegisterationContainer>
+        <RegistrationContainer>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Register</h1>
                 <FormInput
@@ -63,7 +68,7 @@ export function Register() {
                     name="name"
                     placeholder="Name"
                 />
-                {errors.email && <Error>{errors.email.message}</Error>}
+                {errors.name && <Error>{errors.name.message}</Error>}
                 <FormInput
                     {...register("email", {
                         required: "Email is required",
@@ -100,8 +105,7 @@ export function Register() {
                     })}
                     type="text"
                     placeholder="Bio"
-                    maxLength={160}
-                />{" "}
+                />
                 {errors.bio && <Error>{errors.bio.message}</Error>}
                 <TwoInputsInRow>
                     <FormInput
@@ -151,15 +155,25 @@ export function Register() {
                 </TwoInputsInRow>
                 {errors.bannerUrl && <Error>{errors.bannerUrl.message}</Error>}
                 {errors.bannerAlt && <Error>{errors.bannerAlt.message}</Error>}
+                {/* Display API error message */}
                 {error && (
-                    <Error>Something went wrong. Please try again.</Error>
+                    <Error>
+                        {error.message || "An unknown error occurred."}
+                    </Error>
                 )}
                 <SubmitBtn type="submit" disabled={loading}>
                     {loading ? "Registering..." : "Register"}
                 </SubmitBtn>
-                {data && <IoCheckmarkDoneCircleSharp fill="green" />}
-                <RegBtn type="button">Register</RegBtn>
+                {data && (
+                    <SuccessMessage>
+                        <h2>Registration successful!</h2>
+                        <IoCheckmarkDoneCircleSharp
+                            fill="green"
+                            fontSize="4rem"
+                        />
+                    </SuccessMessage>
+                )}
             </Form>
-        </RegisterationContainer>
+        </RegistrationContainer>
     );
 }

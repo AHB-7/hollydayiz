@@ -12,7 +12,7 @@ import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { ApiResponseLogin, LoginFormData } from "../../types/global.types";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useStore } from "../../util/global/local-storage";
+import { useStore } from "../../util/global/zustand-store";
 
 export function Login() {
     const {
@@ -27,8 +27,9 @@ export function Login() {
 
     const setAccessToken = useStore((state) => state.setAccessToken);
     const setName = useStore((state) => state.setName);
-
     const savedMail = useStore((state) => state.mail);
+    const navbarState = useStore((state) => state.navbarState); // To read the state
+    const setNavbarState = useStore((state) => state.setNavbarState); // To update the state
 
     useEffect(() => {
         if (data && data.accessToken) {
@@ -36,14 +37,13 @@ export function Login() {
             setName(data.name);
             const name = data.name;
             window.location.href = `/holidaze/profiles/${name}`;
+            setNavbarState(false);
         }
     }, [data, setAccessToken]);
 
     const onSubmit: SubmitHandler<LoginFormData> = async (formData) => {
         await request("POST", formData);
     };
-
-    const setNavbarState = useStore((state) => state.setNavbarState);
 
     return (
         <FormContainer>
@@ -80,9 +80,7 @@ export function Login() {
                 />
                 {errors.password && <Error>{errors.password.message}</Error>}
 
-                {error && (
-                    <Error>Something went wrong. Please try again.</Error>
-                )}
+                {error && <Error>{error.message}</Error>}
 
                 <SubmitBtn type="submit" disabled={loading}>
                     {loading ? "Logging in..." : "Login"}

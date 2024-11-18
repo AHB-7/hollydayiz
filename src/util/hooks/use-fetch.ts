@@ -71,8 +71,18 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                     setData(response.data);
                 }
             }
-        } catch (err) {
-            setError(err as Error);
+        } catch (err: any) {
+            if (err.response) {
+                // Extract error message from API response
+                const apiError =
+                    err.response.data?.errors?.[0]?.message ||
+                    err.response.data?.message ||
+                    "An error occurred";
+
+                setError(new Error(apiError));
+            } else {
+                setError(err);
+            }
         } finally {
             setLoading(false);
         }

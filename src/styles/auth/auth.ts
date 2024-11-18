@@ -10,7 +10,7 @@ export const FormContainer = styled.div`
     margin: 0 auto;
     padding: 2rem;
 `;
-export const RegisterationContainer = styled.section`
+export const RegistrationContainer = styled.section`
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
@@ -60,7 +60,7 @@ export const FormInput = styled.input`
     }
 `;
 export const SubmitBtn = styled.button`
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.secondary};
     color: ${({ theme }) => theme.colors.text};
     border: none;
     border-radius: 0.8rem;
@@ -71,7 +71,7 @@ export const SubmitBtn = styled.button`
     cursor: pointer;
     transition: background-color 0.2s;
     &:hover {
-        background-color: ${({ theme }) => theme.colors.secondary};
+        background-color: ${({ theme }) => theme.colors.background};
     }
 `;
 export const LogOut = styled.a`
@@ -107,4 +107,16 @@ export const TwoInputsInRow = styled.div`
     gap: 1rem;
     width: 100%;
     justify-content: space-between;
+`;
+export const SuccessMessage = styled.div`
+    > h2 {
+        color: ${({ theme }) => theme.colors.background};
+    }
+    font-size: 1.2rem;
+    font-weight: 900;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    align-items: center;
 `;
