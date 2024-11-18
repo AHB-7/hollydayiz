@@ -11,7 +11,7 @@ import {
 } from "../../styles/auth/auth";
 import { useApi } from "../../util/hooks/use-fetch";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
-import { ApiResponseRegister } from "../../types/global.types";
+import { ApiResponseRegister } from "../../types/global";
 import { useStore } from "../../util/global/zustand-store";
 
 type RegistrationFormData = {

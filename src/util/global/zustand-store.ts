@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Store } from "../../types/global.types";
+import { Store } from "../../types/global";
 /**
  * Zustand store for managing global state with persistent localStorage integration.
  *

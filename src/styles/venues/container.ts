@@ -6,6 +6,6 @@ export const VenuesContainer = styled.section`
     @media screen and (${({ theme }) => theme.breakpoints.md}) {
         grid-template-columns: 100%;
     }
-    padding: 1rem;
+    padding: 4rem 1rem 1rem 1rem;
     background-color: ${({ theme }) => theme.colors.background};
 `;

@@ -28,6 +28,14 @@ export type Accommodation = {
         lat: number;
         lng: number;
     };
+    owner: {
+        name: string;
+        email: string;
+        avatar: {
+            url: string;
+            alt: string;
+        };
+    };
     _count: {
         bookings: number;
     };

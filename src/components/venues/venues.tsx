@@ -4,7 +4,8 @@ import {
     VenueImageContainer,
     VenueMetaContainer,
     VenueMeta,
-    VenueBookingsButton,
+    // VenueBookingsButton,
+    OwnerNameImg,
 } from "../../styles/venues/cards";
 import { VenuesContainer } from "../../styles/venues/container";
 import { FaWifi } from "react-icons/fa6";
@@ -16,7 +17,7 @@ import {
 } from "react-icons/md";
 import { IoPeopleSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { Accommodation } from "../../types/global.types";
+import { Accommodation } from "../../types/global";
 import { useApi } from "../../util/hooks/use-fetch";
 import { useEffect } from "react";
 
@@ -26,12 +27,16 @@ export function Venues() {
         loading,
         error,
         request,
-    } = useApi<Accommodation[]>("https://v2.api.noroff.dev/holidaze/venues");
+    } = useApi<Accommodation[]>(
+        "https://v2.api.noroff.dev/holidaze/venues?_owner=true&_bookings=true"
+    );
 
     useEffect(() => {
         request("GET");
     }, []);
-    useEffect(() => {}, [posts]);
+    useEffect(() => {
+        console.log(posts);
+    }, [posts]);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -40,11 +45,17 @@ export function Venues() {
             {posts?.map((post) => (
                 <VenueCard key={post.id}>
                     <VenueInfoContainer>
-                        <h2>{post.name}</h2>
+                        <OwnerNameImg>
+                            <img
+                                src={post.owner.avatar.url}
+                                alt={post.owner.avatar.alt}
+                            />
+                            <p>{post.owner.name}</p>
+                        </OwnerNameImg>
                     </VenueInfoContainer>
                     <VenueImageContainer>
                         <Link
-                            to={`/venues/${post.id}?_owner=true&_bookings=true`}
+                            to={`/holidaze/venues/${post.id}?_owner=true&_bookings=true`}
                         >
                             <img
                                 src={
@@ -62,8 +73,10 @@ export function Venues() {
                         <Stars rating={post.rating} />
                     </VenueImageContainer>
                     <VenueInfoContainer>
-                        <p>Price</p>
-                        <p>{post.price} NOK</p>
+                        <h2>{post.name}</h2>
+                        <div>
+                            <p>{post.price} NOK</p>
+                        </div>
                     </VenueInfoContainer>
                     <VenueMetaContainer>
                         <VenueMeta>
@@ -99,7 +112,7 @@ export function Venues() {
                             <IoPeopleSharp />
                         </VenueMeta>
                     </VenueMetaContainer>
-                    <VenueBookingsButton>Book Now</VenueBookingsButton>
+                    {/* <VenueBookingsButton>Book Now</VenueBookingsButton> */}
                 </VenueCard>
             ))}
         </VenuesContainer>

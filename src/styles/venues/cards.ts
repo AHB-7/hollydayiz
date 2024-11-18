@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const VenueCard = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 1rem 1rem 2rem 1rem;
+    padding: 0.5rem;
     gap: 0.5rem;
     border-radius: 1rem;
     border: 0.01rem solid ${({ theme }) => theme.colors.text};
@@ -18,11 +18,27 @@ export const VenueInfoContainer = styled.div`
         font-size: 1.5rem;
         font-weight: 600;
     }
-    > p {
+    > div > p {
         font-weight: 700;
         font-size: 1.1rem;
     }
     padding: 0.5rem;
+    position: relative;
+`;
+export const OwnerNameImg = styled.div`
+    display: flex;
+    align-items: end;
+    gap: 0.5rem;
+    position: relative;
+    > img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    > p {
+        padding-bottom: 0.5rem;
+    }
 `;
 export const VenueImageContainer = styled.div`
     > a > img {
@@ -71,19 +87,20 @@ export const VenueMeta = styled.div`
     height: 2.5rem;
     border-radius: 0.3rem;
 `;
-export const VenueBookingsButton = styled.button`
-    background-color: ${({ theme }) => theme.colors.text};
-    color: ${({ theme }) => theme.colors.background};
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.6rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    &:hover {
-        background-color: ${({ theme }) => theme.colors.primary};
-    }
-    &:active {
-        background-color: ${({ theme }) => theme.colors.secondary};
-    }
-`;
+
+// export const VenueBookingsButton = styled.button`
+//     background-color: ${({ theme }) => theme.colors.text};
+//     color: ${({ theme }) => theme.colors.background};
+//     border: none;
+//     border-radius: 0.3rem;
+//     padding: 0.6rem;
+//     font-size: 1.1rem;
+//     cursor: pointer;
+//     transition: background-color 0.2s;
+//     &:hover {
+//         background-color: ${({ theme }) => theme.colors.primary};
+//     }
+//     &:active {
+//         background-color: ${({ theme }) => theme.colors.secondary};
+//     }
+// `;

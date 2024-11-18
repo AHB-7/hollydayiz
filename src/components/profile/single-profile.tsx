@@ -10,7 +10,7 @@ import {
     ProfileName,
 } from "../../styles/profile/profile";
 import { useApi } from "../../util/hooks/use-fetch";
-import { SingleUser } from "../../types/global.types";
+import { SingleUser } from "../../types/global";
 import { useEffect } from "react";
 
 export function SingleProfile() {

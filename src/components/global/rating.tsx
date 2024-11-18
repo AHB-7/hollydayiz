@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StarsProps } from "../../types/global.types";
+import { StarsProps } from "../../types/global";
 import { StarsContainer } from "../../styles/venues/cards";
 import { FaStar } from "react-icons/fa6";
 

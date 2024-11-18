@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import { useState } from "react";
-import { UseApiReturn } from "../../types/global.types";
+import { UseApiReturn } from "../../types/global";
 /**
  * Custom hook to perform API requests using Axios.
  *
