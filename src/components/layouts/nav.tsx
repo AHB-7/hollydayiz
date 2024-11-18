@@ -43,11 +43,12 @@ export function Navbar() {
 
     const verified = Boolean(accessToken);
 
+    const name = localStorage.getItem("name");
     return (
         <NavbarSc>
             <UpperNav>
                 <Link to="/">
-                    <img src="./logo.svg" alt="asa" />
+                    <img src="/logo.svg" alt="asa" />
                 </Link>
 
                 {!verified ? (
@@ -76,7 +77,9 @@ export function Navbar() {
                 <>
                     {navbarState && (
                         <LowerNav>
-                            <Link to={"/"}>Profile</Link>
+                            <Link to={`/holidaze/profiles/${name}`}>
+                                Profile
+                            </Link>
                             <Link to="/booking">Booking</Link>
                             <LogOut onClick={logOut}>Logout</LogOut>
                         </LowerNav>

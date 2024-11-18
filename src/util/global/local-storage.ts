@@ -5,6 +5,7 @@ export const useStore = create<Store>((set) => ({
     accessToken: null,
     navbarState: false,
     mail: null,
+    name: null,
 
     setAccessToken: (token: string | null) => {
         if (token) {
@@ -28,6 +29,13 @@ export const useStore = create<Store>((set) => ({
         }
         set({ mail: mail });
     },
+    setName: (name: string | null) => {
+        if (name) {
+            localStorage.setItem("name", name);
+        } else {
+            localStorage.removeItem("name");
+        }
+    },
 
     initializeFromStorage: () => {
         set({
@@ -36,6 +44,7 @@ export const useStore = create<Store>((set) => ({
                 localStorage.getItem("navbarState") || "false"
             ),
             mail: localStorage.getItem("mail"),
+            name: localStorage.getItem("name"),
         });
     },
 }));

@@ -89,6 +89,8 @@ export interface FetchOptions {
     method?: "GET" | "POST" | "PUT" | "DELETE";
     body?: Record<string, unknown>;
     accessToken?: string;
+    apiKey?: string;
+    config?: AxiosRequestConfig;
 }
 export type LoginFormData = {
     email: string;
@@ -136,8 +138,25 @@ export interface Store {
     accessToken: string | null;
     navbarState: boolean;
     mail: string | null;
+    name: string | null;
+    setName: (name: string | null) => void;
     setMail: (mail: string | null) => void;
     setAccessToken: (token: string | null) => void;
     setNavbarState: (state: boolean) => void;
     initializeFromStorage: () => void;
+}
+export interface SingleUser {
+    name: string;
+    email: string;
+    bio: string | null;
+    avatar: {
+        url: string;
+        alt: string;
+    };
+    banner: {
+        url: string;
+        alt: string;
+    };
+    venueManager: boolean;
+    meta: any;
 }

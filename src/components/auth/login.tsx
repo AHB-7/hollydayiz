@@ -26,12 +26,16 @@ export function Login() {
     );
 
     const setAccessToken = useStore((state) => state.setAccessToken);
-    const savedMail = useStore((state) => state.mail); // Retrieve saved email
+    const setName = useStore((state) => state.setName);
+
+    const savedMail = useStore((state) => state.mail);
 
     useEffect(() => {
         if (data && data.accessToken) {
             setAccessToken(data.accessToken);
-            window.location.href = "/";
+            setName(data.name);
+            const name = data.name;
+            window.location.href = `/holidaze/profiles/${name}`;
         }
     }, [data, setAccessToken]);
 
