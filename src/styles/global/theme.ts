@@ -5,9 +5,9 @@ const baseTheme = {
         dangerous: "#FF0000",
     },
     breakpoints: {
-        sm: "600px",
-        md: "800px",
-        lg: "1200px",
+        sm: "max-width: 450px",
+        md: "max-width: 600px",
+        lg: "max-width: 1200px",
     },
 };
 

@@ -25,10 +25,13 @@ export const LowerNav = styled.div`
     align-items: center;
     font-size: 2.4rem;
     font-weight: 900;
-    padding: 1rem;
+    padding: 4rem 1rem 0.5rem 1rem;
     gap: 1rem;
     > * {
         color: ${({ theme }) => theme.colors.background};
+    }
+    @media screen and (${({ theme }) => theme.breakpoints.md}) {
+        padding: 4rem 0 0.5rem 0;
     }
 `;
 

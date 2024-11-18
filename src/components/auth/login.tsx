@@ -28,8 +28,7 @@ export function Login() {
     const setAccessToken = useStore((state) => state.setAccessToken);
     const setName = useStore((state) => state.setName);
     const savedMail = useStore((state) => state.mail);
-    const navbarState = useStore((state) => state.navbarState); // To read the state
-    const setNavbarState = useStore((state) => state.setNavbarState); // To update the state
+    const setNavbarState = useStore((state) => state.setNavbarState);
 
     useEffect(() => {
         if (data && data.accessToken) {

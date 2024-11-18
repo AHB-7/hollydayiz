@@ -38,17 +38,18 @@ export function Register() {
     );
 
     const setMail = useStore((state) => state.setMail);
+    const setNavbarState = useStore((state) => state.setNavbarState);
 
-    // Redirect after successful registration
     useEffect(() => {
         if (data && data.email) {
-            setMail(data.email); // Update the global store
-            window.location.href = "/"; // Redirect to the desired page
+            setMail(data.email);
+            window.location.href = "/";
+            setNavbarState(true);
         }
-    }, [data, setMail]); // Runs only when `data` changes
+    }, [data, setMail]);
 
     const onSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
-        await request("POST", formData); // Send the registration request
+        await request("POST", formData);
     };
 
     return (

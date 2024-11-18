@@ -25,11 +25,5 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.secondary};
     text-decoration: none;
   }
-  colors{
-  primary: "#2B699B",
-  secondary: "#2ecc71",
-  dangerous: "#FF0000",
-  text: #100F0F,
-  background: #E8EBF0,
-  }
+
 `;

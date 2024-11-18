@@ -51,7 +51,6 @@ export function Navbar() {
                 <Link to="/">
                     <img src="/logo.svg" alt="asa" />
                 </Link>
-
                 {!verified ? (
                     <LogInContainer onClick={toggleLogIn}>
                         <p>LogIn</p>
@@ -67,13 +66,13 @@ export function Navbar() {
                 )}
             </UpperNav>
             {!verified ? (
-                <>
+                <div>
                     {navbarState && (
                         <LowerNav>
                             <Login />
                         </LowerNav>
                     )}
-                </>
+                </div>
             ) : (
                 <>
                     {navbarState && (

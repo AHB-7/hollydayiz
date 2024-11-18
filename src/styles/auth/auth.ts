@@ -8,7 +8,10 @@ export const FormContainer = styled.div`
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1rem;
+    @media screen and (${({ theme }) => theme.breakpoints.md}) {
+        padding: 0;
+    }
 `;
 export const RegistrationContainer = styled.section`
     display: flex;
@@ -24,6 +27,9 @@ export const RegistrationContainer = styled.section`
     background-color: ${({ theme }) => theme.colors.text};
     border-radius: 0.8rem;
     color: ${({ theme }) => theme.colors.background};
+    @media screen and (${({ theme }) => theme.breakpoints.md}) {
+        padding: 6rem 0.5rem;
+    }
 `;
 export const Form = styled.form`
     display: flex;
@@ -37,6 +43,10 @@ export const Form = styled.form`
     padding: 1rem;
     border-radius: 0.8rem;
     height: 100%;
+    @media screen and (${({ theme }) => theme.breakpoints.md}) {
+        padding: 0;
+        padding: 4rem 0.5rem;
+    }
     > h1 {
         color: ${({ theme }) => theme.colors.background};
         margin-bottom: 3rem;
@@ -47,7 +57,7 @@ export const FormInput = styled.input`
     border: none;
     border-radius: 0.8rem;
     border: 0.05rem solid white;
-    padding: 0.6rem;
+    padding: 0.65rem;
     font-size: 1rem;
     width: 100%;
     background-color: transparent;
@@ -83,7 +93,8 @@ export const LogOut = styled.a`
     border: none;
     transition: 0.2s;
     &:hover {
-    color: grey;
+        color: grey;
+    }
 `;
 export const RegBtn = styled(LogOut)`
     color: ${({ theme }) => theme.colors.secondary};
