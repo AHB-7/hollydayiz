@@ -1,4 +1,4 @@
-import { Venues } from "../components/home/venues";
+import { Venues } from "../components/venues/venues";
 
 export function AllVenues() {
     return (
