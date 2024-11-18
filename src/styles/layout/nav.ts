@@ -2,17 +2,17 @@ import styled from "styled-components";
 
 export const Navbar = styled.nav`
     background-color: ${({ theme }) => theme.colors.text};
-    width: 100%;
-    max-width: 25rem;
-    padding: 0.5rem 0.7rem;
-    max-width: 100%;
+    width: 95%;
     position: absolute;
-    margin: 0 auto;
+    padding: 0.5rem 0.7rem;
     border-radius: 1.2rem;
     top: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
     overflow: auto;
 `;
+
 export const UpperNav = styled.div`
     display: flex;
     justify-content: space-between;
