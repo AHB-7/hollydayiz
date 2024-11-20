@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { Accommodation } from "../../types/global";
 import { useApi } from "../../util/hooks/use-fetch";
 import { useEffect } from "react";
+import { baseUrl } from "../../util/global/variables";
 
 export function Venues() {
     const {
@@ -28,7 +29,7 @@ export function Venues() {
         error,
         request,
     } = useApi<Accommodation[]>(
-        "https://v2.api.noroff.dev/holidaze/venues?_owner=true&_bookings=true"
+        `${baseUrl}/venues?sortOrder=desc&sort=created&_owner=true`
     );
 
     useEffect(() => {

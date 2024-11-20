@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleVenue as SingleVenueTypes } from "../../types/global";
@@ -8,30 +8,67 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import {
     CarouselComponent,
-    FirstRow,
+    Row,
     MainContainer,
     VenueDescription,
     VenueInfo,
     VenueTitle,
+    VenuePrice,
 } from "../../styles/single-venue/single-venue-styles";
 
 export function SingleVenue() {
     const { venueId } = useParams();
+    const apiToken = localStorage.getItem("accessToken");
+
     const {
         data: venue,
-        loading,
-        error,
-        request,
+        loading: venueLoading,
+        error: venueError,
+        request: fetchVenue,
     } = useApi<SingleVenueTypes>(
         `${baseUrl}/venues/${venueId}?_owner=true&_bookings=true`
     );
 
+    const {
+        data: bookingResponse,
+        loading: bookingLoading,
+        error: bookingError,
+        request: createBooking,
+    } = useApi(`${baseUrl}/bookings`);
+
+    const [formData, setFormData] = useState({
+        dateFrom: "",
+        dateTo: "",
+        guests: 1,
+    });
+
     useEffect(() => {
-        request("GET");
+        fetchVenue("GET");
     }, [venueId]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        await createBooking(
+            "POST",
+            {
+                ...formData,
+                venueId,
+            },
+            {},
+            apiToken || ""
+        );
+    };
+
+    if (venueLoading) return <p>Loading...</p>;
+    if (venueError) return <p>Error: {venueError.message}</p>;
 
     const sliderSettings = {
         dots: true,
@@ -59,56 +96,79 @@ export function SingleVenue() {
                     <p>No images available</p>
                 )}
             </CarouselComponent>
+            <Row>
+                <VenuePrice>
+                    <strong>Price:</strong>
+                </VenuePrice>
+                <VenuePrice>
+                    <strong>${venue?.price}</strong>
+                </VenuePrice>
+            </Row>
             <VenueInfo>
                 <VenueTitle>{venue?.name}</VenueTitle>
                 <VenueDescription>{venue?.description}</VenueDescription>
             </VenueInfo>
-            <FirstRow></FirstRow>
-            <p>
-                <strong>Price:</strong> ${venue?.price}
-            </p>
-            <p>
-                <strong>Max Guests:</strong> {venue?.maxGuests}
-            </p>
-            <p>
-                <strong>Rating:</strong>{" "}
-                {venue?.rating || "No rating available"}
-            </p>
-            <p>
-                <strong>Created:</strong>{" "}
-                {venue?.created
-                    ? new Date(venue.created).toLocaleDateString()
-                    : "Not available"}
-            </p>
-            <p>
-                <strong>Updated:</strong>{" "}
-                {venue?.updated
-                    ? new Date(venue.updated).toLocaleDateString()
-                    : "Not available"}
-            </p>
-            <div>
-                <h2>Meta</h2>
-                <pre>{JSON.stringify(venue?.meta, null, 2)}</pre>
-            </div>
-            <div>
-                <h2>Location</h2>
-                <p>
-                    <strong>Address:</strong>{" "}
-                    {venue?.location?.address || "Not provided"}
-                </p>
-                <p>
-                    <strong>City:</strong>{" "}
-                    {venue?.location?.city || "Not provided"}
-                </p>
-                <p>
-                    <strong>Country:</strong>{" "}
-                    {venue?.location?.country || "Not provided"}
-                </p>
-                <p>
-                    <strong>Zip Code:</strong>{" "}
-                    {venue?.location?.zip || "Not provided"}
-                </p>
-            </div>
+
+            {/* Booking Form */}
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label>
+                        Date From:
+                        <input
+                            type="date"
+                            name="dateFrom"
+                            value={formData.dateFrom}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Date To:
+                        <input
+                            type="date"
+                            name="dateTo"
+                            value={formData.dateTo}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Guests:
+                        <input
+                            type="number"
+                            name="guests"
+                            min="1"
+                            max={venue?.maxGuests}
+                            value={formData.guests}
+                            onChange={handleInputChange}
+                            required
+                        />
+                    </label>
+                </div>
+                <button type="submit" disabled={bookingLoading}>
+                    {bookingLoading ? "Booking..." : "Book Now"}
+                </button>
+            </form>
+
+            {/* Booking Response */}
+            {bookingResponse && (
+                <div>
+                    <h3>Booking Details</h3>
+                    <p>Booking ID: {bookingResponse.id}</p>
+                    <p>Date From: {bookingResponse.dateFrom}</p>
+                    <p>Date To: {bookingResponse.dateTo}</p>
+                    <p>Guests: {bookingResponse.guests}</p>
+                </div>
+            )}
+
+            {/* Booking Error */}
+            {bookingError && (
+                <p style={{ color: "red" }}>{bookingError.message}</p>
+            )}
         </MainContainer>
     );
 }

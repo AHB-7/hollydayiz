@@ -14,7 +14,7 @@ import { SingleUser } from "../../types/global";
 import { useEffect } from "react";
 
 export function SingleProfile() {
-    const profilename = localStorage.getItem("name");
+    const userProfileName = localStorage.getItem("name");
     const apiToken = localStorage.getItem("accessToken");
 
     const {
@@ -23,7 +23,7 @@ export function SingleProfile() {
         error,
         request,
     } = useApi<SingleUser>(
-        `https://v2.api.noroff.dev/holidaze/profiles/${profilename}`
+        `https://v2.api.noroff.dev/holidaze/profiles/${userProfileName}`
     );
 
     useEffect(() => {

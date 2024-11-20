@@ -6,36 +6,46 @@ export const MainContainer = styled.main`
     align-items: center;
     justify-content: center;
     padding-top: 4rem;
+    gap: 2rem;
 `;
-export const FirstRow = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    gap: 1.4rem;
-`;
+
 export const CarouselComponent = styled.div`
     width: 100%;
-    max-width: 45rem;
+    max-width: 55rem;
     height: 35rem;
-
+    padding: 0 0.5rem;
+    @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+        height: 25rem;
+    }
     .slick-list {
-        width: 45rem;
+        width: 100%;
+        max-width: 55rem;
         height: 35rem;
         overflow: hidden;
+        @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+            height: 25rem;
+        }
     }
 
     .slick-slide {
-        display: flex !important;
+        display: flex;
         align-items: center;
         justify-content: center;
         height: 35rem;
+        @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+            height: 25rem;
+        }
     }
 
     img {
-        width: 45rem;
+        width: 100%;
+        max-width: 55rem;
         height: 35rem;
         object-fit: cover;
-        border-radius: 1.8rem;
+        border-radius: 1.2rem;
+        @media screen and (${({ theme }) => theme.breakpoints.sm}) {
+            height: 25rem;
+        }
     }
 
     .slick-arrow {
@@ -52,11 +62,11 @@ export const CarouselComponent = styled.div`
     }
 
     .slick-prev {
-        left: 0px;
+        left: 14px;
     }
 
     .slick-next {
-        right: 0px;
+        right: 14px;
     }
 
     .slick-dots li button:before {
@@ -72,12 +82,27 @@ export const CarouselComponent = styled.div`
 
 export const VenueInfo = styled.div`
     margin-top: 1rem;
+    padding: 0 0.5rem;
+    max-width: 55rem;
 `;
 export const VenueTitle = styled.h1`
     font-size: 2rem;
     margin-bottom: 1rem;
 `;
 export const VenueDescription = styled.p`
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 1rem;
+    line-height: 1.4;
+    text-align: justify;
+    padding: 0 0.5rem;
+`;
+export const VenuePrice = styled.p`
+    font-size: 1.4rem;
+`;
+export const Row = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 55rem;
+    padding: 0 1rem;
 `;
