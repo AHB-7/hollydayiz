@@ -73,6 +73,8 @@ export type SingleVenue = {
         email: string;
         avatar: string;
     };
+    created: string;
+    updated: string;
     bookings: {
         id: string;
         dateFrom: string;

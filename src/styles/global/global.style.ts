@@ -18,7 +18,10 @@ export const GlobalStyle = createGlobalStyle`
     color: ${(props) => props.theme.colors.text};
     max-width: ${(props) => props.theme.breakpoints.lg};
     margin: 0 auto;
-    font-family: 'Noto Sans', sans-serif;
+    font-family: 'Noto Sans', sans-serif;   
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   a {
