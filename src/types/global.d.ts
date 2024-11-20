@@ -71,7 +71,10 @@ export type SingleVenue = {
     owner: {
         name: string;
         email: string;
-        avatar: string;
+        avatar: {
+            url: string;
+            alt: string;
+        };
     };
     created: string;
     updated: string;

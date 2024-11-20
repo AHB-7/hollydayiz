@@ -105,4 +105,27 @@ export const Row = styled.div`
     width: 100%;
     max-width: 55rem;
     padding: 0 1rem;
+    margin-top: 1rem;
+    > div > h2 {
+        font-size: 1.4rem;
+        margin-bottom: 0.2rem;
+    }
+`;
+
+export const MetaInfo = styled.div`
+    display: flex;
+    justify-content: start;
+    text-align: start;
+    width: 100%;
+    max-width: 55rem;
+    align-items: center;
+    gap: 2rem;
+    padding: 0 0.5rem;
+    margin-top: 1rem;
+    max-width: 55rem;
+    font-size: 1.2rem;
+    color: ${({ theme }) => theme.colors.textSecondary};
+    border-top: 0.12rem solid rgba(0, 0, 0, 0.2);
+    border-bottom: 0.12rem solid rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 0;
 `;

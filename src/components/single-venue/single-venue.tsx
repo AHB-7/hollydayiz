@@ -14,7 +14,9 @@ import {
     VenueInfo,
     VenueTitle,
     VenuePrice,
+    MetaInfo,
 } from "../../styles/single-venue/single-venue-styles";
+import { OwnerNameImg, VenueInfoContainer } from "../../styles/venues/cards";
 
 export function SingleVenue() {
     const { venueId } = useParams();
@@ -80,6 +82,15 @@ export function SingleVenue() {
 
     return (
         <MainContainer>
+            <Row>
+                <OwnerNameImg>
+                    <img
+                        src={venue?.owner.avatar.url}
+                        alt={venue?.owner.avatar.alt}
+                    />
+                    <h2>{venue?.owner.name}</h2>
+                </OwnerNameImg>
+            </Row>
             <CarouselComponent>
                 {venue?.media && venue.media.length > 0 ? (
                     <Slider {...sliderSettings}>
@@ -108,7 +119,33 @@ export function SingleVenue() {
                 <VenueTitle>{venue?.name}</VenueTitle>
                 <VenueDescription>{venue?.description}</VenueDescription>
             </VenueInfo>
-
+            <MetaInfo>
+                {venue?.meta?.wifi && (
+                    <p>
+                        <strong>Wifi:</strong> Available
+                    </p>
+                )}
+                {venue?.meta?.pets && (
+                    <p>
+                        <strong>Kitchen:</strong> Available
+                    </p>
+                )}
+                {venue?.meta?.parking && (
+                    <p>
+                        <strong>Parking:</strong> Available
+                    </p>
+                )}
+                {venue?.meta?.breakfast && (
+                    <p>
+                        <strong>Pool:</strong> Available
+                    </p>
+                )}
+                {venue?.meta?.parking && (
+                    <p>
+                        <strong>TV:</strong> Available
+                    </p>
+                )}
+            </MetaInfo>
             {/* Booking Form */}
             <form onSubmit={handleSubmit}>
                 <div>
