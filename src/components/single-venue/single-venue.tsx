@@ -15,8 +15,20 @@ import {
     VenueTitle,
     VenuePrice,
     MetaInfo,
+    MetaInfoItem,
+    MetaTitle,
+    RatingContainer,
+    RatingContainerInner,
 } from "../../styles/single-venue/single-venue-styles";
-import { OwnerNameImg, VenueInfoContainer } from "../../styles/venues/cards";
+import { OwnerNameImg } from "../../styles/venues/cards";
+import { FaWifi } from "react-icons/fa6";
+import {
+    MdLocalParking,
+    MdOutlineEmojiFoodBeverage,
+    MdOutlinePets,
+} from "react-icons/md";
+import { IoPeopleSharp } from "react-icons/io5";
+import { Stars } from "../global/rating";
 
 export function SingleVenue() {
     const { venueId } = useParams();
@@ -82,15 +94,6 @@ export function SingleVenue() {
 
     return (
         <MainContainer>
-            <Row>
-                <OwnerNameImg>
-                    <img
-                        src={venue?.owner.avatar.url}
-                        alt={venue?.owner.avatar.alt}
-                    />
-                    <h2>{venue?.owner.name}</h2>
-                </OwnerNameImg>
-            </Row>
             <CarouselComponent>
                 {venue?.media && venue.media.length > 0 ? (
                     <Slider {...sliderSettings}>
@@ -107,6 +110,9 @@ export function SingleVenue() {
                     <p>No images available</p>
                 )}
             </CarouselComponent>
+            <RatingContainer>
+                <Stars rating={venue?.rating ?? 0} />
+            </RatingContainer>
             <Row>
                 <VenuePrice>
                     <strong>Price:</strong>
@@ -115,38 +121,61 @@ export function SingleVenue() {
                     <strong>${venue?.price}</strong>
                 </VenuePrice>
             </Row>
+
             <VenueInfo>
                 <VenueTitle>{venue?.name}</VenueTitle>
                 <VenueDescription>{venue?.description}</VenueDescription>
             </VenueInfo>
+            <MetaTitle>
+                <h3>This services are included in the price: </h3>
+            </MetaTitle>
             <MetaInfo>
                 {venue?.meta?.wifi && (
-                    <p>
-                        <strong>Wifi:</strong> Available
-                    </p>
-                )}
-                {venue?.meta?.pets && (
-                    <p>
-                        <strong>Kitchen:</strong> Available
-                    </p>
-                )}
-                {venue?.meta?.parking && (
-                    <p>
-                        <strong>Parking:</strong> Available
-                    </p>
+                    <MetaInfoItem>
+                        <FaWifi />
+                        <span>Wifi included</span>
+                    </MetaInfoItem>
                 )}
                 {venue?.meta?.breakfast && (
-                    <p>
-                        <strong>Pool:</strong> Available
-                    </p>
+                    <MetaInfoItem>
+                        <MdOutlineEmojiFoodBeverage />
+                        <span>Breakfast included</span>
+                    </MetaInfoItem>
                 )}
                 {venue?.meta?.parking && (
-                    <p>
-                        <strong>TV:</strong> Available
-                    </p>
+                    <MetaInfoItem>
+                        <MdLocalParking />
+                        <span>Parking included</span>
+                    </MetaInfoItem>
+                )}
+
+                {venue?.meta?.pets && (
+                    <MetaInfoItem>
+                        <MdOutlinePets />
+                        <span>Pets allowed</span>
+                    </MetaInfoItem>
                 )}
             </MetaInfo>
-            {/* Booking Form */}
+            <Row>
+                <OwnerNameImg>
+                    <img
+                        src={venue?.owner.avatar.url}
+                        alt={venue?.owner.avatar.alt}
+                    />
+                    <h2>{venue?.owner.name}</h2>
+                </OwnerNameImg>
+            </Row>
+            <div>
+                <h3>Location</h3>
+                <p>
+                    {venue?.location.address}, {venue?.location.city},{" "}
+                    {venue?.location.zip}, {venue?.location.country}
+                </p>
+            </div>
+            <div>
+                <h3>Max Guests</h3>
+                <p>{venue?.maxGuests}</p>
+            </div>
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>

@@ -6,12 +6,12 @@ export const MainContainer = styled.main`
     align-items: center;
     justify-content: center;
     padding-top: 4rem;
-    gap: 2rem;
+    gap: 1rem;
 `;
 
 export const CarouselComponent = styled.div`
     width: 100%;
-    max-width: 55rem;
+    max-width: 45rem;
     height: 35rem;
     padding: 0 0.5rem;
     @media screen and (${({ theme }) => theme.breakpoints.sm}) {
@@ -19,7 +19,7 @@ export const CarouselComponent = styled.div`
     }
     .slick-list {
         width: 100%;
-        max-width: 55rem;
+        max-width: 45rem;
         height: 35rem;
         overflow: hidden;
         @media screen and (${({ theme }) => theme.breakpoints.sm}) {
@@ -36,10 +36,9 @@ export const CarouselComponent = styled.div`
             height: 25rem;
         }
     }
-
     img {
         width: 100%;
-        max-width: 55rem;
+        max-width: 45rem;
         height: 35rem;
         object-fit: cover;
         border-radius: 1.2rem;
@@ -79,11 +78,17 @@ export const CarouselComponent = styled.div`
         color: #000;
     }
 `;
-
+export const RatingContainer = styled.div`
+    width: 100%;
+    max-width: 45rem;
+    height: 80vh;
+    position: absolute;
+    bottom: 0;
+`;
 export const VenueInfo = styled.div`
-    margin-top: 1rem;
     padding: 0 0.5rem;
-    max-width: 55rem;
+    max-width: 45rem;
+    width: 100%;
 `;
 export const VenueTitle = styled.h1`
     font-size: 2rem;
@@ -94,38 +99,59 @@ export const VenueDescription = styled.p`
     margin-bottom: 1rem;
     line-height: 1.4;
     text-align: justify;
-    padding: 0 0.5rem;
 `;
 export const VenuePrice = styled.p`
     font-size: 1.4rem;
 `;
 export const Row = styled.div`
     display: flex;
+    padding: 0 1rem;
     justify-content: space-between;
     width: 100%;
-    max-width: 55rem;
-    padding: 0 1rem;
-    margin-top: 1rem;
+    max-width: 45rem;
+    padding: 1.3rem 0.5rem;
     > div > h2 {
         font-size: 1.4rem;
         margin-bottom: 0.2rem;
     }
 `;
-
 export const MetaInfo = styled.div`
-    display: flex;
-    justify-content: start;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     text-align: start;
     width: 100%;
-    max-width: 55rem;
-    align-items: center;
-    gap: 2rem;
+    max-width: 45rem;
     padding: 0 0.5rem;
-    margin-top: 1rem;
-    max-width: 55rem;
+    @media (${({ theme }) => theme.breakpoints.md}) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+`;
+export const MetaTitle = styled.div`
+    width: 100%;
+    max-width: 45rem;
+    padding: 0 0.5rem;
+    > h3 {
+        font-size: 1.2rem;
+    }
+`;
+export const MetaInfoItem = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0.5rem;
+    gap: 0.5rem;
     font-size: 1.2rem;
-    color: ${({ theme }) => theme.colors.textSecondary};
-    border-top: 0.12rem solid rgba(0, 0, 0, 0.2);
-    border-bottom: 0.12rem solid rgba(0, 0, 0, 0.2);
-    padding: 0.5rem 0;
+    border-radius: 1rem;
+    height: 5rem;
+    border: 1px solid ${({ theme }) => theme.colors.screenBackground};
+    > span {
+        text-align: center;
+        font-size: 1rem;
+        color: ${({ theme }) => theme.colors.text};
+    }
+    > svg {
+        font-size: 3rem;
+        fill: ${({ theme }) => theme.colors.text};
 `;

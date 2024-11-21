@@ -4,7 +4,6 @@ import {
     VenueImageContainer,
     VenueMetaContainer,
     VenueMeta,
-    // VenueBookingsButton,
     OwnerNameImg,
 } from "../../styles/venues/cards";
 import { VenuesContainer } from "../../styles/venues/container";
