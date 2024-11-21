@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleVenue as SingleVenueTypes } from "../../types/global";
 import { baseUrl } from "../../util/global/variables";
+import "react-calendar/dist/Calendar.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -27,10 +28,11 @@ import {
     MdOutlinePets,
 } from "react-icons/md";
 import { Stars } from "../global/rating";
+import { Booking } from "./booking";
+import { GrLocation } from "react-icons/gr";
 
 export function SingleVenue() {
     const { venueId } = useParams();
-    const apiToken = localStorage.getItem("accessToken");
 
     const {
         data: venue,
@@ -41,43 +43,9 @@ export function SingleVenue() {
         `${baseUrl}/venues/${venueId}?_owner=true&_bookings=true`
     );
 
-    const {
-        data: bookingResponse,
-        loading: bookingLoading,
-        error: bookingError,
-        request: createBooking,
-    } = useApi(`${baseUrl}/bookings`);
-
-    const [formData, setFormData] = useState({
-        dateFrom: "",
-        dateTo: "",
-        guests: 1,
-    });
-
     useEffect(() => {
         fetchVenue("GET");
     }, [venueId]);
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        await createBooking(
-            "POST",
-            {
-                ...formData,
-                venueId,
-            },
-            {},
-            apiToken || ""
-        );
-    };
 
     if (venueLoading) return <p>Loading...</p>;
     if (venueError) return <p>Error: {venueError.message}</p>;
@@ -107,10 +75,11 @@ export function SingleVenue() {
                 ) : (
                     <p>No images available</p>
                 )}
+                <RatingContainer>
+                    <Stars rating={venue?.rating ?? 0} />
+                </RatingContainer>
             </CarouselComponent>
-            <RatingContainer>
-                <Stars rating={venue?.rating ?? 0} />
-            </RatingContainer>
+
             <Row>
                 <VenuePrice>
                     <strong>Price:</strong>
@@ -162,77 +131,22 @@ export function SingleVenue() {
                     />
                     <h2>{venue?.owner.name}</h2>
                 </OwnerNameImg>
+                <div>
+                    <GrLocation />
+                    <p>
+                        {venue?.location.address}, {venue?.location.city},{" "}
+                        {venue?.location.zip}, {venue?.location.country}
+                    </p>
+                </div>
             </Row>
-            <div>
-                <h3>Location</h3>
-                <p>
-                    {venue?.location.address}, {venue?.location.city},{" "}
-                    {venue?.location.zip}, {venue?.location.country}
-                </p>
-            </div>
+
             <div>
                 <h3>Max Guests</h3>
                 <p>{venue?.maxGuests}</p>
             </div>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>
-                        Date From:
-                        <input
-                            type="date"
-                            name="dateFrom"
-                            value={formData.dateFrom}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Date To:
-                        <input
-                            type="date"
-                            name="dateTo"
-                            value={formData.dateTo}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Guests:
-                        <input
-                            type="number"
-                            name="guests"
-                            min="1"
-                            max={venue?.maxGuests}
-                            value={formData.guests}
-                            onChange={handleInputChange}
-                            required
-                        />
-                    </label>
-                </div>
-                <button type="submit" disabled={bookingLoading}>
-                    {bookingLoading ? "Booking..." : "Book Now"}
-                </button>
-            </form>
-
-            {/* Booking Response */}
-            {bookingResponse && (
-                <div>
-                    <h3>Booking Details</h3>
-                    <p>Booking ID: {bookingResponse.id}</p>
-                    <p>Date From: {bookingResponse.dateFrom}</p>
-                    <p>Date To: {bookingResponse.dateTo}</p>
-                    <p>Guests: {bookingResponse.guests}</p>
-                </div>
-            )}
-
-            {/* Booking Error */}
-            {bookingError && (
-                <p style={{ color: "red" }}>{bookingError.message}</p>
-            )}
+            <div>
+                <Booking maxGuests={venue?.maxGuests} price={venue?.price} />
+            </div>
         </MainContainer>
     );
 }

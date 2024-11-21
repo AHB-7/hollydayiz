@@ -13,6 +13,7 @@ export const CarouselComponent = styled.div`
     width: 100%;
     max-width: 45rem;
     height: 35rem;
+    position: relative;
     padding: 0 0.5rem;
     @media screen and (${({ theme }) => theme.breakpoints.sm}) {
         height: 25rem;
@@ -81,7 +82,6 @@ export const CarouselComponent = styled.div`
 export const RatingContainer = styled.div`
     width: 100%;
     max-width: 45rem;
-    height: 80vh;
     position: absolute;
     bottom: 0;
 `;
@@ -107,12 +107,28 @@ export const Row = styled.div`
     display: flex;
     padding: 0 1rem;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: end;
     width: 100%;
     max-width: 45rem;
     padding: 1.3rem 0.5rem;
     > div > h2 {
         font-size: 1.4rem;
         margin-bottom: 0.2rem;
+    }
+    :last-child {
+        display: flex;
+        align-items: end;
+        gap: 0.5rem;
+        margin-left: auto;
+    }
+    > div p {
+        font-weight: bold;
+        margin-left: auto;
+    }
+    > div svg {
+        font-size: 1.2rem;
     }
 `;
 export const MetaInfo = styled.div`
