@@ -35,7 +35,6 @@ export function Login() {
             setAccessToken(data.accessToken);
             setName(data.name);
             const name = data.name;
-            window.location.href = `/holidaze/profiles/${name}`;
             setNavbarState(false);
         }
     }, [data, setAccessToken]);

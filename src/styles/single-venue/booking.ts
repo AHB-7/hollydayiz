@@ -3,9 +3,10 @@ import Calendar from "react-calendar";
 
 export const ContainerForCalendar = styled.section`
     display: flex;
-    flex-direction: row;
     width: 100%;
     max-width: 45rem;
+    padding: 0 0.5rem;
+    flex-direction: column;
     > form {
         display: flex;
         flex-direction: column;
@@ -24,8 +25,9 @@ export const StyledCalendar = styled(Calendar)`
     padding: 1rem;
     font-size: 1.2rem;
     font-weight: bold;
+    width: 100%;
     .unavailable {
-        background: #ff474c;
+        background: lightcoral;
     }
 
     .react-calendar__tile {
@@ -71,16 +73,30 @@ export const GuestNumber = styled.select`
     width: 100%;
     padding: 0.5rem;
     font-size: 1.2rem;
-    border-radius: 0.8rem;
+    border-radius: 0.5rem;
     border: 1px solid ${({ theme }) => theme.colors.screenBackground};
+    background: ${({ theme }) => theme.colors.background};
 `;
 export const Loging = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
     width: 100%;
     max-width: 45rem;
-    gap: 1rem;
     margin: 2rem 0;
+`;
+export const StateMessage = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 1.2rem;
+    font-weight: bold;
+    > svg {
+        font-size: 1.5rem;
+    }
 `;

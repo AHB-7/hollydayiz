@@ -153,21 +153,20 @@ export function SingleVenue() {
                     Max Guests <strong>{venue?.maxGuests}</strong>
                 </h3>
             </PriceAndDate>
-            <div>
-                {verified ? (
-                    <Booking
-                        maxGuests={venue?.maxGuests}
-                        price={venue?.price}
-                        venueData={venue}
-                    />
-                ) : (
-                    <Loging>
-                        <VenueBookingsButton onClick={toggleActiveState}>
-                            Log in to book
-                        </VenueBookingsButton>
-                    </Loging>
-                )}
-            </div>
+
+            {verified ? (
+                <Booking
+                    maxGuests={venue?.maxGuests}
+                    price={venue?.price}
+                    venueData={venue}
+                />
+            ) : (
+                <Loging>
+                    <VenueBookingsButton onClick={toggleActiveState}>
+                        Log in to book
+                    </VenueBookingsButton>
+                </Loging>
+            )}
         </MainContainer>
     );
 }

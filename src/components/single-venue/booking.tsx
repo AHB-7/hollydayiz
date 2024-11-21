@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useRef, useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import {
     BookingInfo,
     ContainerForCalendar,
     GuestNumber,
     GuestNumberContainer,
+    Loging,
     PriceAndDate,
+    StateMessage,
     StyledCalendar,
 } from "../../styles/single-venue/booking";
 import { VenueBookingsButton } from "../../styles/venues/cards";
@@ -13,18 +15,20 @@ import { Error, SuccessMessage } from "../../styles/auth/auth";
 import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
-
-type BookingProps = {
-    maxGuests: number | undefined;
-    price: number | undefined;
-    venueData: {
-        bookings: { dateFrom: string; dateTo: string }[];
-    } | null;
-};
+import { calculateDays } from "../../util/global/calculater";
+import { BookingProps } from "../../types/global";
 
 export function Booking({ maxGuests, price, venueData }: BookingProps) {
     const { venueId } = useParams<{ venueId: string }>();
     const apiToken = localStorage.getItem("accessToken");
+    const userName = localStorage.getItem("name");
+
+    const messageRef = useRef<HTMLDivElement>(null);
+
+    const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
+    const [guests, setGuests] = useState(1);
+    const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+    const [formError, setFormError] = useState<string | null>(null);
 
     const {
         data: bookingResponse,
@@ -33,11 +37,12 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
         request: createBooking,
     } = useApi(`${baseUrl}/bookings`);
 
-    const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
-    const [guests, setGuests] = useState(1);
-    const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+    useEffect(() => {
+        if (bookingResponse || bookingError) {
+            messageRef.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [bookingResponse, bookingError]);
 
-    // Generate unavailable dates from the provided venueData
     useEffect(() => {
         if (venueData?.bookings) {
             const bookedDates = venueData.bookings.flatMap(
@@ -59,21 +64,15 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
         }
     }, [venueData]);
 
-    const calculateDays = (range: [Date, Date] | null): number =>
-        range
-            ? Math.ceil(
-                  (range[1].getTime() - range[0].getTime()) /
-                      (1000 * 60 * 60 * 24)
-              )
-            : 0;
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!dateRange) {
-            alert("Please select a date range.");
+            setFormError("Please select a date to book.");
             return;
         }
+
+        setFormError(null);
 
         const [dateFrom, dateTo] = dateRange;
 
@@ -90,11 +89,16 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
         );
     };
 
-    const isDateUnavailable = (date: Date): boolean =>
-        unavailableDates.some(
-            (unavailableDate) =>
-                unavailableDate.toDateString() === date.toDateString()
+    const isDateUnavailable = (date: Date): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return (
+            unavailableDates.some(
+                (unavailableDate) =>
+                    unavailableDate.toDateString() === date.toDateString()
+            ) || date < today
         );
+    };
 
     const getTileClassName = ({ date }: { date: Date }) =>
         isDateUnavailable(date) ? "unavailable" : "";
@@ -115,21 +119,29 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                                 tileDisabled={({ date }) =>
                                     isDateUnavailable(date)
                                 }
-                                tileClassName={getTileClassName} // Apply the unavailable class
+                                tileClassName={getTileClassName}
                             />
                         </label>
                     </div>
+                    {formError && (
+                        <StateMessage>
+                            <Error>{formError}</Error>
+                        </StateMessage>
+                    )}
                     <BookingInfo>
                         <PriceAndDate>
                             <p>
-                                Days:{" "}
+                                Days:
                                 <strong>{calculateDays(dateRange)}</strong>
                             </p>
                             <p>
-                                Price:{" "}
+                                Price:
                                 <strong>
                                     {dateRange
-                                        ? `${calculateDays(dateRange) * (price ?? 0)}`
+                                        ? `$${
+                                              calculateDays(dateRange) *
+                                              (price ?? 0)
+                                          }`
                                         : "Select dates"}
                                 </strong>
                             </p>
@@ -154,24 +166,42 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                                 ))}
                             </GuestNumber>
                         </GuestNumberContainer>
-                        <VenueBookingsButton
-                            type="submit"
-                            disabled={bookingLoading}
-                        >
-                            {bookingLoading ? "Booking..." : "Book Now"}
-                        </VenueBookingsButton>
+                        <Loging>
+                            <VenueBookingsButton
+                                type="submit"
+                                disabled={bookingLoading}
+                            >
+                                {bookingLoading ? "Booking..." : "Book Now"}
+                            </VenueBookingsButton>
+                        </Loging>
                     </BookingInfo>
                 </form>
-                {bookingResponse && (
-                    <SuccessMessage>
-                        <h3>Your booking has been placed successfully!</h3>
-                        <IoCheckmarkDoneCircleSharp
-                            fill="green"
-                            fontSize="4rem"
-                        />
-                    </SuccessMessage>
-                )}
-                {bookingError && <Error>{bookingError.message}</Error>}
+                <div ref={messageRef}>
+                    {bookingResponse && (
+                        <StateMessage>
+                            <SuccessMessage>
+                                <h3>
+                                    Your booking has been placed successfully!
+                                </h3>
+                                <IoCheckmarkDoneCircleSharp
+                                    fill="green"
+                                    fontSize="4rem"
+                                />
+                                <VenueBookingsButton
+                                    as={Link}
+                                    to={`/holidaze/profiles/${userName}`}
+                                >
+                                    View your bookings history
+                                </VenueBookingsButton>
+                            </SuccessMessage>
+                        </StateMessage>
+                    )}
+                    {bookingError && (
+                        <StateMessage>
+                            <Error>{bookingError.message}</Error>
+                        </StateMessage>
+                    )}
+                </div>
             </ContainerForCalendar>
         </>
     );

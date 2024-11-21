@@ -173,3 +173,10 @@ export interface SingleUser {
     venueManager: boolean;
     meta: any;
 }
+export type BookingProps = {
+    maxGuests: number | undefined;
+    price: number | undefined;
+    venueData: {
+        bookings: { dateFrom: string; dateTo: string }[];
+    } | null;
+};
