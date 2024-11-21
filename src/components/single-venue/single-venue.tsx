@@ -18,7 +18,6 @@ import {
     MetaInfoItem,
     MetaTitle,
     RatingContainer,
-    RatingContainerInner,
 } from "../../styles/single-venue/single-venue-styles";
 import { OwnerNameImg } from "../../styles/venues/cards";
 import { FaWifi } from "react-icons/fa6";
@@ -27,7 +26,6 @@ import {
     MdOutlineEmojiFoodBeverage,
     MdOutlinePets,
 } from "react-icons/md";
-import { IoPeopleSharp } from "react-icons/io5";
 import { Stars } from "../global/rating";
 
 export function SingleVenue() {
