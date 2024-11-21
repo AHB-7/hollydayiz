@@ -1,21 +1,29 @@
-import { useApi } from "../../util/hooks/use-fetch";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { baseUrl } from "../../util/global/variables";
 import {
+    BookingInfo,
     ContainerForCalendar,
     GuestNumber,
+    GuestNumberContainer,
     PriceAndDate,
     StyledCalendar,
 } from "../../styles/single-venue/booking";
+import { VenueBookingsButton } from "../../styles/venues/cards";
+import { Error, SuccessMessage } from "../../styles/auth/auth";
+import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
+import { useApi } from "../../util/hooks/use-fetch";
+import { baseUrl } from "../../util/global/variables";
 
 type BookingProps = {
-    maxGuests?: number | undefined;
-    price?: number | undefined;
+    maxGuests: number | undefined;
+    price: number | undefined;
+    venueData: {
+        bookings: { dateFrom: string; dateTo: string }[];
+    } | null;
 };
 
-export function Booking({ maxGuests, price }: BookingProps) {
-    const { venueId } = useParams();
+export function Booking({ maxGuests, price, venueData }: BookingProps) {
+    const { venueId } = useParams<{ venueId: string }>();
     const apiToken = localStorage.getItem("accessToken");
 
     const {
@@ -25,45 +33,39 @@ export function Booking({ maxGuests, price }: BookingProps) {
         request: createBooking,
     } = useApi(`${baseUrl}/bookings`);
 
-    const {
-        data: venueData,
-        loading: venueLoading,
-        error: venueError,
-        request: fetchVenue,
-    } = useApi(`${baseUrl}/venues/${venueId}?_bookings=true`);
-
     const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
     const [guests, setGuests] = useState(1);
     const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
-    useEffect(() => {
-        fetchVenue("GET");
-    }, [venueId]);
-
+    // Generate unavailable dates from the provided venueData
     useEffect(() => {
         if (venueData?.bookings) {
-            const dates: Date[] = [];
-            venueData.bookings.forEach(
-                (booking: { dateFrom: string; dateTo: string }) => {
-                    const start = new Date(booking.dateFrom);
-                    const end = new Date(booking.dateTo);
-                    let currentDate = start;
-                    while (currentDate <= end) {
-                        dates.push(new Date(currentDate));
-                        currentDate.setDate(currentDate.getDate() + 1);
+            const bookedDates = venueData.bookings.flatMap(
+                ({ dateFrom, dateTo }) => {
+                    const start = new Date(dateFrom);
+                    const end = new Date(dateTo);
+                    const dates = [];
+                    for (
+                        let d = new Date(start);
+                        d <= end;
+                        d.setDate(d.getDate() + 1)
+                    ) {
+                        dates.push(new Date(d));
                     }
+                    return dates;
                 }
             );
-            setUnavailableDates(dates);
+            setUnavailableDates(bookedDates);
         }
     }, [venueData]);
 
-    const calculateDays = (range: [Date, Date] | null) => {
-        if (!range) return 0;
-        const [start, end] = range;
-        const difference = Math.abs(end.getTime() - start.getTime());
-        return Math.ceil(difference / (1000 * 60 * 60 * 24));
-    };
+    const calculateDays = (range: [Date, Date] | null): number =>
+        range
+            ? Math.ceil(
+                  (range[1].getTime() - range[0].getTime()) /
+                      (1000 * 60 * 60 * 24)
+              )
+            : 0;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -88,101 +90,89 @@ export function Booking({ maxGuests, price }: BookingProps) {
         );
     };
 
-    const tileDisabled = ({ date }: { date: Date }) => {
-        return unavailableDates.some(
+    const isDateUnavailable = (date: Date): boolean =>
+        unavailableDates.some(
             (unavailableDate) =>
                 unavailableDate.toDateString() === date.toDateString()
         );
-    };
 
-    const tileClassName = ({ date }: { date: Date }) => {
-        if (
-            unavailableDates.some(
-                (unavailableDate) =>
-                    unavailableDate.toDateString() === date.toDateString()
-            )
-        ) {
-            return "unavailable";
-        }
-        return null;
-    };
+    const getTileClassName = ({ date }: { date: Date }) =>
+        isDateUnavailable(date) ? "unavailable" : "";
 
     return (
         <>
-            {venueLoading && <p>Loading venue...</p>}
-            {venueError && <p>Error: {venueError.message}</p>}
             <ContainerForCalendar>
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>
-                            Select Dates:
+                            <p>Start your booking by selecting dates:</p>
                             <StyledCalendar
                                 selectRange
-                                onChange={(range: any) =>
+                                onChange={(range) =>
                                     setDateRange(range as [Date, Date])
                                 }
                                 value={dateRange}
-                                tileDisabled={tileDisabled}
-                                tileClassName={tileClassName}
+                                tileDisabled={({ date }) =>
+                                    isDateUnavailable(date)
+                                }
+                                tileClassName={getTileClassName} // Apply the unavailable class
                             />
                         </label>
                     </div>
-                    <div>
-                     
-                        {dateRange ? (
-                            <PriceAndDate>
-                                <p>
-                                    Days:{" "}
-                                    <strong>{calculateDays(dateRange)}</strong>
-                                </p>
-
-                                <p>
-                                    Price: <strong>${price}</strong>
-                                </p>
-                            </PriceAndDate>
-                        ) : (
-                            <PriceAndDate>
-                                <p>
-                                    Days:{" "}
-                                    <strong>{calculateDays(dateRange)}</strong>
-                                </p>
-
-                                <p>Price: select dates to calculate</p>
-                            </PriceAndDate>
-                        )}
-                        <div>
-                            <label>
-                                Guests:
-                                <GuestNumber
-                                    type="number"
-                                    min="1"
-                                    max={maxGuests}
-                                    value={guests}
-                                    onChange={(e) =>
-                                        setGuests(Number(e.target.value))
-                                    }
-                                    required
-                                />
-                            </label>
-                        </div>
-                        <button type="submit" disabled={bookingLoading}>
+                    <BookingInfo>
+                        <PriceAndDate>
+                            <p>
+                                Days:{" "}
+                                <strong>{calculateDays(dateRange)}</strong>
+                            </p>
+                            <p>
+                                Price:{" "}
+                                <strong>
+                                    {dateRange
+                                        ? `${calculateDays(dateRange) * (price ?? 0)}`
+                                        : "Select dates"}
+                                </strong>
+                            </p>
+                        </PriceAndDate>
+                        <GuestNumberContainer>
+                            <p>Guests:</p>
+                            <GuestNumber
+                                as="select"
+                                value={guests}
+                                onChange={(e) =>
+                                    setGuests(Number(e.target.value))
+                                }
+                                required
+                            >
+                                {Array.from(
+                                    { length: maxGuests ?? 0 },
+                                    (_, i) => i + 1
+                                ).map((guest) => (
+                                    <option key={guest} value={guest}>
+                                        {guest}
+                                    </option>
+                                ))}
+                            </GuestNumber>
+                        </GuestNumberContainer>
+                        <VenueBookingsButton
+                            type="submit"
+                            disabled={bookingLoading}
+                        >
                             {bookingLoading ? "Booking..." : "Book Now"}
-                        </button>
-                    </div>
+                        </VenueBookingsButton>
+                    </BookingInfo>
                 </form>
+                {bookingResponse && (
+                    <SuccessMessage>
+                        <h3>Your booking has been placed successfully!</h3>
+                        <IoCheckmarkDoneCircleSharp
+                            fill="green"
+                            fontSize="4rem"
+                        />
+                    </SuccessMessage>
+                )}
+                {bookingError && <Error>{bookingError.message}</Error>}
             </ContainerForCalendar>
-            {bookingResponse && (
-                <div>
-                    <h3>Booking Details</h3>
-                    <p>Booking ID: {bookingResponse.id}</p>
-                    <p>Date From: {bookingResponse.dateFrom}</p>
-                    <p>Date To: {bookingResponse.dateTo}</p>
-                    <p>Guests: {bookingResponse.guests}</p>
-                </div>
-            )}
-            {bookingError && (
-                <p style={{ color: "red" }}>{bookingError.message}</p>
-            )}
         </>
     );
 }

@@ -82,7 +82,7 @@ export const CarouselComponent = styled.div`
 export const RatingContainer = styled.div`
     width: 100%;
     max-width: 45rem;
-    position: absolute;
+    position: relative;
     bottom: 0;
 `;
 export const VenueInfo = styled.div`
@@ -112,7 +112,7 @@ export const Row = styled.div`
     align-items: end;
     width: 100%;
     max-width: 45rem;
-    padding: 1.3rem 0.5rem;
+    padding: 1rem 0.5rem;
     > div > h2 {
         font-size: 1.4rem;
         margin-bottom: 0.2rem;

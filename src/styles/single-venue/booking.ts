@@ -4,13 +4,18 @@ import Calendar from "react-calendar";
 export const ContainerForCalendar = styled.section`
     display: flex;
     flex-direction: row;
-    gap: 1rem;
     width: 100%;
+    max-width: 45rem;
     > form {
-        width: 100%;
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+        > div > label > p {
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0.5rem;
+        }
     }
 `;
 export const StyledCalendar = styled(Calendar)`
@@ -36,16 +41,46 @@ export const StyledCalendar = styled(Calendar)`
         background: green;
     }
 `;
+export const BookingInfo = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 2rem 2rem 2rem;
+`;
 export const PriceAndDate = styled.div`
+    width: 100%;
+    max-width: 45rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    > h3 {
+        margin: 0 auto;
+        > strong {
+            color: ${({ theme }) => theme.colors.primary};
+    }
 `;
-export const GuestNumber = styled.input`
+export const GuestNumberContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+`;
+export const GuestNumber = styled.select`
     width: 100%;
-    max-width: 45rem;
     padding: 0.5rem;
     font-size: 1.2rem;
     border-radius: 0.8rem;
     border: 1px solid ${({ theme }) => theme.colors.screenBackground};
+`;
+export const Loging = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 45rem;
+    gap: 1rem;
+    margin: 2rem 0;
 `;

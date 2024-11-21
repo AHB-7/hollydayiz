@@ -88,19 +88,19 @@ export const VenueMeta = styled.div`
     border-radius: 0.3rem;
 `;
 
-// export const VenueBookingsButton = styled.button`
-//     background-color: ${({ theme }) => theme.colors.text};
-//     color: ${({ theme }) => theme.colors.background};
-//     border: none;
-//     border-radius: 0.3rem;
-//     padding: 0.6rem;
-//     font-size: 1.1rem;
-//     cursor: pointer;
-//     transition: background-color 0.2s;
-//     &:hover {
-//         background-color: ${({ theme }) => theme.colors.primary};
-//     }
-//     &:active {
-//         background-color: ${({ theme }) => theme.colors.secondary};
-//     }
-// `;
+export const VenueBookingsButton = styled.button`
+    background-color: ${({ theme }) => theme.colors.text};
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.6rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+        background-color: ${({ theme }) => theme.colors.primary};
+    }
+    &:active {
+        background-color: ${({ theme }) => theme.colors.secondary};
+    }
+`;

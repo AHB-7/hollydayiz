@@ -20,7 +20,7 @@ import {
     MetaTitle,
     RatingContainer,
 } from "../../styles/single-venue/single-venue-styles";
-import { OwnerNameImg } from "../../styles/venues/cards";
+import { OwnerNameImg, VenueBookingsButton } from "../../styles/venues/cards";
 import { FaWifi } from "react-icons/fa6";
 import {
     MdLocalParking,
@@ -30,9 +30,18 @@ import {
 import { Stars } from "../global/rating";
 import { Booking } from "./booking";
 import { GrLocation } from "react-icons/gr";
+import { Loging, PriceAndDate } from "../../styles/single-venue/booking";
+import { useStore } from "../../util/global/zustand-store";
 
 export function SingleVenue() {
     const { venueId } = useParams();
+
+    const { accessToken, setNavbarState, navbarState } = useStore();
+
+    const verified = Boolean(accessToken);
+    const toggleActiveState = () => {
+        setNavbarState(!navbarState);
+    };
 
     const {
         data: venue,
@@ -139,13 +148,25 @@ export function SingleVenue() {
                     </p>
                 </div>
             </Row>
-
+            <PriceAndDate>
+                <h3>
+                    Max Guests <strong>{venue?.maxGuests}</strong>
+                </h3>
+            </PriceAndDate>
             <div>
-                <h3>Max Guests</h3>
-                <p>{venue?.maxGuests}</p>
-            </div>
-            <div>
-                <Booking maxGuests={venue?.maxGuests} price={venue?.price} />
+                {verified ? (
+                    <Booking
+                        maxGuests={venue?.maxGuests}
+                        price={venue?.price}
+                        venueData={venue}
+                    />
+                ) : (
+                    <Loging>
+                        <VenueBookingsButton onClick={toggleActiveState}>
+                            Log in to book
+                        </VenueBookingsButton>
+                    </Loging>
+                )}
             </div>
         </MainContainer>
     );
