@@ -36,6 +36,7 @@ export const useStore = create<Store>((set) => ({
     navbarState: false,
     mail: null,
     name: null,
+    otherUsersName: null,
 
     setAccessToken: (token: string | null) => {
         if (token) {
@@ -65,6 +66,14 @@ export const useStore = create<Store>((set) => ({
         } else {
             localStorage.removeItem("name");
         }
+    },
+    setOtherUsersName: (name: string | null) => {
+        if (name) {
+            localStorage.setItem("otherUsersName", name);
+        } else {
+            localStorage.removeItem("otherUsersName");
+        }
+        set({ otherUsersName: name });
     },
 
     initializeFromStorage: () => {

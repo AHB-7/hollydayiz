@@ -38,6 +38,7 @@ export const OwnerNameImg = styled.div`
     }
     > p {
         padding-bottom: 0.5rem;
+        font-size: 1.5rem;
     }
 `;
 export const VenueImageContainer = styled.div`

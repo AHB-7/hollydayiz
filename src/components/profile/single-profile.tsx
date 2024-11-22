@@ -14,7 +14,8 @@ import { SingleUser } from "../../types/global";
 import { useEffect } from "react";
 
 export function SingleProfile() {
-    const userProfileName = localStorage.getItem("name");
+    const userProfileName = localStorage.getItem("otherUsersName");
+    console.log(userProfileName);
     const apiToken = localStorage.getItem("accessToken");
 
     const {
@@ -33,9 +34,11 @@ export function SingleProfile() {
 
         fetchData();
     }, []);
+
     useEffect(() => {}, [user]);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
+
     return (
         <ProfileContainer>
             <ProfileBannerContainer>

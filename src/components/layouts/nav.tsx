@@ -19,12 +19,23 @@ export function Navbar() {
         setNavbarState,
         setAccessToken,
         setMail,
+        otherUsersName,
+        setOtherUsersName,
         initializeFromStorage,
     } = useStore();
 
     useEffect(() => {
         initializeFromStorage();
     }, [initializeFromStorage]);
+
+    useEffect(() => {
+        const name = localStorage.getItem("name");
+        if (name) {
+            setOtherUsersName(name);
+        } else {
+            setOtherUsersName(null);
+        }
+    }, [setOtherUsersName]);
 
     const toggleActiveState = () => {
         setNavbarState(!navbarState);
@@ -41,10 +52,21 @@ export function Navbar() {
         setMail(null);
         window.location.href = "/";
     };
-
+    const navigate = (path: string) => {
+        window.location.href = path;
+    };
+    const handleProfileClick = () => {
+        const name = localStorage.getItem("name");
+        if (name) {
+            setOtherUsersName(name);
+            navigate(`/holidaze/profiles/${name}`);
+        } else {
+            setOtherUsersName(null);
+            navigate(`/holidaze/profiles/`);
+        }
+    };
     const verified = Boolean(accessToken);
 
-    const name = localStorage.getItem("name");
     return (
         <NavbarSc>
             <UpperNav>
@@ -77,7 +99,10 @@ export function Navbar() {
                 <>
                     {navbarState && (
                         <LowerNav>
-                            <Link to={`/holidaze/profiles/${name}`}>
+                            <Link
+                                onClick={handleProfileClick}
+                                to={`/holidaze/profiles/${otherUsersName}`}
+                            >
                                 Profile
                             </Link>
                             <Link to="/booking">Booking</Link>

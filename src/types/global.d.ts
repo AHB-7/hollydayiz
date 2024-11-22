@@ -152,10 +152,12 @@ export interface Store {
     navbarState: boolean;
     mail: string | null;
     name: string | null;
+    otherUsersName: string | null;
     setName: (name: string | null) => void;
     setMail: (mail: string | null) => void;
     setAccessToken: (token: string | null) => void;
     setNavbarState: (state: boolean) => void;
+    setOtherUsersName: (name: string | null) => void;
     initializeFromStorage: () => void;
 }
 export interface SingleUser {

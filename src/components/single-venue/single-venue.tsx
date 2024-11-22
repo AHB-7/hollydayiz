@@ -32,6 +32,7 @@ import { Booking } from "./booking";
 import { GrLocation } from "react-icons/gr";
 import { Loging, PriceAndDate } from "../../styles/single-venue/booking";
 import { useStore } from "../../util/global/zustand-store";
+import { PorfileLink } from "../venues/link-to-profiles";
 
 export function SingleVenue() {
     const { venueId } = useParams();
@@ -133,13 +134,11 @@ export function SingleVenue() {
                 )}
             </MetaInfo>
             <Row>
-                <OwnerNameImg>
-                    <img
-                        src={venue?.owner.avatar.url}
-                        alt={venue?.owner.avatar.alt}
-                    />
-                    <h2>{venue?.owner.name}</h2>
-                </OwnerNameImg>
+                <PorfileLink
+                    name={venue?.owner.name ?? null}
+                    url={venue?.owner.avatar.url ?? null}
+                    alt={venue?.owner.avatar.alt ?? null}
+                />
                 <div>
                     <GrLocation />
                     <p>

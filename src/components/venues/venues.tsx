@@ -4,7 +4,6 @@ import {
     VenueImageContainer,
     VenueMetaContainer,
     VenueMeta,
-    OwnerNameImg,
 } from "../../styles/venues/cards";
 import { VenuesContainer } from "../../styles/venues/container";
 import { FaWifi } from "react-icons/fa6";
@@ -20,6 +19,7 @@ import { Accommodation } from "../../types/global";
 import { useApi } from "../../util/hooks/use-fetch";
 import { useEffect } from "react";
 import { baseUrl } from "../../util/global/variables";
+import { PorfileLink } from "./link-to-profiles";
 
 export function Venues() {
     const {
@@ -34,9 +34,7 @@ export function Venues() {
     useEffect(() => {
         request("GET");
     }, []);
-    useEffect(() => {
-        console.log(posts);
-    }, [posts]);
+    useEffect(() => {}, [posts]);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -45,13 +43,11 @@ export function Venues() {
             {posts?.map((post) => (
                 <VenueCard key={post.id}>
                     <VenueInfoContainer>
-                        <OwnerNameImg>
-                            <img
-                                src={post.owner.avatar.url}
-                                alt={post.owner.avatar.alt}
-                            />
-                            <p>{post.owner.name}</p>
-                        </OwnerNameImg>
+                        <PorfileLink
+                            name={post.owner.name}
+                            url={post.owner.avatar.url}
+                            alt={post.owner.avatar.alt}
+                        />
                     </VenueInfoContainer>
                     <VenueImageContainer>
                         <Link
