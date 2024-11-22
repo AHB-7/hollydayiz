@@ -11,12 +11,16 @@ import {
 } from "../../styles/profile/profile";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useStore } from "../../util/global/zustand-store";
+import { NotLogedInContainer } from "../../styles/auth/auth";
+import { VenueBookingsButton } from "../../styles/venues/cards";
 
 export function SingleProfile() {
-    const userProfileName = localStorage.getItem("otherUsersName");
-    console.log(userProfileName);
     const apiToken = localStorage.getItem("accessToken");
+
+    const userProfileName = localStorage.getItem("otherUsersName");
+    const { setNavbarState, navbarState } = useStore();
 
     const {
         data: user,
@@ -29,24 +33,55 @@ export function SingleProfile() {
 
     useEffect(() => {
         const fetchData = async () => {
-            await request("GET", undefined, undefined, `${apiToken}`);
+            if (apiToken) {
+                await request("GET", undefined, undefined, `${apiToken}`);
+            }
         };
 
         fetchData();
+    }, [apiToken]);
+
+    useEffect(() => {
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === "accessToken" && event.newValue) {
+                window.location.reload(); // Reload page when accessToken is set
+            }
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
     }, []);
 
-    useEffect(() => {}, [user]);
+    const toggleActiveState = () => {
+        setNavbarState(!navbarState);
+    };
+
     if (loading) return <p>Loading...</p>;
+    if (!apiToken)
+        return (
+            <NotLogedInContainer>
+                <p>Log in to view this profile</p>
+                <VenueBookingsButton onClick={toggleActiveState}>
+                    Log in
+                </VenueBookingsButton>
+            </NotLogedInContainer>
+        );
     if (error) return <p>Error: {error.message}</p>;
 
     return (
         <ProfileContainer>
             <ProfileBannerContainer>
                 <ProfileBannerImage
-                    src={user?.banner.url}
-                    alt={user?.banner.alt}
+                    src={user?.banner?.url || "/default-banner.jpg"}
+                    alt={user?.banner?.alt || "Default banner"}
                 />
-                <ProfileAvatar src={user?.avatar.url} alt={user?.avatar.alt} />
+                <ProfileAvatar
+                    src={user?.avatar?.url || "/default-avatar.jpg"}
+                    alt={user?.avatar?.alt || "Default avatar"}
+                />
             </ProfileBannerContainer>
             <ProfileInfo>
                 <ProfileName>

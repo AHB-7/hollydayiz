@@ -131,3 +131,13 @@ export const SuccessMessage = styled.div`
     gap: 0.4rem;
     align-items: center;
 `;
+export const NotLogedInContainer = styled.section`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.4rem;
+    width: 100%;
+    height: 100vh;
+    align-items: center;
+`;
