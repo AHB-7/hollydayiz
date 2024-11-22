@@ -34,7 +34,6 @@ export function Login() {
         if (data && data.accessToken) {
             setAccessToken(data.accessToken);
             setName(data.name);
-            const name = data.name;
             setNavbarState(false);
         }
     }, [data, setAccessToken]);

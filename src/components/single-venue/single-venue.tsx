@@ -20,7 +20,7 @@ import {
     MetaTitle,
     RatingContainer,
 } from "../../styles/single-venue/single-venue-styles";
-import { OwnerNameImg, VenueBookingsButton } from "../../styles/venues/cards";
+import { VenueBookingsButton } from "../../styles/venues/cards";
 import { FaWifi } from "react-icons/fa6";
 import {
     MdLocalParking,
