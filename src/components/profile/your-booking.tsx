@@ -27,7 +27,7 @@ type UserBookingTypes = {
 export function UserBooking() {
     const apiToken = localStorage.getItem("accessToken");
     const userProfileName = localStorage.getItem("otherUsersName");
-    const { bookingIds, setBookingIds } = useBookingStore();
+    const { setBookingIds } = useBookingStore();
 
     const {
         data: user,
