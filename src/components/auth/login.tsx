@@ -6,9 +6,9 @@ import {
     FormInput,
     RegBtn,
     SubmitBtn,
-} from "../../styles/auth/auth";
+    IoCheckmarkDoneCircleSharp,
+} from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
 import { ApiResponseLogin, LoginFormData } from "../../types/global";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";

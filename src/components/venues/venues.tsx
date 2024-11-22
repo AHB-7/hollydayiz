@@ -4,22 +4,20 @@ import {
     VenueImageContainer,
     VenueMetaContainer,
     VenueMeta,
-} from "../../styles/venues/cards";
-import { VenuesContainer } from "../../styles/venues/container";
-import { FaWifi } from "react-icons/fa6";
-import { Stars } from "../../components/global/rating";
-import {
+    FaWifi,
     MdLocalParking,
     MdOutlineEmojiFoodBeverage,
     MdOutlinePets,
-} from "react-icons/md";
+    VenuesContainer,
+} from "../../styles/index";
+import { Stars } from "../../components/global/rating";
 import { IoPeopleSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { Accommodation } from "../../types/global";
 import { useApi } from "../../util/hooks/use-fetch";
 import { useEffect } from "react";
 import { baseUrl } from "../../util/global/variables";
-import { PorfileLink } from "./link-to-profiles";
+import { ProfileLink } from "./link-to-profiles";
 
 export function Venues() {
     const {
@@ -43,7 +41,7 @@ export function Venues() {
             {posts?.map((post) => (
                 <VenueCard key={post.id}>
                     <VenueInfoContainer>
-                        <PorfileLink
+                        <ProfileLink
                             name={post.owner.name}
                             url={post.owner.avatar.url}
                             alt={post.owner.avatar.alt}

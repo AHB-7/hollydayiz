@@ -179,6 +179,11 @@ export type BookingProps = {
     maxGuests: number | undefined;
     price: number | undefined;
     venueData: {
-        bookings: { dateFrom: string; dateTo: string }[];
+        bookings: {
+            dateFrom: string;
+            dateTo: string;
+            id: string;
+            guests: number;
+        }[];
     } | null;
 };

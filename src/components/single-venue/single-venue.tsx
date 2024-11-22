@@ -1,12 +1,5 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useApi } from "../../util/hooks/use-fetch";
-import { SingleVenue as SingleVenueTypes } from "../../types/global";
-import { baseUrl } from "../../util/global/variables";
-import "react-calendar/dist/Calendar.css";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import {
     CarouselComponent,
     Row,
@@ -19,31 +12,32 @@ import {
     MetaInfoItem,
     MetaTitle,
     RatingContainer,
-} from "../../styles/single-venue/single-venue-styles";
-import { VenueBookingsButton } from "../../styles/venues/cards";
-import { FaWifi } from "react-icons/fa6";
-import {
+    Loging,
+    PriceAndDate,
+    FaWifi,
+    GrLocation,
     MdLocalParking,
     MdOutlineEmojiFoodBeverage,
     MdOutlinePets,
-} from "react-icons/md";
-import { Stars } from "../global/rating";
-import { Booking } from "./booking";
-import { GrLocation } from "react-icons/gr";
-import { Loging, PriceAndDate } from "../../styles/single-venue/booking";
+} from "../../styles/index";
+import { useApi } from "../../util/hooks/use-fetch";
+import { SingleVenue as SingleVenueTypes } from "../../types/global";
+import { baseUrl } from "../../util/global/variables";
+import "react-calendar/dist/Calendar.css";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { Booking, Stars, ProfileLink } from "../../components/index";
+import { VenueBookingsButton } from "../../styles/venues/cards";
 import { useStore } from "../../util/global/zustand-store";
-import { PorfileLink } from "../venues/link-to-profiles";
 
 export function SingleVenue() {
     const { venueId } = useParams();
-
     const { accessToken, setNavbarState, navbarState } = useStore();
-
     const verified = Boolean(accessToken);
     const toggleActiveState = () => {
         setNavbarState(!navbarState);
     };
-
     const {
         data: venue,
         loading: venueLoading,
@@ -134,7 +128,7 @@ export function SingleVenue() {
                 )}
             </MetaInfo>
             <Row>
-                <PorfileLink
+                <ProfileLink
                     name={venue?.owner.name ?? null}
                     url={venue?.owner.avatar.url ?? null}
                     alt={venue?.owner.avatar.alt ?? null}

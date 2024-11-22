@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { StarsProps } from "../../types/global";
-import { StarsContainer } from "../../styles/venues/cards";
-import { FaStar } from "react-icons/fa6";
+import { StarsContainer, FaStar } from "../../styles/index";
 
 // Styled component for Star
 const Star = styled(FaStar)`

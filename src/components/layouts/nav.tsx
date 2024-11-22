@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import {
+    LogOut,
     LogInContainer,
     LowerNav,
     Navbar as NavbarSc,
     UpperNav,
-} from "../../styles/layout/nav";
+    FiLogIn,
+    MdOutlineMenu,
+} from "../../styles/index";
+import { Login } from "../index";
 import { useEffect } from "react";
-import { FiLogIn } from "react-icons/fi";
-import { MdOutlineMenu } from "react-icons/md";
-import { LogOut } from "../../styles/auth/auth";
-import { Login } from "../auth/login";
 import { useStore } from "../../util/global/zustand-store";
 
 export function Navbar() {

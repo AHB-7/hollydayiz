@@ -9,39 +9,47 @@ import {
     PriceAndDate,
     StateMessage,
     StyledCalendar,
-} from "../../styles/single-venue/booking";
-import { VenueBookingsButton } from "../../styles/venues/cards";
-import { Error, SuccessMessage } from "../../styles/auth/auth";
-import { IoCheckmarkDoneCircleSharp } from "react-icons/io5";
+    VenueBookingsButton,
+    Error,
+    SuccessMessage,
+    IoCheckmarkDoneCircleSharp,
+} from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
-import { calculateDays } from "../../util/global/calculater";
+import { calculateDays } from "../../util/global/calculator";
 import { BookingProps } from "../../types/global";
 
 export function Booking({ maxGuests, price, venueData }: BookingProps) {
     const { venueId } = useParams<{ venueId: string }>();
+    const name = localStorage.getItem("name");
     const apiToken = localStorage.getItem("accessToken");
-    const userName = localStorage.getItem("name");
-
     const messageRef = useRef<HTMLDivElement>(null);
-
     const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
     const [guests, setGuests] = useState(1);
     const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
     const [formError, setFormError] = useState<string | null>(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [bookingId, setBookingId] = useState<string | null>(null);
 
-    const {
-        data: bookingResponse,
-        loading: bookingLoading,
-        error: bookingError,
-        request: createBooking,
-    } = useApi(`${baseUrl}/bookings`);
+    // Separate hooks for creating and updating bookings
+    const createBooking = useApi(`${baseUrl}/bookings`);
+    const updateBooking = useApi("");
 
     useEffect(() => {
-        if (bookingResponse || bookingError) {
+        if (
+            createBooking.data ||
+            createBooking.error ||
+            updateBooking.data ||
+            updateBooking.error
+        ) {
             messageRef.current?.scrollIntoView({ behavior: "smooth" });
         }
-    }, [bookingResponse, bookingError]);
+    }, [
+        createBooking.data,
+        createBooking.error,
+        updateBooking.data,
+        updateBooking.error,
+    ]);
 
     useEffect(() => {
         if (venueData?.bookings) {
@@ -76,17 +84,49 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
 
         const [dateFrom, dateTo] = dateRange;
 
-        await createBooking(
-            "POST",
-            {
-                dateFrom: dateFrom.toISOString(),
-                dateTo: dateTo.toISOString(),
-                guests,
-                venueId,
-            },
-            {},
-            apiToken || ""
-        );
+        const requestBody = {
+            dateFrom: dateFrom.toISOString(),
+            dateTo: dateTo.toISOString(),
+            guests,
+            venueId: !isEditing ? venueId : undefined,
+        };
+
+        try {
+            if (isEditing && bookingId) {
+                // Update Booking
+                await updateBooking.request(
+                    "PUT",
+                    requestBody,
+                    { url: `${baseUrl}/bookings/${bookingId}` },
+                    apiToken || ""
+                );
+            } else {
+                // Create Booking
+                await createBooking.request(
+                    "POST",
+                    requestBody,
+                    undefined,
+                    apiToken || ""
+                );
+            }
+
+            setIsEditing(false);
+            setBookingId(null);
+        } catch (err) {
+            console.error("Error submitting booking:", err);
+        }
+    };
+
+    const handleEdit = (booking: {
+        id: string;
+        dateFrom: string;
+        dateTo: string;
+        guests: number;
+    }) => {
+        setDateRange([new Date(booking.dateFrom), new Date(booking.dateTo)]);
+        setGuests(booking.guests);
+        setBookingId(booking.id);
+        setIsEditing(true);
     };
 
     const isDateUnavailable = (date: Date): boolean => {
@@ -109,7 +149,11 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         <label>
-                            <p>Start your booking by selecting dates:</p>
+                            <p>
+                                {isEditing
+                                    ? "Edit your booking:"
+                                    : "Start your booking by selecting dates:"}
+                            </p>
                             <StyledCalendar
                                 selectRange
                                 onChange={(range) =>
@@ -169,19 +213,30 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                         <Loging>
                             <VenueBookingsButton
                                 type="submit"
-                                disabled={bookingLoading}
+                                disabled={
+                                    createBooking.loading ||
+                                    updateBooking.loading
+                                }
                             >
-                                {bookingLoading ? "Booking..." : "Book Now"}
+                                {createBooking.loading || updateBooking.loading
+                                    ? isEditing
+                                        ? "Updating..."
+                                        : "Booking..."
+                                    : isEditing
+                                    ? "Update Booking"
+                                    : "Book Now"}
                             </VenueBookingsButton>
                         </Loging>
                     </BookingInfo>
                 </form>
                 <div ref={messageRef}>
-                    {bookingResponse && (
+                    {(createBooking.data || updateBooking.data) && (
                         <StateMessage>
                             <SuccessMessage>
                                 <h3>
-                                    Your booking has been placed successfully!
+                                    {isEditing
+                                        ? "Your booking has been updated successfully!"
+                                        : "Your booking has been placed successfully!"}
                                 </h3>
                                 <IoCheckmarkDoneCircleSharp
                                     fill="green"
@@ -189,20 +244,31 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                                 />
                                 <VenueBookingsButton
                                     as={Link}
-                                    to={`/holidaze/profiles/${userName}`}
+                                    to={`/holidaze/profiles/${name}`}
                                 >
                                     View your bookings history
                                 </VenueBookingsButton>
                             </SuccessMessage>
                         </StateMessage>
                     )}
-                    {bookingError && (
+                    {(createBooking.error || updateBooking.error) && (
                         <StateMessage>
-                            <Error>{bookingError.message}</Error>
+                            <Error>
+                                {createBooking.error?.message ||
+                                    updateBooking.error?.message}
+                            </Error>
                         </StateMessage>
                     )}
                 </div>
             </ContainerForCalendar>
+            {venueData?.bookings.map((booking) => (
+                <div key={booking.id}>
+                    <p>Booking ID: {booking.id}</p>
+                    <button onClick={() => handleEdit(booking)}>
+                        Edit This Booking
+                    </button>
+                </div>
+            ))}
         </>
     );
 }

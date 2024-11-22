@@ -1,4 +1,3 @@
-import { IoMdSettings } from "react-icons/io";
 import {
     ProfileAvatar,
     ProfileBannerContainer,
@@ -8,13 +7,16 @@ import {
     ProfileContainer,
     ProfileInfo,
     ProfileName,
-} from "../../styles/profile/profile";
+    NotLogedInContainer,
+    VenueBookingsButton,
+    IoMdSettings,
+} from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStore } from "../../util/global/zustand-store";
-import { NotLogedInContainer } from "../../styles/auth/auth";
-import { VenueBookingsButton } from "../../styles/venues/cards";
+import { UserBooking } from "./your-booking";
+import { baseUrl } from "../../util/global/variables";
 
 export function SingleProfile() {
     const apiToken = localStorage.getItem("accessToken");
@@ -27,9 +29,7 @@ export function SingleProfile() {
         loading,
         error,
         request,
-    } = useApi<SingleUser>(
-        `https://v2.api.noroff.dev/holidaze/profiles/${userProfileName}`
-    );
+    } = useApi<SingleUser>(`${baseUrl}/profiles/${userProfileName}`);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -91,6 +91,7 @@ export function SingleProfile() {
                     <ProfileBio>{user?.bio}</ProfileBio>
                 </ProfileBioContainer>
             </ProfileInfo>
+            <UserBooking />
         </ProfileContainer>
     );
 }
