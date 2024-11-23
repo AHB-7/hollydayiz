@@ -18,11 +18,18 @@ import { UserBooking } from "./user-booking";
 import { baseUrl } from "../../util/global/variables";
 import { useParams } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
+import { PostVenue } from "./post-venue";
 
 export function SingleProfile() {
-    const apiToken = localStorage.getItem("accessToken");
+    const {
+        setNavbarState,
+        navbarState,
+        venueManager,
+        accessToken,
+        setVenueManager,
+    } = useUserPreferences();
+
     const { username } = useParams<{ username: string }>();
-    const { setNavbarState, navbarState } = useUserPreferences();
     const [profileOwner, setProfileOwner] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
     const [updatedProfile, setUpdatedProfile] = useState({
@@ -44,18 +51,18 @@ export function SingleProfile() {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (apiToken && username) {
+            if (accessToken && username) {
                 await request(
                     "GET",
                     undefined,
                     undefined,
-                    apiToken || undefined
+                    accessToken || undefined
                 );
             }
         };
 
         fetchData();
-    }, [apiToken, username]);
+    }, [accessToken, username]);
 
     useEffect(() => {
         if (name === username) {
@@ -71,6 +78,7 @@ export function SingleProfile() {
                 banner: user.banner || { url: "", alt: "" },
                 venueManager: user.venueManager || false,
             });
+            setVenueManager(user.venueManager);
         }
     }, [user]);
 
@@ -80,11 +88,16 @@ export function SingleProfile() {
                 "PUT",
                 updatedProfile,
                 undefined,
-                apiToken || undefined
+                accessToken || undefined
             );
-            console.log("Profile updated successfully:", response);
             setEditing(false);
-            await request("GET", undefined, undefined, apiToken || undefined);
+            await request(
+                "GET",
+                undefined,
+                undefined,
+                accessToken || undefined
+            );
+            console.log("Profile updated:", response);
         } catch (err) {
             console.error("Error updating profile:", err);
         }
@@ -95,7 +108,7 @@ export function SingleProfile() {
     };
 
     if (loading) return <p>Loading...</p>;
-    if (!apiToken)
+    if (!accessToken)
         return (
             <NotLoggedInContainer>
                 <p>Log in to view this profile</p>
@@ -217,6 +230,7 @@ export function SingleProfile() {
                         </span>
                     )}
                 </ProfileBioContainer>
+                {venueManager === true && <PostVenue />}
                 {editing && (
                     <div>
                         <label>

@@ -22,6 +22,8 @@ export function Navbar() {
         otherUsersName,
         setOtherUsersName,
         initializeFromStorage,
+        setVenueManager,
+        setName,
     } = useUserPreferences();
 
     useEffect(() => {
@@ -50,6 +52,8 @@ export function Navbar() {
         setNavbarState(false);
         initializeFromStorage();
         setMail(null);
+        setVenueManager(false);
+        setName(null);
         window.location.href = "/";
     };
     const navigate = (path: string) => {
