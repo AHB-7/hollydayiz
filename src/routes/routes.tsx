@@ -10,7 +10,7 @@ export function AppRouter() {
             <Route path="/" element={<Venues />} />
             <Route path="/register" element={<Register />} />
             <Route
-                path="/holidaze/profiles/:profilenarme"
+                path="/holidaze/profiles/:username"
                 element={<SingleProfile />}
             />
             <Route path="/holidaze/venues/:venueId" element={<SingleVenue />} />

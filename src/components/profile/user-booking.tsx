@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
 import { Link } from "react-router-dom";
-import { useBookingStore } from "../../util/global/arry-id";
 import {
     BookingCard,
     BookingCardImage,
@@ -12,22 +11,30 @@ import {
     GuestsNumber,
     MdDelete,
     ViewVenue,
-    StyledCalendar,
     EditContainer,
 } from "../../styles/index";
+import CalendarComponent from "../global/calender"; // Reusing the CalendarComponent
 import { UserBookingTypes } from "../../types/global";
 
 export function UserBooking() {
     const apiToken = localStorage.getItem("accessToken");
     const userProfileName = localStorage.getItem("otherUsersName");
-    const { setBookingIds } = useBookingStore();
-
     const [editingBooking, setEditingBooking] =
         useState<UserBookingTypes | null>(null);
+    const [profileOwner, setProfileOwner] = useState<boolean>(false);
+    const name = localStorage.getItem("name");
+
+    useEffect(() => {
+        if (name === userProfileName) {
+            setProfileOwner(true);
+        }
+    }, [name, userProfileName]);
+
     const [editDateRange, setEditDateRange] = useState<[Date, Date] | null>(
         null
     );
     const [editGuests, setEditGuests] = useState<number>(1);
+    const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
 
     const {
         data: user,
@@ -52,10 +59,33 @@ export function UserBooking() {
 
     useEffect(() => {
         if (user) {
-            const ids = user.map((booking) => booking.id);
-            setBookingIds(ids);
+            const bookedDates = user.flatMap(({ dateFrom, dateTo }) => {
+                const start = new Date(dateFrom);
+                const end = new Date(dateTo);
+                const dates = [];
+                for (
+                    let d = new Date(start);
+                    d <= end;
+                    d.setDate(d.getDate() + 1)
+                ) {
+                    dates.push(new Date(d));
+                }
+                return dates;
+            });
+            setUnavailableDates(bookedDates);
         }
-    }, [user, setBookingIds]);
+    }, [user]);
+
+    const isDateUnavailable = (date: Date): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return (
+            unavailableDates.some(
+                (unavailableDate) =>
+                    unavailableDate.toDateString() === date.toDateString()
+            ) || date < today
+        );
+    };
 
     const handleDelete = async (bookingId: string) => {
         if (apiToken) {
@@ -81,7 +111,7 @@ export function UserBooking() {
             new Date(booking.dateFrom),
             new Date(booking.dateTo),
         ]);
-        setEditGuests(booking.guests); // Set the current guest count for editing
+        setEditGuests(booking.guests);
     };
 
     const handleSaveChanges = async () => {
@@ -91,7 +121,7 @@ export function UserBooking() {
             const updatedBooking = {
                 dateFrom: dateFrom.toISOString(),
                 dateTo: dateTo.toISOString(),
-                guests: editGuests, // Updated guest count
+                guests: editGuests,
             };
 
             try {
@@ -104,7 +134,7 @@ export function UserBooking() {
                     apiToken
                 );
                 setEditingBooking(null);
-                await apiRequest("GET", undefined, undefined, apiToken); // Refresh bookings
+                await apiRequest("GET", undefined, undefined, apiToken);
             } catch (err) {
                 console.error("Error updating booking:", err);
             }
@@ -136,35 +166,42 @@ export function UserBooking() {
                             <BookingCardImage
                                 src={booking.venue.media[0]?.url || ""}
                                 alt={booking.venue.name || "Venue Image"}
-                            />{" "}
+                            />
                         </Link>
                         <div>
                             <h2>{booking.venue.name}</h2>
                             <p>Created: {formatDate(booking.created)}</p>
                             <p>Date From: {formatDate(booking.dateFrom)}</p>
                             <p>Date To: {formatDate(booking.dateTo)}</p>
-                            <BookingDelete
-                                onClick={() => handleDelete(booking.id)}
-                            >
-                                <MdDelete />
-                            </BookingDelete>
+                            {profileOwner && (
+                                <BookingDelete
+                                    onClick={() => handleDelete(booking.id)}
+                                >
+                                    <MdDelete />
+                                </BookingDelete>
+                            )}
                             <ViewVenue>
                                 <GuestsNumber>
                                     Guests: {booking.guests}
                                 </GuestsNumber>
-                                <a onClick={() => handleEdit(booking)}>Edit</a>
+                                {profileOwner && (
+                                    <a onClick={() => handleEdit(booking)}>
+                                        Edit
+                                    </a>
+                                )}
                             </ViewVenue>
                         </div>
                     </CardInfo>
                     {editingBooking?.id === booking.id && (
                         <div>
                             <h3>Edit Booking Details</h3>
-                            <StyledCalendar
-                                selectRange
-                                onChange={(range) =>
-                                    setEditDateRange(range as [Date, Date])
+                            <CalendarComponent
+                                dateRange={editDateRange}
+                                setDateRange={setEditDateRange}
+                                isDateUnavailable={isDateUnavailable}
+                                getTileClassName={({ date }) =>
+                                    isDateUnavailable(date) ? "unavailable" : ""
                                 }
-                                value={editDateRange}
                             />
                             <div>
                                 <label>

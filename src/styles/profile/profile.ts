@@ -34,6 +34,8 @@ export const ProfileInfo = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem;
+    width: 100%;
 `;
 export const ProfileName = styled.h1`
     margin-top: 3rem;
@@ -41,15 +43,30 @@ export const ProfileName = styled.h1`
     margin-bottom: 1rem;
 `;
 export const ProfileBioContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
     margin-top: 1rem;
     font-weight: 300;
-`;
-export const ProfileBio = styled.p`
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid ${(props) => props.theme.colors.text};
+    border-radius: 0.5rem;
+    position: relative;
+    > span {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 0.5rem;
+        > svg {
+            font-size: 1.5rem;
+        }
+    }
+    > h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+    }
+    > p {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
 `;

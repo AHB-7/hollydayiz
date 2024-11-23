@@ -44,7 +44,10 @@ export function Venues() {
                         <ProfileLink
                             name={post.owner.name}
                             url={post.owner.avatar.url}
-                            alt={post.owner.avatar.alt}
+                            alt={
+                                post.owner.avatar?.alt ||
+                                `Profile picture of ${post.owner.name}`
+                            }
                         />
                     </VenueInfoContainer>
                     <VenueImageContainer>
@@ -58,7 +61,7 @@ export function Venues() {
                                         : "placeholder-image-url.jpg"
                                 }
                                 alt={
-                                    post.media?.length > 0
+                                    post.media?.length > 0 && post.media[0]?.alt
                                         ? post.media[0].alt
                                         : "Image not available"
                                 }

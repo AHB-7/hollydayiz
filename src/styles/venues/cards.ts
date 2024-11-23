@@ -17,6 +17,10 @@ export const VenueInfoContainer = styled.div`
     > h2 {
         font-size: 1.5rem;
         font-weight: 600;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        flex: 1;
     }
     > div > p {
         font-weight: 700;
@@ -45,6 +49,7 @@ export const VenueImageContainer = styled.div`
     > a > img {
         cursor: pointer;
         width: 100%;
+        min-height: 20rem;
         aspect-ratio: 1 / 1;
         object-fit: cover;
         scale: 1;

@@ -100,12 +100,17 @@ export function Navbar() {
                     {navbarState && (
                         <LowerNav>
                             <Link
-                                onClick={handleProfileClick}
+                                onClick={() => {
+                                    handleProfileClick();
+                                    setNavbarState(false);
+                                }}
                                 to={`/holidaze/profiles/${otherUsersName}`}
                             >
                                 Profile
                             </Link>
-                            <Link to="/booking">Booking</Link>
+                            <Link to="/" onClick={() => setNavbarState(false)}>
+                                Venues
+                            </Link>
                             <LogOut onClick={logOut}>Logout</LogOut>
                         </LowerNav>
                     )}
