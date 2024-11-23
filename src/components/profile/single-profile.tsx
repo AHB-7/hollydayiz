@@ -15,7 +15,7 @@ import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
 import { useEffect } from "react";
 import { useStore } from "../../util/global/zustand-store";
-import { UserBooking } from "./your-booking";
+import { UserBooking } from "./user-booking";
 import { baseUrl } from "../../util/global/variables";
 
 export function SingleProfile() {

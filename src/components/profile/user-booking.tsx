@@ -3,6 +3,16 @@ import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
 import { Link } from "react-router-dom";
 import { useBookingStore } from "../../util/global/arry-id";
+import {
+    BookingCard,
+    BookingCardImage,
+    BookingContainer,
+    BookingDelete,
+    CardInfo,
+    GuestsNumber,
+    MdDelete,
+    ViewVenue,
+} from "../../styles/index";
 
 type UserBookingTypes = {
     id: string;
@@ -81,25 +91,47 @@ export function UserBooking() {
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
-
-    return user?.map((booking) => (
-        <div key={booking.id}>
-            <h2>Venue: {booking.venue.name}</h2>
-            <img src={booking.venue.media[0].url} alt="" />
-            <Link to={`/holidaze/venues/${booking.venue.id}`}>View Venue</Link>
-            <button
-                onClick={() => {
-                    handleDelete(booking.id);
-                }}
-            >
-                Cancel Booking
-            </button>
-
-            <h3>Date From: {booking.dateFrom}</h3>
-            <h3>Date To: {booking.dateTo}</h3>
-            <h3>Guests: {booking.guests}</h3>
-            <h3>Created: {booking.created}</h3>
-            <h3>Updated: {booking.updated}</h3>
-        </div>
-    ));
+    const formatDate = (isoString: string) => {
+        if (!isoString) return "Unknown Date";
+        return new Date(isoString).toLocaleString("en-US", {
+            dateStyle: "medium",
+        });
+    };
+    return (
+        <BookingContainer>
+            {user?.map((booking) => (
+                <BookingCard key={booking.id}>
+                    <CardInfo>
+                        <BookingCardImage
+                            src={booking.venue.media[0].url}
+                            alt=""
+                        />
+                        <div>
+                            <h2>{booking.venue.name}</h2>
+                            <p>Created:{formatDate(booking?.updated)}</p>
+                            <p>Date From:{formatDate(booking?.dateFrom)}</p>
+                            <p>Date To:{formatDate(booking?.dateTo)}</p>
+                            <BookingDelete
+                                onClick={() => {
+                                    handleDelete(booking.id);
+                                }}
+                            >
+                                <MdDelete />
+                            </BookingDelete>
+                        </div>
+                    </CardInfo>
+                    <div>
+                        <ViewVenue>
+                            <GuestsNumber>
+                                Gestes:{booking.guests}{" "}
+                            </GuestsNumber>
+                            <Link to={`/holidaze/venues/${booking.venue.id}`}>
+                                View Venue
+                            </Link>
+                        </ViewVenue>
+                    </div>
+                </BookingCard>
+            ))}
+        </BookingContainer>
+    );
 }

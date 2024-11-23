@@ -6,5 +6,5 @@ export * from "./single-venue/single-venue";
 export * from "./venues/link-to-profiles";
 export * from "./venues/venues";
 export * from "./profile/single-profile";
-export * from "./profile/your-booking";
+export * from "./profile/user-booking";
 export * from "./layouts/nav";

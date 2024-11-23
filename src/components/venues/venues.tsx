@@ -106,7 +106,6 @@ export function Venues() {
                             <IoPeopleSharp />
                         </VenueMeta>
                     </VenueMetaContainer>
-                    {/* <VenueBookingsButton>Book Now</VenueBookingsButton> */}
                 </VenueCard>
             ))}
         </VenuesContainer>
