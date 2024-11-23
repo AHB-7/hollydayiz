@@ -27,11 +27,15 @@ export function SingleProfile() {
         venueManager,
         accessToken,
         setVenueManager,
+        name,
+        venueContainer,
+        setVenueContainer,
     } = useUserPreferences();
 
     const { username } = useParams<{ username: string }>();
     const [profileOwner, setProfileOwner] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
+
     const [updatedProfile, setUpdatedProfile] = useState({
         bio: "",
         avatar: { url: "", alt: "" },
@@ -39,8 +43,9 @@ export function SingleProfile() {
         venueManager: false,
     });
 
-    const name = localStorage.getItem("name");
-
+    const openVenueComponent = () => {
+        setVenueContainer(true);
+    };
     const {
         data: user,
         loading,
@@ -230,7 +235,13 @@ export function SingleProfile() {
                         </span>
                     )}
                 </ProfileBioContainer>
-                {venueManager === true && <PostVenue />}
+                {venueContainer === false ? (
+                    <> {venueManager === true && <PostVenue />}</>
+                ) : (
+                    <VenueBookingsButton onClick={openVenueComponent}>
+                        Start creating a venue
+                    </VenueBookingsButton>
+                )}
                 {editing && (
                     <div>
                         <label>

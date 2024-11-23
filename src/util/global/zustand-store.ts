@@ -131,6 +131,7 @@ export const useUserPreferences = create<Store>((set) => ({
     name: null,
     otherUsersName: null,
     venueManager: false,
+    venueContainer: false,
 
     setAccessToken: (token: string | null) => {
         if (token) {
@@ -178,6 +179,10 @@ export const useUserPreferences = create<Store>((set) => ({
         set({ venueManager });
     },
 
+    setVenueContainer: (venueContainer: boolean) => {
+        set({ venueContainer });
+    },
+
     initializeFromStorage: () => {
         set({
             accessToken: localStorage.getItem("accessToken"),
@@ -187,6 +192,7 @@ export const useUserPreferences = create<Store>((set) => ({
             name: localStorage.getItem("name"),
             otherUsersName: localStorage.getItem("otherUsersName"),
             venueManager: localStorage.getItem("venueManager") === "true",
+            venueContainer: localStorage.getItem("venueContainer") === "true",
         });
     },
 }));

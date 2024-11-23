@@ -155,6 +155,7 @@ export interface Store {
     name: string | null;
     otherUsersName: string | null;
     venueManager: boolean;
+    venueContainer: boolean;
     setName: (name: string | null) => void;
     setVenueManager: (venueManager: boolean) => void;
     setMail: (mail: string | null) => void;
@@ -162,6 +163,7 @@ export interface Store {
     setNavbarState: (state: boolean) => void;
     setOtherUsersName: (name: string | null) => void;
     initializeFromStorage: () => void;
+    setVenueContainer: (venueContainer: boolean) => void;
 }
 export interface SingleUser {
     name: string;

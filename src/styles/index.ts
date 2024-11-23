@@ -6,6 +6,8 @@ export * from "../styles/auth/auth";
 export * from "../styles/layout/nav";
 export * from "../styles/profile/profile";
 export * from "./bookings/booking-profile";
+export * from "./layout/nav";
+export * from "./profile/post-venue";
 
 export { FaWifi } from "react-icons/fa6";
 export { GrLocation } from "react-icons/gr";
