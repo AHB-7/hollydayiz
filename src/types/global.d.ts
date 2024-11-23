@@ -187,3 +187,22 @@ export type BookingProps = {
         }[];
     } | null;
 };
+export type UserBookingTypes = {
+    id: string;
+    dateFrom: string;
+    dateTo: string;
+    guests: number;
+    created: string;
+    updated: string;
+    venue: {
+        id: string;
+        name: string;
+        description: string;
+        media: [
+            {
+                id: string;
+                url: string;
+            }
+        ];
+    };
+};

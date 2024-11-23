@@ -37,14 +37,15 @@ export const BookingCardImage = styled.img`
     height: 8rem;
     border-radius: 0.5rem;
     object-fit: cover;
-    object-fit: cover;
 `;
 export const CardInfo = styled.div`
     display: flex;
     flex-direction: row;
     align-items: start;
-    width: 100%;
     gap: 1rem;
+    > div {
+        flex: 1;
+    }
     > div > h2 {
         font-size: 1.5rem;
         margin-bottom: 1rem;
@@ -60,13 +61,42 @@ export const ViewVenue = styled.div`
     align-items: end;
     justify-content: space-between;
     > a {
-        color: black;
-        transition: color 0.3s;
+        background-color: ${(props) => props.theme.colors.text};
+        color: ${(props) => props.theme.colors.background};
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
         &:hover {
-            color: grey;
+            background-color: ${(props) => props.theme.colors.primary};
         }
     }
 `;
 export const GuestsNumber = styled.p`
     font-weight: bold;
+`;
+export const EditContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    > span {
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: red;
+    }
+    > p {
+        font-size: 1.2rem;
+        cursor: pointer;
+        background-color: ${(props) => props.theme.colors.text};
+        color: ${(props) => props.theme.colors.background};
+        transition: all 0.3s;
+        padding: 0.5rem 2rem;
+        border-radius: 0.5rem;
+        &:hover {
+            background-color: ${(props) => props.theme.colors.primary};
+        }
+    }
 `;
