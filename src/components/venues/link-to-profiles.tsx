@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 import { OwnerNameImg } from "../../styles/index";
-import { useStore } from "../../util/global/zustand-store";
+import { useUserPreferences } from "../../util/global/zustand-store";
 type ProfileLinkProps = {
     name: string | null;
     url: string | null;
     alt: string | null;
 };
 export function ProfileLink({ name, url, alt }: ProfileLinkProps) {
-    const setOtherUsersName = useStore((state) => state.setOtherUsersName);
+    const setOtherUsersName = useUserPreferences(
+        (state) => state.setOtherUsersName
+    );
 
     const handleMouseEnter = (name: string) => {
         setOtherUsersName(name);

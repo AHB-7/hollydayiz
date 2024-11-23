@@ -12,7 +12,7 @@ import {
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { ApiResponseRegister } from "../../types/global";
-import { useStore } from "../../util/global/zustand-store";
+import { useUserPreferences } from "../../util/global/zustand-store";
 
 type RegistrationFormData = {
     name: string;
@@ -37,8 +37,8 @@ export function Register() {
         "https://v2.api.noroff.dev/auth/register"
     );
 
-    const setMail = useStore((state) => state.setMail);
-    const setNavbarState = useStore((state) => state.setNavbarState);
+    const setMail = useUserPreferences((state) => state.setMail);
+    const setNavbarState = useUserPreferences((state) => state.setNavbarState);
 
     useEffect(() => {
         if (data && data.email) {

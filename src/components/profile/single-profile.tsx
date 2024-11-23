@@ -6,7 +6,7 @@ import {
     ProfileContainer,
     ProfileInfo,
     ProfileName,
-    NotLogedInContainer,
+    NotLoggedInContainer,
     VenueBookingsButton,
     IoMdSettings,
     EditContainer,
@@ -14,15 +14,15 @@ import {
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
 import { useEffect, useState } from "react";
-import { useStore } from "../../util/global/zustand-store";
 import { UserBooking } from "./user-booking";
 import { baseUrl } from "../../util/global/variables";
 import { useParams } from "react-router-dom";
+import { useUserPreferences } from "../../util/global/zustand-store";
 
 export function SingleProfile() {
     const apiToken = localStorage.getItem("accessToken");
     const { username } = useParams<{ username: string }>();
-    const { setNavbarState, navbarState } = useStore();
+    const { setNavbarState, navbarState } = useUserPreferences();
     const [profileOwner, setProfileOwner] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
     const [updatedProfile, setUpdatedProfile] = useState({
@@ -97,12 +97,12 @@ export function SingleProfile() {
     if (loading) return <p>Loading...</p>;
     if (!apiToken)
         return (
-            <NotLogedInContainer>
+            <NotLoggedInContainer>
                 <p>Log in to view this profile</p>
                 <VenueBookingsButton onClick={toggleActiveState}>
                     Log in
                 </VenueBookingsButton>
-            </NotLogedInContainer>
+            </NotLoggedInContainer>
         );
     if (error) return <p>Error: {error.message}</p>;
 

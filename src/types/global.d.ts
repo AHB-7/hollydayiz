@@ -131,6 +131,7 @@ export type ApiResponseLogin = {
         alt: string;
     };
     accessToken: string;
+    venueManager: boolean;
 };
 export type ApiResponseRegister = {
     name: string;
@@ -153,7 +154,9 @@ export interface Store {
     mail: string | null;
     name: string | null;
     otherUsersName: string | null;
+    venueManager: boolean;
     setName: (name: string | null) => void;
+    setVenueManager: (venueManager: boolean) => void;
     setMail: (mail: string | null) => void;
     setAccessToken: (token: string | null) => void;
     setNavbarState: (state: boolean) => void;

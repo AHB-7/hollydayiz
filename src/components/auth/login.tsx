@@ -12,7 +12,7 @@ import { useApi } from "../../util/hooks/use-fetch";
 import { ApiResponseLogin, LoginFormData } from "../../types/global";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useStore } from "../../util/global/zustand-store";
+import { useUserPreferences } from "../../util/global/zustand-store";
 
 export function Login() {
     const {
@@ -25,10 +25,10 @@ export function Login() {
         "https://v2.api.noroff.dev/auth/login"
     );
 
-    const setAccessToken = useStore((state) => state.setAccessToken);
-    const setName = useStore((state) => state.setName);
-    const savedMail = useStore((state) => state.mail);
-    const setNavbarState = useStore((state) => state.setNavbarState);
+    const setAccessToken = useUserPreferences((state) => state.setAccessToken);
+    const setName = useUserPreferences((state) => state.setName);
+    const savedMail = useUserPreferences((state) => state.mail);
+    const setNavbarState = useUserPreferences((state) => state.setNavbarState);
 
     useEffect(() => {
         if (data && data.accessToken) {

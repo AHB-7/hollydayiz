@@ -131,7 +131,7 @@ export const SuccessMessage = styled.div`
     gap: 0.4rem;
     align-items: center;
 `;
-export const NotLogedInContainer = styled.section`
+export const NotLoggedInContainer = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;

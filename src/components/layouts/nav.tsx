@@ -10,7 +10,7 @@ import {
 } from "../../styles/index";
 import { Login } from "../index";
 import { useEffect } from "react";
-import { useStore } from "../../util/global/zustand-store";
+import { useUserPreferences } from "../../util/global/zustand-store";
 
 export function Navbar() {
     const {
@@ -22,7 +22,7 @@ export function Navbar() {
         otherUsersName,
         setOtherUsersName,
         initializeFromStorage,
-    } = useStore();
+    } = useUserPreferences();
 
     useEffect(() => {
         initializeFromStorage();

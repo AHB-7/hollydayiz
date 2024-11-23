@@ -29,11 +29,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Booking, Stars, ProfileLink } from "../../components/index";
 import { VenueBookingsButton } from "../../styles/venues/cards";
-import { useStore } from "../../util/global/zustand-store";
+import { useUserPreferences } from "../../util/global/zustand-store";
 
 export function SingleVenue() {
     const { venueId } = useParams();
-    const { accessToken, setNavbarState, navbarState } = useStore();
+    const { accessToken, setNavbarState, navbarState } = useUserPreferences();
     const verified = Boolean(accessToken);
     const toggleActiveState = () => {
         setNavbarState(!navbarState);
