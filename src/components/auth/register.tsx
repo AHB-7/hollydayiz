@@ -11,20 +11,8 @@ import {
     IoCheckmarkDoneCircleSharp,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { ApiResponseRegister } from "../../types/global";
+import { ApiResponseRegister, RegistrationFormData } from "../../types/global";
 import { useUserPreferences } from "../../util/global/zustand-store";
-
-type RegistrationFormData = {
-    name: string;
-    email: string;
-    password: string;
-    bio: string;
-    avatarUrl?: string;
-    avatarAlt?: string;
-    bannerUrl?: string;
-    bannerAlt?: string;
-    venueManager: boolean;
-};
 
 export function Register() {
     const {

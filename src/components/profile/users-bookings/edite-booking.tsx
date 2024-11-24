@@ -1,4 +1,4 @@
-import CalendarComponent from "../../global/calender"; 
+import CalendarComponent from "../../global/calender";
 import { EditContainer } from "../../../styles/index";
 
 export function EditBookingForm({

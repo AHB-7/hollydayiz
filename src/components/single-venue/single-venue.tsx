@@ -21,7 +21,7 @@ import {
     MdOutlinePets,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { SingleVenue as SingleVenueTypes } from "../../types/global";
+import { SingleVenueType } from "../../types/global";
 import { baseUrl } from "../../util/global/variables";
 import "react-calendar/dist/Calendar.css";
 import Slider from "react-slick";
@@ -43,7 +43,7 @@ export function SingleVenue() {
         loading: venueLoading,
         error: venueError,
         request: fetchVenue,
-    } = useApi<SingleVenueTypes>(
+    } = useApi<SingleVenueType>(
         `${baseUrl}/venues/${venueId}?_owner=true&_bookings=true`
     );
 

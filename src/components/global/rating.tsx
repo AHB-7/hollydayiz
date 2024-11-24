@@ -16,7 +16,6 @@ const Star = styled(FaStar)`
 `;
 
 export function Stars({ rating }: StarsProps) {
-    // Ensure the rating is between 0 and 5
     const safeRating = Math.max(0, Math.min(Math.floor(rating), 5));
 
     return (

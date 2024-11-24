@@ -20,7 +20,7 @@ export function MediaFields({
     errors: any;
     addMedia: () => void;
     removeMedia: (index: number) => void;
-    watch: any; 
+    watch: any;
 }) {
     return (
         <>
@@ -58,7 +58,7 @@ export function MediaFields({
                                 })}
                                 type="text"
                                 placeholder="Enter alt text"
-                                disabled={!currentUrl} 
+                                disabled={!currentUrl}
                             />
                             {errors?.media?.[index]?.alt && (
                                 <Error>{errors.media[index].alt.message}</Error>
