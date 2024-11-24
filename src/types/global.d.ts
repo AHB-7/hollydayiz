@@ -233,6 +233,11 @@ export interface SingleUser {
         alt: string;
     };
     venueManager: boolean;
+    venues: Accommodation[];
+    _count: {
+        bookings: number;
+        venues: number;
+    };
     meta: any;
 }
 export type BookingProps = {

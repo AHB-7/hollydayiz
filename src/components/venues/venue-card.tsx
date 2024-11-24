@@ -15,30 +15,51 @@ import { Link } from "react-router-dom";
 import { ProfileLink } from "./link-to-profiles";
 import { Accommodation } from "../../types/global";
 
-export function VenueCardComponent({ venue }: { venue: Accommodation }) {
-    const { id, name, price, rating, media, meta, maxGuests, owner } = venue;
+export function VenueCardComponent({
+    venue,
+    showOwner = true,
+}: {
+    venue: Accommodation;
+    showOwner?: boolean;
+}) {
+    const {
+        id,
+        name = "Unnamed Venue",
+        price = 0,
+        rating = 0,
+        media = [],
+        meta = { wifi: false, parking: false, breakfast: false, pets: false },
+        maxGuests = 1,
+        owner = {
+            name: "Unknown Owner",
+            avatar: { url: "/default-avatar.jpg", alt: "Default avatar" },
+        },
+    } = venue;
 
     return (
         <VenueCard key={id}>
-            <VenueInfoContainer>
-                <ProfileLink
-                    name={owner.name}
-                    url={owner.avatar.url}
-                    alt={
-                        owner.avatar?.alt || `Profile picture of ${owner.name}`
-                    }
-                />
-            </VenueInfoContainer>
+            {showOwner && (
+                <VenueInfoContainer>
+                    <ProfileLink
+                        name={owner.name}
+                        url={owner.avatar?.url}
+                        alt={
+                            owner.avatar?.alt ||
+                            `Profile picture of ${owner.name}`
+                        }
+                    />
+                </VenueInfoContainer>
+            )}
             <VenueImageContainer>
                 <Link to={`/holidaze/venues/${id}?_owner=true&_bookings=true`}>
                     <img
                         src={
-                            media?.length > 0
+                            media.length > 0
                                 ? media[0].url
                                 : "placeholder-image-url.jpg"
                         }
                         alt={
-                            media?.length > 0 && media[0]?.alt
+                            media.length > 0 && media[0]?.alt
                                 ? media[0].alt
                                 : "Image not available"
                         }
@@ -54,24 +75,24 @@ export function VenueCardComponent({ venue }: { venue: Accommodation }) {
             </VenueInfoContainer>
             <VenueMetaContainer>
                 <VenueMeta>
-                    {meta?.wifi ? <FaWifi /> : <FaWifi fill="lightgrey" />}
+                    {meta.wifi ? <FaWifi /> : <FaWifi fill="lightgrey" />}
                 </VenueMeta>
                 <VenueMeta>
-                    {meta?.pets ? (
+                    {meta.pets ? (
                         <MdOutlinePets />
                     ) : (
                         <MdOutlinePets fill="lightgrey" />
                     )}
                 </VenueMeta>
                 <VenueMeta>
-                    {meta?.parking ? (
+                    {meta.parking ? (
                         <MdLocalParking />
                     ) : (
                         <MdLocalParking fill="lightgrey" />
                     )}
                 </VenueMeta>
                 <VenueMeta>
-                    {meta?.breakfast ? (
+                    {meta.breakfast ? (
                         <MdOutlineEmojiFoodBeverage />
                     ) : (
                         <MdOutlineEmojiFoodBeverage fill="lightgrey" />

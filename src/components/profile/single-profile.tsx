@@ -10,6 +10,7 @@ import {
     VenueBookingsButton,
     IoMdSettings,
     EditContainer,
+    VenuesContainer,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
@@ -19,6 +20,7 @@ import { baseUrl } from "../../util/global/variables";
 import { useParams } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
 import { PostVenue } from "./post-venue-ui/main";
+import { VenueCardComponent } from "../venues/venue-card";
 
 export function SingleProfile() {
     const {
@@ -51,7 +53,8 @@ export function SingleProfile() {
         loading,
         error,
         request,
-    } = useApi<SingleUser>(`${baseUrl}/profiles/${username}`);
+    } = useApi<SingleUser>(`${baseUrl}/profiles/${username}?_venues=true`);
+
     const updateProfileRequest = useApi(`${baseUrl}/profiles/${username}`);
 
     useEffect(() => {
@@ -123,6 +126,7 @@ export function SingleProfile() {
             </NotLoggedInContainer>
         );
     if (error) return <p>Error: {error.message}</p>;
+    console.log(user?.venues);
 
     return (
         <ProfileContainer>
@@ -248,7 +252,6 @@ export function SingleProfile() {
                               )}
                     </>
                 )}
-
                 {editing && (
                     <div>
                         <label>
@@ -268,6 +271,19 @@ export function SingleProfile() {
                         </label>
                     </div>
                 )}
+                <VenuesContainer>
+                    {Array.isArray(user?.venues) && user.venues.length > 0 ? (
+                        user.venues.map((venue) => (
+                            <VenueCardComponent
+                                key={venue.id}
+                                venue={venue}
+                                showOwner={false}
+                            />
+                        ))
+                    ) : (
+                        <p>No venues available for this user.</p>
+                    )}
+                </VenuesContainer>
             </ProfileInfo>
             {editing && (
                 <EditContainer>
@@ -275,6 +291,7 @@ export function SingleProfile() {
                     <button onClick={handleSave}>Save</button>
                 </EditContainer>
             )}
+
             <UserBooking />
         </ProfileContainer>
     );
