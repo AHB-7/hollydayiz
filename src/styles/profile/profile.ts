@@ -17,6 +17,7 @@ export const ProfileBannerContainer = styled.section`
 export const ProfileBannerImage = styled.img`
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-bottom-left-radius: 2rem;
     border-bottom-right-radius: 2rem;
 `;
@@ -28,6 +29,7 @@ export const ProfileAvatar = styled.img`
     width: 7rem;
     height: 7rem;
     border-radius: 50%;
+    object-fit: cover;
 `;
 export const ProfileInfo = styled.div`
     display: flex;

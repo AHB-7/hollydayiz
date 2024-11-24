@@ -68,11 +68,11 @@ interface VenueFormData extends Record<string, unknown> {
 }
 
 export function PostVenue() {
-    const { accessToken, setVenueContainer } = useUserPreferences() || {};
+    const { accessToken, setVenueContainer, venueContainer } = useUserPreferences() || {};
     const { data, loading, error, request } = useApi(`${baseUrl}/venues`);
 
     const closeVenueContainer = () => {
-        setVenueContainer(false);
+        {venueContainer && setVenueContainer(false)}
     };
     const {
         register,

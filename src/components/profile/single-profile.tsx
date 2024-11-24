@@ -235,13 +235,20 @@ export function SingleProfile() {
                         </span>
                     )}
                 </ProfileBioContainer>
-                {venueContainer === true ? (
-                    <> {venueManager === true && <PostVenue />}</>
-                ) : (
-                    <VenueBookingsButton onClick={openVenueComponent}>
-                        Start creating a venue
-                    </VenueBookingsButton>
+                {profileOwner && (
+                    <>
+                        {venueContainer
+                            ? venueManager && <PostVenue />
+                            : venueManager && (
+                                  <VenueBookingsButton
+                                      onClick={openVenueComponent}
+                                  >
+                                      Start creating a venue
+                                  </VenueBookingsButton>
+                              )}
+                    </>
                 )}
+
                 {editing && (
                     <div>
                         <label>
