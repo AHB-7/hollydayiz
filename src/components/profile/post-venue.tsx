@@ -4,7 +4,7 @@ import { useUserPreferences } from "../../util/global/zustand-store";
 import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
 import {
-    FormInput,
+    FormInputVenue,
     Error,
     IoCheckmarkDoneCircleSharp,
     VenueBookingsButton,
@@ -12,7 +12,18 @@ import {
     VenueContainer,
     CloseButton,
     ToInputsInARow,
+    Label,
+    VenueDescriptionPost,
+    MediaContainer,
+    SubmitBtn,
+    MetaContainer,
+    MdLocalParking,
+    MdOutlineEmojiFoodBeverage,
+    MdOutlinePets,
+    SubmitBtnVenue,
+    SuccessMessageForPost,
 } from "../../styles/index";
+import { FaWifi } from "react-icons/fa";
 
 // Define types for the form data
 interface Media {
@@ -125,20 +136,19 @@ export function PostVenue() {
             <VenueForm onSubmit={handleSubmit(onSubmit)}>
                 {error && <Error>{error.message}</Error>}
                 {data && <p>Venue created successfully!</p>}
-
-                <label>
+                <Label>
                     Name:
-                    <FormInput
+                    <FormInputVenue
                         {...register("name", { required: "Name is required" })}
                         type="text"
                         placeholder="Name"
                     />
                     {errors.name && <Error>{errors.name.message}</Error>}
-                </label>
-
-                <label>
+                </Label>
+                <Label>
                     Description:
-                    <textarea
+                    <VenueDescriptionPost
+                        as="textarea"
                         {...register("description", {
                             required: "Description is required",
                         })}
@@ -147,14 +157,12 @@ export function PostVenue() {
                     {errors.description && (
                         <Error>{errors.description.message}</Error>
                     )}
-                </label>
-
-                <h3>Media</h3>
+                </Label>
                 {media.map((_, index) => (
-                    <div key={index}>
-                        <label>
-                            Media URL:
-                            <FormInput
+                    <MediaContainer key={index}>
+                        <Label>
+                            Media
+                            <FormInputVenue
                                 {...register(`media.${index}.url`, {
                                     required: "Media URL is required",
                                 })}
@@ -166,10 +174,10 @@ export function PostVenue() {
                                     {errors.media[index].url?.message}
                                 </Error>
                             )}
-                        </label>
-                        <label>
+                        </Label>
+                        <Label>
                             Media Alt Text:
-                            <FormInput
+                            <FormInputVenue
                                 {...register(`media.${index}.alt`, {
                                     required: "Alt text is required",
                                 })}
@@ -181,44 +189,43 @@ export function PostVenue() {
                                     {errors.media[index].alt?.message}
                                 </Error>
                             )}
-                        </label>
-                        <button
-                            type="button"
-                            onClick={() => removeMedia(index)}
-                        >
+                        </Label>
+                        <a type="button" onClick={() => removeMedia(index)}>
                             Remove Media
-                        </button>
-                    </div>
+                        </a>
+                    </MediaContainer>
                 ))}
-                <button type="button" onClick={addMedia}>
+                <SubmitBtnVenue type="button" onClick={addMedia}>
                     Add Media
-                </button>
+                </SubmitBtnVenue>
                 <ToInputsInARow>
                     {" "}
-                    <label>
+                    <Label>
                         Price:
-                        <FormInput
+                        <FormInputVenue
+                            id="price"
                             {...register("price", {
                                 required: "Price is required",
                                 min: {
                                     value: 1,
                                     message: "Price must be greater than 0",
                                 },
+                                valueAsNumber: true,
                             })}
                             type="number"
                             placeholder="Price"
                         />
                         {errors.price && <Error>{errors.price.message}</Error>}
-                    </label>
-                    <label>
                         Max Guests:
-                        <FormInput
+                        <FormInputVenue
+                            id="maxGuests"
                             {...register("maxGuests", {
                                 required: "Max guests is required",
                                 min: {
                                     value: 1,
-                                    message: "Must allow at least 1 guest",
+                                    message: "Max guests must be at least 1",
                                 },
+                                valueAsNumber: true,
                             })}
                             type="number"
                             placeholder="Max Guests"
@@ -226,127 +233,131 @@ export function PostVenue() {
                         {errors.maxGuests && (
                             <Error>{errors.maxGuests.message}</Error>
                         )}
-                    </label>
+                    </Label>
                 </ToInputsInARow>
-
-                <h3>Meta</h3>
-                <label>
-                    WiFi:
-                    <input type="checkbox" {...register("meta.wifi")} />
-                </label>
-                <label>
-                    Parking:
-                    <input type="checkbox" {...register("meta.parking")} />
-                </label>
-                <label>
-                    Breakfast:
-                    <input type="checkbox" {...register("meta.breakfast")} />
-                </label>
-                <label>
-                    Pets:
-                    <input type="checkbox" {...register("meta.pets")} />
-                </label>
-
-                <h3>Location</h3>
-                <label>
+                <MetaContainer>
+                    <Label>
+                        <input type="checkbox" {...register("meta.wifi")} />
+                        <FaWifi />
+                        <p>WiFi</p>
+                    </Label>
+                    <Label>
+                        <input type="checkbox" {...register("meta.parking")} />
+                        <MdLocalParking />
+                        <p>Parking</p>
+                    </Label>
+                    <Label>
+                        <input
+                            type="checkbox"
+                            {...register("meta.breakfast")}
+                        />
+                        <MdOutlineEmojiFoodBeverage />
+                        <p> Breakfast</p>
+                    </Label>
+                    <Label>
+                        <input type="checkbox" {...register("meta.pets")} />
+                        <MdOutlinePets />
+                        <p>Pets</p>
+                    </Label>
+                </MetaContainer>
+                <Label>
                     Address:
-                    <FormInput
-                        {...register("location.address", {
-                            required: "Address is required",
-                        })}
+                    <FormInputVenue
+                        {...register("location.address", {})}
                         type="text"
                         placeholder="Address"
                     />
                     {errors.location?.address && (
                         <Error>{errors.location.address.message}</Error>
                     )}
-                </label>
-                <label>
-                    City:
-                    <FormInput
-                        {...register("location.city", {
-                            required: "City is required",
-                        })}
-                        type="text"
-                        placeholder="City"
-                    />
-                    {errors.location?.city && (
-                        <Error>{errors.location.city.message}</Error>
-                    )}
-                </label>
-                <label>
-                    ZIP Code:
-                    <FormInput
-                        {...register("location.zip", {
-                            required: "ZIP Code is required",
-                        })}
-                        type="text"
-                        placeholder="ZIP Code"
-                    />
-                    {errors.location?.zip && (
-                        <Error>{errors.location.zip.message}</Error>
-                    )}
-                </label>
-                <label>
-                    Country:
-                    <FormInput
-                        {...register("location.country", {
-                            required: "Country is required",
-                        })}
-                        type="text"
-                        placeholder="Country"
-                    />
-                    {errors.location?.country && (
-                        <Error>{errors.location.country.message}</Error>
-                    )}
-                </label>
-                <label>
-                    Continent:
-                    <FormInput
-                        {...register("location.continent", {
-                            required: "Continent is required",
-                        })}
-                        type="text"
-                        placeholder="Continent"
-                    />
-                    {errors.location?.continent && (
-                        <Error>{errors.location.continent.message}</Error>
-                    )}
-                </label>
-                <label>
-                    Latitude:
-                    <FormInput
-                        {...register("location.lat", {
-                            required: "Latitude is required",
-                            valueAsNumber: true,
-                        })}
-                        type="number"
-                        placeholder="Latitude"
-                    />
-                    {errors.location?.lat && (
-                        <Error>{errors.location.lat.message}</Error>
-                    )}
-                </label>
-                <label>
-                    Longitude:
-                    <FormInput
-                        {...register("location.lng", {
-                            required: "Longitude is required",
-                            valueAsNumber: true,
-                        })}
-                        type="number"
-                        placeholder="Longitude"
-                    />
-                    {errors.location?.lng && (
-                        <Error>{errors.location.lng.message}</Error>
-                    )}
-                </label>
+                </Label>
+                <ToInputsInARow>
+                    <Label>
+                        City:
+                        <FormInputVenue
+                            {...register("location.city", {})}
+                            type="text"
+                            placeholder="City"
+                        />
+                        {errors.location?.city && (
+                            <Error>{errors.location.city.message}</Error>
+                        )}
+                    </Label>
+                    <Label>
+                        ZIP Code:
+                        <FormInputVenue
+                            {...register("location.zip", {})}
+                            type="text"
+                            placeholder="ZIP Code"
+                        />
+                        {errors.location?.zip && (
+                            <Error>{errors.location.zip.message}</Error>
+                        )}
+                    </Label>
+                </ToInputsInARow>
+                <ToInputsInARow>
+                    <Label>
+                        Country:
+                        <FormInputVenue
+                            {...register("location.country", {})}
+                            type="text"
+                            placeholder="Country"
+                        />
+                        {errors.location?.country && (
+                            <Error>{errors.location.country.message}</Error>
+                        )}
+                    </Label>
+                    <Label>
+                        Continent:
+                        <FormInputVenue
+                            {...register("location.continent", {})}
+                            type="text"
+                            placeholder="Continent"
+                        />
+                        {errors.location?.continent && (
+                            <Error>{errors.location.continent.message}</Error>
+                        )}
+                    </Label>
+                </ToInputsInARow>
+                <ToInputsInARow>
+                    <Label>
+                        Latitude:
+                        <FormInputVenue
+                            {...register("location.lat", {
+                                valueAsNumber: true,
+                            })}
+                            type="number"
+                            placeholder="Latitude"
+                        />
+                        {errors.location?.lat && (
+                            <Error>{errors.location.lat.message}</Error>
+                        )}
+                    </Label>
+                    <Label>
+                        Longitude:
+                        <FormInputVenue
+                            {...register("location.lng", {
+                                valueAsNumber: true,
+                            })}
+                            type="number"
+                            placeholder="Longitude"
+                        />
+                        {errors.location?.lng && (
+                            <Error>{errors.location.lng.message}</Error>
+                        )}
+                    </Label>
+                </ToInputsInARow>
 
-                <VenueBookingsButton type="submit" disabled={loading}>
+                <SubmitBtnVenue type="submit" disabled={loading}>
                     {loading ? "Creating Venue..." : "Create Venue"}
-                </VenueBookingsButton>
+                </SubmitBtnVenue>
 
-                {data && <IoCheckmarkDoneCircleSharp fill="green" />}
+                {data && (
+                    <SuccessMessageForPost>
+                        <p>Venue been successfully created</p>
+                        <IoCheckmarkDoneCircleSharp fill="green" />
+                    </SuccessMessageForPost>
+                )}
                 <CloseButton onClick={closeVenueContainer}>x</CloseButton>
             </VenueForm>
         </VenueContainer>

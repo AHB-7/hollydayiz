@@ -235,7 +235,7 @@ export function SingleProfile() {
                         </span>
                     )}
                 </ProfileBioContainer>
-                {venueContainer === false ? (
+                {venueContainer === true ? (
                     <> {venueManager === true && <PostVenue />}</>
                 ) : (
                     <VenueBookingsButton onClick={openVenueComponent}>
