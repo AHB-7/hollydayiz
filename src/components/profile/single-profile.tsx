@@ -14,11 +14,11 @@ import {
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
 import { useEffect, useState } from "react";
-import { UserBooking } from "./user-booking";
+import { UserBooking } from "./users-bookings/main";
 import { baseUrl } from "../../util/global/variables";
 import { useParams } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
-import { PostVenue } from "./post-venue";
+import { PostVenue } from "./post-venue-ui/main";
 
 export function SingleProfile() {
     const {

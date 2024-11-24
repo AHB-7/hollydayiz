@@ -67,8 +67,11 @@ export const MediaContainer = styled.div`
     flex-direction: column;
     gap: 1rem;
     width: 100%;
-    > a {
+    > button {
         margin-left: auto;
+        background: none;
+        outline: none;
+        border: none;
         padding-right: 0.5rem;
         color: yellow;
         cursor: pointer;

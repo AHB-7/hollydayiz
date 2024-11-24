@@ -211,3 +211,62 @@ export type UserBookingTypes = {
         ];
     };
 };
+export interface Media {
+    url: string;
+    alt: string;
+}
+
+export interface Meta {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
+}
+
+export interface Location {
+    address: string;
+    city: string;
+    zip: string;
+    country: string;
+    continent: string;
+    lat: number;
+    lng: number;
+}
+
+// VenueFormData interface must come first
+export interface VenueFormData {
+    name: string;
+    description: string;
+    media: Media[];
+    price: number;
+    maxGuests: number;
+    rating: number;
+    meta: Meta;
+    location: Location;
+    [key: string]: unknown;
+}
+
+// defaultVenueFormValues can now use VenueFormData
+export const defaultVenueFormValues: VenueFormData = {
+    name: "",
+    description: "",
+    media: [{ url: "", alt: "" }],
+    price: 0,
+    maxGuests: 0,
+    rating: 0,
+    meta: {
+        wifi: false,
+        parking: false,
+        breakfast: false,
+        pets: false,
+    },
+    location: {
+        address: "",
+        city: "",
+        zip: "",
+        country: "",
+        continent: "",
+        lat: 0,
+        lng: 0,
+    },
+};
