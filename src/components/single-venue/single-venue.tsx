@@ -25,7 +25,7 @@ import {
     BookingContainer,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { SingleVenueType, UserBookingTypes } from "../../types/global";
+import { SingleVenueType } from "../../types/global";
 import { baseUrl } from "../../util/global/variables";
 import "react-calendar/dist/Calendar.css";
 import Slider from "react-slick";
@@ -104,9 +104,7 @@ export function SingleVenue() {
         today.setHours(0, 0, 0, 0);
         return date < today;
     };
-    const handleEdit = (booking: UserBookingTypes) => {
-        console.log("Editing booking:", booking);
-    };
+
     const sliderSettings = {
         dots: true,
         infinite: true,
