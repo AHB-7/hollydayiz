@@ -53,9 +53,14 @@ export const CardInfo = styled.div`
         margin-bottom: 1rem;
         padding-right: 1rem;
     }
-    > div > p {
-        padding: 0.1rem 0;
-    }
+`;
+export const PastDate = styled.span`
+    color: red;
+    font-weight: bold;
+`;
+
+export const NormalDate = styled.span`
+    color: inherit;
 `;
 export const ViewVenue = styled.div`
     margin-top: 0.5rem;

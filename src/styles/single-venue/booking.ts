@@ -58,6 +58,7 @@ export const PriceAndDate = styled.div`
     align-items: center;
     > h3 {
         margin: 0 auto;
+        padding: 4rem 0.5rem;
         > strong {
             color: ${({ theme }) => theme.colors.primary};
     }

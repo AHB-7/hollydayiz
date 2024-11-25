@@ -263,12 +263,7 @@ export type UserBookingTypes = {
         id: string;
         name: string;
         description: string;
-        media: [
-            {
-                id: string;
-                url: string;
-            }
-        ];
+        media: { url: string; alt: string }[]; // Update media to accept arrays
     };
 };
 export interface Media {

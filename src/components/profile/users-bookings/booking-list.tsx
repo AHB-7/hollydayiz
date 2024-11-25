@@ -17,6 +17,7 @@ export function BookingList({
     setEditGuests,
     isDateUnavailable,
     formatDate,
+    isPastDate,
 }: {
     bookings: UserBookingTypes[];
     profileOwner: boolean;
@@ -31,6 +32,7 @@ export function BookingList({
     setEditGuests: (guests: number) => void;
     isDateUnavailable: (date: Date) => boolean;
     formatDate: (isoString: string) => string;
+    isPastDate: (date: Date) => boolean;
 }) {
     return (
         <>
@@ -42,6 +44,7 @@ export function BookingList({
                         handleDelete={handleDelete}
                         handleEdit={handleEdit}
                         formatDate={formatDate}
+                        isPastDate={isPastDate}
                     />
                     {editingBooking?.id === booking.id && (
                         <EditBookingForm

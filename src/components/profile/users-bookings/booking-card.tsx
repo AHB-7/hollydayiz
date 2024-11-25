@@ -5,8 +5,10 @@ import {
     BookingDelete,
     ViewVenue,
     GuestsNumber,
+    PastDate,
+    NormalDate,
+    MdDelete,
 } from "../../../styles/index";
-import { MdDelete } from "react-icons/md";
 import { UserBookingTypes } from "../../../types/global";
 
 export function BookingCardComponent({
@@ -15,12 +17,14 @@ export function BookingCardComponent({
     handleDelete,
     handleEdit,
     formatDate,
+    isPastDate,
 }: {
     booking: UserBookingTypes;
     profileOwner: boolean;
     handleDelete: (id: string) => void;
     handleEdit: (booking: UserBookingTypes) => void;
     formatDate: (isoString: string) => string;
+    isPastDate: (date: Date) => boolean;
 }) {
     return (
         <CardInfo>
@@ -33,8 +37,22 @@ export function BookingCardComponent({
             <div>
                 <h2>{booking.venue.name}</h2>
                 <p>Created: {formatDate(booking.created)}</p>
-                <p>Date From: {formatDate(booking.dateFrom)}</p>
-                <p>Date To: {formatDate(booking.dateTo)}</p>
+                <p>
+                    Date From:{" "}
+                    {isPastDate(new Date(booking.dateFrom)) ? (
+                        <PastDate>{formatDate(booking.dateFrom)}</PastDate>
+                    ) : (
+                        <NormalDate>{formatDate(booking.dateFrom)}</NormalDate>
+                    )}
+                </p>
+                <p>
+                    Date To:{" "}
+                    {isPastDate(new Date(booking.dateTo)) ? (
+                        <PastDate>{formatDate(booking.dateTo)}</PastDate>
+                    ) : (
+                        <NormalDate>{formatDate(booking.dateTo)}</NormalDate>
+                    )}
+                </p>
                 {profileOwner && (
                     <BookingDelete onClick={() => handleDelete(booking.id)}>
                         <MdDelete />

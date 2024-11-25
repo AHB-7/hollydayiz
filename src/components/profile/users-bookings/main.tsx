@@ -140,6 +140,11 @@ export function UserBooking() {
             dateStyle: "medium",
         });
     };
+    const isPastDate = (date: Date): boolean => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        return date < today;
+    };
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -160,6 +165,7 @@ export function UserBooking() {
                 setEditGuests={setEditGuests}
                 isDateUnavailable={isDateUnavailable}
                 formatDate={formatDate}
+                isPastDate={isPastDate} // New prop
             />
         </BookingContainer>
     );

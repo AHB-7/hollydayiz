@@ -1,5 +1,6 @@
 export * from "../styles/single-venue/single-venue-styles";
 export * from "../styles/single-venue/booking";
+export * from "../styles/single-venue/edit-delet-venue";
 export * from "../styles/venues/cards";
 export * from "../styles/venues/container";
 export * from "../styles/auth/auth";
