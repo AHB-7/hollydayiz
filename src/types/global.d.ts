@@ -263,7 +263,7 @@ export type UserBookingTypes = {
         id: string;
         name: string;
         description: string;
-        media: { url: string; alt: string }[]; // Update media to accept arrays
+        media: { url: string; alt: string }[];
     };
 };
 export interface Media {
@@ -288,7 +288,6 @@ export interface Location {
     lng: number;
 }
 
-// VenueFormData interface must come first
 export interface VenueFormData {
     name: string;
     description: string;
@@ -301,7 +300,6 @@ export interface VenueFormData {
     [key: string]: unknown;
 }
 
-// defaultVenueFormValues can now use VenueFormData
 export const defaultVenueFormValues: VenueFormData = {
     name: "",
     description: "",

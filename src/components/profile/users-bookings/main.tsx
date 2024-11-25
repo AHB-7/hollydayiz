@@ -165,7 +165,7 @@ export function UserBooking() {
                 setEditGuests={setEditGuests}
                 isDateUnavailable={isDateUnavailable}
                 formatDate={formatDate}
-                isPastDate={isPastDate} // New prop
+                isPastDate={isPastDate} 
             />
         </BookingContainer>
     );

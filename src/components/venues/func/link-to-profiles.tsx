@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import { OwnerNameImg } from "../../styles/index";
-import { useUserPreferences } from "../../util/global/zustand-store";
+import { OwnerNameImg } from "../../../styles/index";
+import { useUserPreferences } from "../../../util/global/zustand-store";
 type ProfileLinkProps = {
     name: string | null;
     url: string | null;

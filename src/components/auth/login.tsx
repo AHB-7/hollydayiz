@@ -58,7 +58,7 @@ export function Login() {
                     type="text"
                     name="email"
                     placeholder="Email"
-                    defaultValue={savedMail || ""} // Pre-fill with saved email if available
+                    defaultValue={savedMail || ""} 
                 />
                 {errors.email && <Error>{errors.email.message}</Error>}
 

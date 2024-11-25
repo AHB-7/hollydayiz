@@ -9,10 +9,10 @@ import {
     MdOutlineEmojiFoodBeverage,
     MdOutlinePets,
 } from "../../styles/index";
-import { Stars } from "../../components/global/rating";
+import { Stars } from "../global/rating";
 import { IoPeopleSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { ProfileLink } from "./link-to-profiles";
+import { ProfileLink } from "./func/link-to-profiles";
 import { Accommodation } from "../../types/global";
 
 export function VenueCardComponent({

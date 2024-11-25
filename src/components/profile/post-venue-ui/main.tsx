@@ -85,7 +85,7 @@ export function PostVenue({
 
     useEffect(() => {
         if (defaultValues) {
-            reset(defaultValues); // Populate form with default values when editing
+            reset(defaultValues);
         }
     }, [defaultValues, reset]);
 

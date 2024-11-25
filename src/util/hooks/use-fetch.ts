@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse, Method } from "axios";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { UseApiReturn } from "../../types/global";
 /**
  * Custom hook to perform API requests using Axios.
@@ -86,55 +86,57 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
 
-    const request = async (
-        method: Method,
-        body?: any,
-        config?: AxiosRequestConfig,
-        token?: string
-    ) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const headers = token
-                ? {
-                      Authorization: `Bearer ${token}`,
-                      "X-Noroff-API-Key":
-                          "cda1b6c4-89c7-41ec-9483-1fdbf3d819ec",
-                      ...config?.headers,
-                  }
-                : config?.headers;
+    const request = useCallback(
+        async (
+            method: Method,
+            body?: any,
+            config?: AxiosRequestConfig,
+            token?: string
+        ) => {
+            setLoading(true);
+            setError(null);
+            try {
+                const headers = token
+                    ? {
+                          Authorization: `Bearer ${token}`,
+                          "X-Noroff-API-Key":
+                              "cda1b6c4-89c7-41ec-9483-1fdbf3d819ec",
+                          ...config?.headers,
+                      }
+                    : config?.headers;
 
-            const response: AxiosResponse<T> = await axios({
-                url,
-                method,
-                data: body,
-                ...config,
-                headers,
-            });
+                const response: AxiosResponse<T> = await axios({
+                    url,
+                    method,
+                    data: body,
+                    ...config,
+                    headers,
+                });
 
-            if (response.data && typeof response.data === "object") {
-                if ("data" in response.data) {
-                    setData((response.data as any).data);
-                } else {
-                    setData(response.data);
+                if (response.data && typeof response.data === "object") {
+                    if ("data" in response.data) {
+                        setData((response.data as any).data);
+                    } else {
+                        setData(response.data);
+                    }
                 }
-            }
-        } catch (err: any) {
-            if (err.response) {
-                // Extract error message from API response
-                const apiError =
-                    err.response.data?.errors?.[0]?.message ||
-                    err.response.data?.message ||
-                    "An error occurred";
+            } catch (err: any) {
+                if (err.response) {
+                    const apiError =
+                        err.response.data?.errors?.[0]?.message ||
+                        err.response.data?.message ||
+                        "An error occurred";
 
-                setError(new Error(apiError));
-            } else {
-                setError(err);
+                    setError(new Error(apiError));
+                } else {
+                    setError(err);
+                }
+            } finally {
+                setLoading(false);
             }
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+        [url] 
+    );
 
     return { data, loading, error, request };
 }

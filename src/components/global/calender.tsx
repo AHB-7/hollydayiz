@@ -1,4 +1,3 @@
-// components/CalendarComponent.tsx
 import React from "react";
 import { StyledCalendar } from "../../styles/index";
 
