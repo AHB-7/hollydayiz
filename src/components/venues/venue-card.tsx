@@ -21,6 +21,7 @@ export function VenueCardComponent({
 }: {
     venue: Accommodation;
     showOwner?: boolean;
+    onEdit?: () => void;
 }) {
     const {
         id,

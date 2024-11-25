@@ -1,8 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
-import { useUserPreferences } from "../../../util/global/zustand-store";
-import { useApi } from "../../../util/hooks/use-fetch";
-import { baseUrl } from "../../../util/global/variables";
 import {
     FormInputVenue,
     Error,
@@ -21,16 +18,25 @@ import { MediaFields } from "./media-field";
 import { MetaFields } from "./meta-field";
 import { LocationFields } from "./location-field";
 
-export function PostVenue() {
-    const { accessToken, setVenueContainer, venueContainer } =
-        useUserPreferences() || {};
-    const { data, loading, error, request } = useApi(`${baseUrl}/venues`);
+interface PostVenueProps {
+    mode: "create" | "edit";
+    defaultValues?: VenueFormData;
+    onSubmit: SubmitHandler<VenueFormData>;
+    loading?: boolean;
+    error?: { message: string };
+    onClose?: () => void;
+    successMessage?: string;
+}
 
-    const closeVenueContainer = () => {
-        {
-            venueContainer && setVenueContainer(false);
-        }
-    };
+export function PostVenue({
+    mode,
+    defaultValues,
+    onSubmit,
+    loading = false,
+    error,
+    onClose,
+    successMessage,
+}: PostVenueProps) {
     const {
         register,
         handleSubmit,
@@ -39,7 +45,7 @@ export function PostVenue() {
         watch,
         reset,
     } = useForm<VenueFormData>({
-        defaultValues: {
+        defaultValues: defaultValues || {
             name: "",
             description: "",
             media: [{ url: "", alt: "" }],
@@ -66,11 +72,6 @@ export function PostVenue() {
 
     const media = watch("media");
 
-    const onSubmit: SubmitHandler<VenueFormData> = async (formData) => {
-        await request("POST", formData, {}, accessToken || undefined);
-        reset();
-    };
-
     const addMedia = () => {
         setValue("media", [...media, { url: "", alt: "" }]);
     };
@@ -83,16 +84,21 @@ export function PostVenue() {
     };
 
     useEffect(() => {
-        if (data) {
-            console.log("Venue created successfully:", data);
+        if (defaultValues) {
+            reset(defaultValues); // Populate form with default values when editing
         }
-    }, [data]);
+    }, [defaultValues, reset]);
 
     return (
         <VenueContainer>
             <VenueForm onSubmit={handleSubmit(onSubmit)}>
                 {error && <Error>{error.message}</Error>}
-                {data && <p>Venue created successfully!</p>}
+                {successMessage && (
+                    <SuccessMessageForPost>
+                        <p>{successMessage}</p>
+                        <IoCheckmarkDoneCircleSharp fill="green" />
+                    </SuccessMessageForPost>
+                )}
                 <Label>
                     Name:
                     <FormInputVenue
@@ -124,7 +130,6 @@ export function PostVenue() {
                     watch={watch}
                 />
                 <ToInputsInARow>
-                    {" "}
                     <Label htmlFor="price">
                         Price:
                         <FormInputVenue
@@ -165,16 +170,16 @@ export function PostVenue() {
                 <MetaFields register={register} />
                 <LocationFields register={register} errors={errors} />
                 <SubmitBtnVenue type="submit" disabled={loading}>
-                    {loading ? "Creating Venue..." : "Create Venue"}
+                    {loading
+                        ? `${
+                              mode === "create" ? "Creating" : "Updating"
+                          } Venue...`
+                        : mode === "create"
+                        ? "Create Venue"
+                        : "Update Venue"}
                 </SubmitBtnVenue>
 
-                {data && (
-                    <SuccessMessageForPost>
-                        <p>Venue been successfully created</p>
-                        <IoCheckmarkDoneCircleSharp fill="green" />
-                    </SuccessMessageForPost>
-                )}
-                <CloseButton onClick={closeVenueContainer}>x</CloseButton>
+                {onClose && <CloseButton onClick={onClose}>x</CloseButton>}
             </VenueForm>
         </VenueContainer>
     );

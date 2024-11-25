@@ -17,7 +17,7 @@ import {
     CloseButton,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { SingleUser } from "../../types/global";
+import { SingleUser, VenueFormData } from "../../types/global";
 import { useEffect, useState } from "react";
 import { UserBooking } from "./users-bookings/main";
 import { baseUrl } from "../../util/global/variables";
@@ -48,6 +48,10 @@ export function SingleProfile() {
     const { username } = useParams<{ username: string }>();
     const [profileOwner, setProfileOwner] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
+    const [editingVenue, setEditingVenue] = useState<VenueFormData | null>(
+        null
+    );
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [updatedProfile, setUpdatedProfile] = useState({
         bio: "",
         avatar: { url: "", alt: "" },
@@ -57,16 +61,16 @@ export function SingleProfile() {
     const [toggleVenue, setToggleVenue] = useState<boolean>(false);
     const [toggleBooking, setToggleBooking] = useState<boolean>(false);
 
-    const toggleVenueHandler = () => {
-        setToggleVenue((prevState) => !prevState);
+    const toggleVenueHandler = () => setToggleVenue((prevState) => !prevState);
+    const toggleBookingHandler = () =>
+        setToggleBooking((prevState) => !prevState);
+    const openVenueComponent = () => setVenueContainer(true);
+    const closeVenueComponent = () => {
+        setVenueContainer(false);
+        setEditingVenue(null);
+        setSuccessMessage(null);
     };
 
-    const toggleBookingHandler = () => {
-        setToggleBooking((prevState) => !prevState);
-    };
-    const openVenueComponent = () => {
-        setVenueContainer(true);
-    };
     const {
         data: user,
         loading,
@@ -75,6 +79,7 @@ export function SingleProfile() {
     } = useApi<SingleUser>(`${baseUrl}/profiles/${username}?_venues=true`);
 
     const updateProfileRequest = useApi(`${baseUrl}/profiles/${username}`);
+    const venueRequest = useApi(`${baseUrl}/venues`);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -92,9 +97,7 @@ export function SingleProfile() {
     }, [accessToken, username]);
 
     useEffect(() => {
-        if (name === username) {
-            setProfileOwner(true);
-        }
+        if (name === username) setProfileOwner(true);
     }, [name, username]);
 
     useEffect(() => {
@@ -129,10 +132,28 @@ export function SingleProfile() {
             console.error("Error updating profile:", err);
         }
     };
-
-    const toggleActiveState = () => {
-        setNavbarState(!navbarState);
+    const handleCreateVenue = async (formData: VenueFormData) => {
+        try {
+            await venueRequest.request(
+                "POST",
+                formData,
+                {},
+                accessToken || undefined
+            );
+            setSuccessMessage("Venue created successfully!");
+            closeVenueComponent();
+            await request(
+                "GET",
+                undefined,
+                undefined,
+                accessToken || undefined
+            );
+        } catch (err) {
+            console.error("Error creating venue:", err);
+        }
     };
+
+    const toggleActiveState = () => setNavbarState(!navbarState);
 
     if (loading) return <p>Loading...</p>;
     if (!accessToken)
@@ -171,8 +192,27 @@ export function SingleProfile() {
                 </ProfileBioContainer>
                 {profileOwner && (
                     <>
-                        {venueContainer
-                            ? venueManager && <PostVenue />
+                        {venueContainer && !editingVenue
+                            ? venueManager && (
+                                  <PostVenue
+                                      mode="create"
+                                      onSubmit={handleCreateVenue}
+                                      onClose={closeVenueComponent}
+                                      loading={venueRequest.loading}
+                                      error={
+                                          venueRequest.error
+                                              ? {
+                                                    message:
+                                                        venueRequest.error
+                                                            .message,
+                                                }
+                                              : undefined
+                                      }
+                                      successMessage={
+                                          successMessage || undefined
+                                      }
+                                  />
+                              )
                             : venueManager && (
                                   <VenueBookingsButton
                                       onClick={openVenueComponent}
@@ -202,6 +242,10 @@ export function SingleProfile() {
                                     key={venue.id}
                                     venue={venue}
                                     showOwner={false}
+                                    onEdit={() => {
+                                        setEditingVenue(venue);
+                                        setVenueContainer(true);
+                                    }}
                                 />
                             ))
                         ) : (
