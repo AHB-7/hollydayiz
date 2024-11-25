@@ -9,8 +9,12 @@ import {
     NotLoggedInContainer,
     VenueBookingsButton,
     IoMdSettings,
-    EditContainer,
-    VenuesContainer,
+    EditProfileContainer,
+    VenuesContainerStyled,
+    ToggleDown,
+    IoEye,
+    IoEyeOff,
+    CloseButton,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser } from "../../types/global";
@@ -21,6 +25,13 @@ import { useParams } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
 import { PostVenue } from "./post-venue-ui/main";
 import { VenueCardComponent } from "../venues/venue-card";
+import {
+    EditInput,
+    EditTextArea,
+    InputContainerForProfile,
+    TwoButtonsInARow,
+} from "../../styles/profile/edit-profile";
+import { EditCheckbox } from "./edit/checkbox";
 
 export function SingleProfile() {
     const {
@@ -37,14 +48,22 @@ export function SingleProfile() {
     const { username } = useParams<{ username: string }>();
     const [profileOwner, setProfileOwner] = useState<boolean>(false);
     const [editing, setEditing] = useState<boolean>(false);
-
     const [updatedProfile, setUpdatedProfile] = useState({
         bio: "",
         avatar: { url: "", alt: "" },
         banner: { url: "", alt: "" },
         venueManager: false,
     });
+    const [toggleVenue, setToggleVenue] = useState<boolean>(false);
+    const [toggleBooking, setToggleBooking] = useState<boolean>(false);
 
+    const toggleVenueHandler = () => {
+        setToggleVenue((prevState) => !prevState);
+    };
+
+    const toggleBookingHandler = () => {
+        setToggleBooking((prevState) => !prevState);
+    };
     const openVenueComponent = () => {
         setVenueContainer(true);
     };
@@ -126,113 +145,24 @@ export function SingleProfile() {
             </NotLoggedInContainer>
         );
     if (error) return <p>Error: {error.message}</p>;
-    console.log(user?.venues);
 
     return (
         <ProfileContainer>
             <ProfileBannerContainer>
-                {editing ? (
-                    <div>
-                        <label>Banner URL:</label>
-                        <input
-                            type="text"
-                            title="Banner URL"
-                            placeholder="Enter banner URL"
-                            value={updatedProfile.banner.url}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    banner: {
-                                        ...prev.banner,
-                                        url: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                        <label>Banner Alt:</label>
-                        <input
-                            type="text"
-                            title="Banner Alt"
-                            placeholder="Enter banner alt text"
-                            value={updatedProfile.banner.alt}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    banner: {
-                                        ...prev.banner,
-                                        alt: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                    </div>
-                ) : (
-                    <ProfileBannerImage
-                        src={user?.banner?.url || "/default-banner.jpg"}
-                        alt={user?.banner?.alt || "Default banner"}
-                    />
-                )}
-                {editing ? (
-                    <div>
-                        <label>Avatar URL:</label>
-                        <input
-                            type="text"
-                            title="Avatar URL"
-                            placeholder="Enter avatar URL"
-                            value={updatedProfile.avatar.url}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    avatar: {
-                                        ...prev.avatar,
-                                        url: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                        <label>Avatar Alt:</label>
-                        <input
-                            type="text"
-                            title="Avatar Alt"
-                            placeholder="Enter avatar alt text"
-                            value={updatedProfile.avatar.alt}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    avatar: {
-                                        ...prev.avatar,
-                                        alt: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                    </div>
-                ) : (
-                    <ProfileAvatar
-                        src={user?.avatar?.url || "/default-avatar.jpg"}
-                        alt={user?.avatar?.alt || "Default avatar"}
-                    />
-                )}
+                <ProfileBannerImage
+                    src={user?.banner?.url || "/default-banner.jpg"}
+                    alt={user?.banner?.alt || "Default banner"}
+                />
+                <ProfileAvatar
+                    src={user?.avatar?.url || "/default-avatar.jpg"}
+                    alt={user?.avatar?.alt || "Default avatar"}
+                />
             </ProfileBannerContainer>
             <ProfileInfo>
                 <ProfileName>{user?.name}</ProfileName>
                 <ProfileBioContainer>
                     <h2>Bio</h2>
-                    {editing ? (
-                        <textarea
-                            title="Bio"
-                            placeholder="Enter your bio"
-                            value={updatedProfile.bio}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    bio: e.target.value,
-                                }))
-                            }
-                        />
-                    ) : (
-                        <p>{user?.bio || "No bio available"}</p>
-                    )}
+                    <p>{user?.bio || "No bio available"}</p>
                     {profileOwner && (
                         <span onClick={() => setEditing(!editing)}>
                             <IoMdSettings />
@@ -252,47 +182,155 @@ export function SingleProfile() {
                               )}
                     </>
                 )}
-                {editing && (
-                    <div>
-                        <label>
-                            Venue Manager:
-                            <input
-                                type="checkbox"
-                                title="Venue Manager"
-                                placeholder="Venue Manager"
-                                checked={updatedProfile.venueManager}
-                                onChange={(e) =>
-                                    setUpdatedProfile((prev) => ({
-                                        ...prev,
-                                        venueManager: e.target.checked,
-                                    }))
-                                }
-                            />
-                        </label>
-                    </div>
+                {toggleVenue ? (
+                    <ToggleDown onClick={toggleVenueHandler}>
+                        Hide Venues
+                        <IoEyeOff />
+                    </ToggleDown>
+                ) : (
+                    <ToggleDown onClick={toggleVenueHandler}>
+                        Show Venues
+                        <IoEye />
+                    </ToggleDown>
                 )}
-                <VenuesContainer>
-                    {Array.isArray(user?.venues) && user.venues.length > 0 ? (
-                        user.venues.map((venue) => (
-                            <VenueCardComponent
-                                key={venue.id}
-                                venue={venue}
-                                showOwner={false}
-                            />
-                        ))
-                    ) : (
-                        <p>No venues available for this user.</p>
-                    )}
-                </VenuesContainer>
+                {toggleVenue && (
+                    <VenuesContainerStyled>
+                        {Array.isArray(user?.venues) &&
+                        user.venues.length > 0 ? (
+                            user.venues.map((venue) => (
+                                <VenueCardComponent
+                                    key={venue.id}
+                                    venue={venue}
+                                    showOwner={false}
+                                />
+                            ))
+                        ) : (
+                            <p>No venues available for this user.</p>
+                        )}
+                    </VenuesContainerStyled>
+                )}
+                {toggleBooking ? (
+                    <ToggleDown onClick={toggleBookingHandler}>
+                        Hide Bookings
+                        <IoEyeOff />
+                    </ToggleDown>
+                ) : (
+                    <ToggleDown onClick={toggleBookingHandler}>
+                        Show Bookings
+                        <IoEye />
+                    </ToggleDown>
+                )}
+                {toggleBooking && <UserBooking />}
             </ProfileInfo>
             {editing && (
-                <EditContainer>
-                    <button onClick={() => setEditing(false)}>Cancel</button>
-                    <button onClick={handleSave}>Save</button>
-                </EditContainer>
+                <EditProfileContainer>
+                    <CloseButton color="#fff" onClick={() => setEditing(false)}>
+                        X
+                    </CloseButton>
+                    <h3>Edit Profile</h3>
+                    <InputContainerForProfile>
+                        <label>Banner URL:</label>
+                        <EditInput
+                            type="text"
+                            title="Banner URL"
+                            placeholder="Enter banner URL"
+                            value={updatedProfile.banner.url}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    banner: {
+                                        ...prev.banner,
+                                        url: e.target.value,
+                                    },
+                                }))
+                            }
+                        />
+                        <label>Banner Alt:</label>
+                        <EditInput
+                            type="text"
+                            title="Banner Alt"
+                            placeholder="Enter banner alt text"
+                            value={updatedProfile.banner.alt}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    banner: {
+                                        ...prev.banner,
+                                        alt: e.target.value,
+                                    },
+                                }))
+                            }
+                        />
+                    </InputContainerForProfile>
+                    <InputContainerForProfile>
+                        <label>Avatar URL:</label>
+                        <EditInput
+                            type="text"
+                            title="Avatar URL"
+                            placeholder="Enter avatar URL"
+                            value={updatedProfile.avatar.url}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    avatar: {
+                                        ...prev.avatar,
+                                        url: e.target.value,
+                                    },
+                                }))
+                            }
+                        />
+                        <label>Avatar Alt:</label>
+                        <EditInput
+                            type="text"
+                            title="Avatar Alt"
+                            placeholder="Enter avatar alt text"
+                            value={updatedProfile.avatar.alt}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    avatar: {
+                                        ...prev.avatar,
+                                        alt: e.target.value,
+                                    },
+                                }))
+                            }
+                        />
+                    </InputContainerForProfile>
+                    <InputContainerForProfile>
+                        <label>Bio:</label>
+                        <EditTextArea
+                            title="Bio"
+                            placeholder="Enter your bio"
+                            value={updatedProfile.bio}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    bio: e.target.value,
+                                }))
+                            }
+                        />
+                    </InputContainerForProfile>
+                    <InputContainerForProfile>
+                        <EditCheckbox
+                            checked={updatedProfile.venueManager}
+                            onChange={(e) =>
+                                setUpdatedProfile((prev) => ({
+                                    ...prev,
+                                    venueManager: e.target.checked,
+                                }))
+                            }
+                        />
+                    </InputContainerForProfile>
+                    <TwoButtonsInARow>
+                        <VenueBookingsButton onClick={handleSave}>
+                            Save
+                        </VenueBookingsButton>
+                        <VenueBookingsButton onClick={() => setEditing(false)}>
+                            Cancel
+                        </VenueBookingsButton>
+                    </TwoButtonsInARow>
+                </EditProfileContainer>
             )}
-
-            <UserBooking />
         </ProfileContainer>
     );
 }

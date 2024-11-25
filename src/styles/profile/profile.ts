@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { VenuesContainer } from "../index";
 
 export const ProfileContainer = styled.section`
     display: flex;
@@ -70,5 +71,27 @@ export const ProfileBioContainer = styled.div`
         word-break: break-word;
         overflow-wrap: anywhere;
         white-space: normal;
+    }
+`;
+export const VenuesContainerStyled = styled(VenuesContainer)`
+    padding: 0.5rem 0;
+`;
+export const ToggleDown = styled.button`
+    color: ${(props) => props.theme.colors.text};
+    background-color: ${(props) => props.theme.colors.background};
+    font-size: 1.2rem;
+    width: 100%;
+    outline: none;
+    border: 0.05rem solid ${(props) => props.theme.colors.text};
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    > svg {
+        font-size: 1.2rem;
     }
 `;

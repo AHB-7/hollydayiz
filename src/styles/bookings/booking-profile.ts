@@ -8,12 +8,14 @@ export const BookingContainer = styled.div`
     @media (max-width: 850px) {
         grid-template-columns: 1fr;
     }
-    padding: 1rem;
+    padding: 0.5rem 0;
+    padding-bottom: 3rem;
 `;
 export const BookingCard = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
+    border-radius: 0.5rem;
     border: 1px solid black;
     position: relative;
 `;
@@ -49,6 +51,7 @@ export const CardInfo = styled.div`
     > div > h2 {
         font-size: 1.5rem;
         margin-bottom: 1rem;
+        padding-right: 1rem;
     }
     > div > p {
         padding: 0.1rem 0;

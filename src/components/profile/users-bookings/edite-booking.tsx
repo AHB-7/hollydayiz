@@ -1,5 +1,9 @@
 import CalendarComponent from "../../global/calender";
-import { EditContainer } from "../../../styles/index";
+import {
+    EditContainer,
+    GuestNumber,
+    GuestNumberContainer,
+} from "../../../styles/index";
 
 export function EditBookingForm({
     editDateRange,
@@ -30,9 +34,9 @@ export function EditBookingForm({
                 }
             />
             <div>
-                <label>
-                    Guests:
-                    <select
+                <GuestNumberContainer>
+                    <label>Guests: </label>
+                    <GuestNumber
                         value={editGuests}
                         onChange={(e) => setEditGuests(Number(e.target.value))}
                     >
@@ -43,8 +47,8 @@ export function EditBookingForm({
                                 </option>
                             )
                         )}
-                    </select>
-                </label>
+                    </GuestNumber>
+                </GuestNumberContainer>
             </div>
             <EditContainer>
                 <span onClick={handleCancelEdit}>Cancel</span>

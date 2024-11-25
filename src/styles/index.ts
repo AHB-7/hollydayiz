@@ -9,6 +9,7 @@ export * from "./bookings/booking-profile";
 export * from "./layout/nav";
 export * from "./profile/profile";
 export * from "./profile/post-venue";
+export * from "./profile/edit-profile";
 
 export { FaWifi } from "react-icons/fa6";
 export { GrLocation } from "react-icons/gr";
@@ -23,3 +24,5 @@ export { FiLogIn } from "react-icons/fi";
 export { MdOutlineMenu } from "react-icons/md";
 export { IoMdSettings } from "react-icons/io";
 export { MdDelete } from "react-icons/md";
+export { IoEye } from "react-icons/io5";
+export { IoEyeOff } from "react-icons/io5";

@@ -2,14 +2,14 @@ import styled from "styled-components";
 import { FormInput, Form, FormContainer } from "../auth/auth";
 import { SubmitBtn } from "../auth/auth";
 
-export const CloseButton = styled.a`
+export const CloseButton = styled.a<{ color?: string }>`
     position: absolute;
     top: 0;
     right: 0;
     padding: 1rem;
     cursor: pointer;
     font-size: 2rem;
-    color: ${({ theme }) => theme.colors.text};
+    color: ${({ color, theme }) => color || theme.colors.text};
 `;
 export const VenueContainer = styled(FormContainer)`
     background: ${({ theme }) => theme.colors.text};
