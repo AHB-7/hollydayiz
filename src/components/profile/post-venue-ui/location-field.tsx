@@ -29,7 +29,13 @@ export function LocationFields({
                 <Label>
                     City:
                     <FormInputVenue
-                        {...register("location.city")}
+                        {...register("location.city", {
+                            required: "City is required",
+                            minLength: {
+                                value: 2,
+                                message: "City must be at least 2 characters long",
+                            }
+                        })}
                         type="text"
                         placeholder="City"
                     />

@@ -185,7 +185,12 @@ export function SingleProfile() {
                     <h2>Bio</h2>
                     <p>{user?.bio || "No bio available"}</p>
                     {profileOwner && (
-                        <span onClick={() => setEditing(!editing)}>
+                        <span
+                            onClick={() => {
+                                setEditing(!editing);
+                                setVenueContainer(!true);
+                            }}
+                        >
                             <IoMdSettings />
                         </span>
                     )}
@@ -215,43 +220,51 @@ export function SingleProfile() {
                               )
                             : venueManager && (
                                   <VenueBookingsButton
-                                      onClick={openVenueComponent}
+                                      onClick={() => {
+                                          openVenueComponent();
+                                          setEditing(false);
+                                      }}
                                   >
                                       Start creating a venue
                                   </VenueBookingsButton>
                               )}
                     </>
                 )}
-                {toggleVenue ? (
-                    <ToggleDown onClick={toggleVenueHandler}>
-                        Hide Venues
-                        <IoEyeOff />
-                    </ToggleDown>
-                ) : (
-                    <ToggleDown onClick={toggleVenueHandler}>
-                        Show Venues
-                        <IoEye />
-                    </ToggleDown>
-                )}
-                {toggleVenue && (
-                    <VenuesContainerStyled>
-                        {Array.isArray(user?.venues) &&
-                        user.venues.length > 0 ? (
-                            user.venues.map((venue) => (
-                                <VenueCardComponent
-                                    key={venue.id}
-                                    venue={venue}
-                                    showOwner={false}
-                                    onEdit={() => {
-                                        setEditingVenue(venue);
-                                        setVenueContainer(true);
-                                    }}
-                                />
-                            ))
+                {venueManager && (
+                    <>
+                        {" "}
+                        {toggleVenue ? (
+                            <ToggleDown onClick={toggleVenueHandler}>
+                                Hide Venues
+                                <IoEyeOff />
+                            </ToggleDown>
                         ) : (
-                            <p>No venues available for this user.</p>
+                            <ToggleDown onClick={toggleVenueHandler}>
+                                Show Venues
+                                <IoEye />
+                            </ToggleDown>
                         )}
-                    </VenuesContainerStyled>
+                        {toggleVenue && (
+                            <VenuesContainerStyled>
+                                {Array.isArray(user?.venues) &&
+                                user.venues.length > 0 ? (
+                                    user.venues.map((venue) => (
+                                        <VenueCardComponent
+                                            key={venue.id}
+                                            venue={venue}
+                                            showOwner={false}
+                                            onEdit={() => {
+                                                setEditingVenue(venue);
+                                                setVenueContainer(true);
+                                            }}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>No venues available for this user.</p>
+                                )}
+                            </VenuesContainerStyled>
+                        )}
+                    </>
                 )}
                 {toggleBooking ? (
                     <ToggleDown onClick={toggleBookingHandler}>

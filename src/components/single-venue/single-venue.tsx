@@ -101,6 +101,7 @@ export function SingleVenue() {
                 accessToken
             );
             console.log("Venue deleted successfully.");
+            window.location.href = `/holidaze/profiles/${name}`;
         } catch (err) {
             console.error("Error deleting venue:", err);
         }
