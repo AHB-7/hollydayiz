@@ -8,7 +8,6 @@ export const SearchSortingContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 0.4rem;
-    padding: 0 0.8rem;
 `;
 
 export const SearchContainer = styled.div`
@@ -19,6 +18,9 @@ export const SearchContainer = styled.div`
     width: 100%;
     > button {
         padding: 0.5rem;
+        height: 100%;
+        max-height: 4rem;
+        font-size: 1.1rem;
         border-top-right-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
         background: ${({ theme }) => theme.colors.background};
@@ -36,7 +38,7 @@ export const SearchContainer = styled.div`
 export const SearchInput = styled.input`
     width: 100%;
     font-size: 1.1rem;
-    padding: 0.35rem;
+    padding: 0.5rem;
     flex: 1;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
@@ -70,6 +72,7 @@ export const SortingContainer = styled.div`
 
         > * {
             fill: ${({ theme }) => theme.colors.text};
+            font-size: 1.1rem;
             transition: fill 0.3s;
         }
 
@@ -81,7 +84,7 @@ export const SortingContainer = styled.div`
 export const SortOptions = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     min-width: 15rem;
     height: 100%;
@@ -97,7 +100,7 @@ export const SortOptions = styled.div`
         font-size: 1.2rem;
         font-weight: bold;
         color: ${({ theme }) => theme.colors.background};
-        padding-bottom: 1rem;
+        padding-bottom: 0.5rem;
     }
     background: ${({ theme }) => theme.colors.text};
     > * {
@@ -124,5 +127,27 @@ export const SortOptions = styled.div`
         border: 0.05rem solid ${({ theme }) => theme.colors.text};
         outline: none;
         margin-top: 1rem;
+    }
+    fieldset {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+        margin: 0;
+        > legend {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: ${({ theme }) => theme.colors.background};
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+        > label {
+            font-size: 1.1rem;
+            color: ${({ theme }) => theme.colors.background};
+            padding-left: 0.5rem;
+        }
     }
 `;

@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { MdFilterList, SortingContainer, SortOptions } from "../../../styles";
+import {
+    MdFilterList,
+    SortingContainer,
+    SortOptions,
+    VenueBookingsButton,
+} from "../../../styles";
 
 interface SortingComponentProps {
     onSortChange: (sort: string, sortOrder: string) => void;
@@ -81,7 +86,12 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                         </label>
                     </fieldset>
 
-                    <button onClick={handleDone}>Done</button>
+                    <VenueBookingsButton
+                        title="Click to confirm sorting"
+                        onClick={handleDone}
+                    >
+                        Done
+                    </VenueBookingsButton>
                 </SortOptions>
             )}
         </SortingContainer>

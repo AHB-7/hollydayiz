@@ -1,11 +1,21 @@
 import styled from "styled-components";
 
+export const NavContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    background-color: red;
+`;
 export const Navbar = styled.nav`
     background-color: ${({ theme }) => theme.colors.text};
-    width: 95%;
     position: absolute;
     padding: 0.5rem 0.7rem;
     border-radius: 1.2rem;
+    width: calc(100% - 2rem);
+    max-width: 1200px;
     top: 0.5rem;
     left: 50%;
     transform: translateX(-50%);

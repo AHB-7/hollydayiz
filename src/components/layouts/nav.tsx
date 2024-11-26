@@ -7,6 +7,7 @@ import {
     UpperNav,
     FiLogIn,
     MdOutlineMenu,
+    NavContainer,
 } from "../../styles/index";
 import { Login } from "../index";
 import { useEffect } from "react";
@@ -72,54 +73,59 @@ export function Navbar() {
     const verified = Boolean(accessToken);
 
     return (
-        <NavbarSc>
-            <UpperNav>
-                <Link to="/">
-                    <img src="/logo.svg" alt="asa" />
-                </Link>
+        <NavContainer>
+            <NavbarSc>
+                <UpperNav>
+                    <Link to="/">
+                        <img src="/logo.svg" alt="asa" />
+                    </Link>
+                    {!verified ? (
+                        <LogInContainer onClick={toggleLogIn}>
+                            <p>LogIn</p>
+                            <FiLogIn stroke="white" />
+                        </LogInContainer>
+                    ) : (
+                        <LogInContainer>
+                            <MdOutlineMenu
+                                fill="white"
+                                onClick={toggleActiveState}
+                            />
+                        </LogInContainer>
+                    )}
+                </UpperNav>
                 {!verified ? (
-                    <LogInContainer onClick={toggleLogIn}>
-                        <p>LogIn</p>
-                        <FiLogIn stroke="white" />
-                    </LogInContainer>
+                    <div>
+                        {navbarState && (
+                            <LowerNav>
+                                <Login />
+                            </LowerNav>
+                        )}
+                    </div>
                 ) : (
-                    <LogInContainer>
-                        <MdOutlineMenu
-                            fill="white"
-                            onClick={toggleActiveState}
-                        />
-                    </LogInContainer>
+                    <>
+                        {navbarState && (
+                            <LowerNav>
+                                <Link
+                                    onClick={() => {
+                                        handleProfileClick();
+                                        setNavbarState(false);
+                                    }}
+                                    to={`/holidaze/profiles/${otherUsersName}`}
+                                >
+                                    Profile
+                                </Link>
+                                <Link
+                                    to="/"
+                                    onClick={() => setNavbarState(false)}
+                                >
+                                    Venues
+                                </Link>
+                                <LogOut onClick={logOut}>Logout</LogOut>
+                            </LowerNav>
+                        )}
+                    </>
                 )}
-            </UpperNav>
-            {!verified ? (
-                <div>
-                    {navbarState && (
-                        <LowerNav>
-                            <Login />
-                        </LowerNav>
-                    )}
-                </div>
-            ) : (
-                <>
-                    {navbarState && (
-                        <LowerNav>
-                            <Link
-                                onClick={() => {
-                                    handleProfileClick();
-                                    setNavbarState(false);
-                                }}
-                                to={`/holidaze/profiles/${otherUsersName}`}
-                            >
-                                Profile
-                            </Link>
-                            <Link to="/" onClick={() => setNavbarState(false)}>
-                                Venues
-                            </Link>
-                            <LogOut onClick={logOut}>Logout</LogOut>
-                        </LowerNav>
-                    )}
-                </>
-            )}
-        </NavbarSc>
+            </NavbarSc>
+        </NavContainer>
     );
 }
