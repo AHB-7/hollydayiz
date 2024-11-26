@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { VenuesContainer } from "../../styles/index";
+import { SearchSortingContainer, VenuesContainer } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { baseUrl } from "../../util/global/variables";
 import { VenueCardComponent } from "./venue-card";
@@ -54,13 +54,17 @@ export function Venues() {
 
     return (
         <VenuesContainer>
-            <SortingComponent onSortChange={handleSortChange} />
-            <SearchComponent
-                searchType="venues"
-                baseUrl={baseUrl}
-                renderResult={(result) => <VenueCardComponent venue={result} />}
-                onSearch={handleSearch}
-            />
+            <SearchSortingContainer>
+                <SearchComponent
+                    searchType="venues"
+                    baseUrl={baseUrl}
+                    renderResult={(result) => (
+                        <VenueCardComponent venue={result} />
+                    )}
+                    onSearch={handleSearch}
+                />
+                <SortingComponent onSortChange={handleSortChange} />
+            </SearchSortingContainer>
             {searchResults && searchResults.length > 0 ? (
                 <>
                     {venuesToDisplay.map((venue) => (

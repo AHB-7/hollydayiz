@@ -1,4 +1,10 @@
 import { useState } from "react";
+import {
+    MdFilterList,
+    MdFilterListOff,
+    SortingContainer,
+    SortOptions,
+} from "../../../styles";
 
 interface SortingComponentProps {
     onSortChange: (sort: string, sortOrder: string) => void;
@@ -21,16 +27,16 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
     };
 
     return (
-        <div>
+        <SortingContainer>
             <button
-                title={sortCompActive ? "Deactivate" : "Activate"}
+                title="filter"
                 onClick={() => setSortCompActive(!sortCompActive)}
             >
-                {sortCompActive ? "Deactivate" : "Activate"}
+                {sortCompActive ? <MdFilterList /> : <MdFilterList />}
             </button>
 
             {sortCompActive && (
-                <div>
+                <SortOptions>
                     <label htmlFor="sort">Sort By:</label>
                     <select
                         id="sort"
@@ -47,8 +53,8 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                         Sort Order:{" "}
                         {sortOrder === "asc" ? "Ascending" : "Descending"}
                     </button>
-                </div>
+                </SortOptions>
             )}
-        </div>
+        </SortingContainer>
     );
 }

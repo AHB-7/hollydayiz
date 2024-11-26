@@ -2,6 +2,7 @@ export * from "../styles/single-venue/single-venue-styles";
 export * from "../styles/single-venue/booking";
 export * from "../styles/single-venue/edit-delet-venue";
 export * from "../styles/venues/cards";
+export * from "../styles/venues/search-sorting";
 export * from "../styles/venues/container";
 export * from "../styles/auth/auth";
 export * from "../styles/layout/nav";
@@ -11,6 +12,7 @@ export * from "./layout/nav";
 export * from "./profile/profile";
 export * from "./profile/post-venue";
 export * from "./profile/edit-profile";
+export { MdFilterList, MdFilterListOff } from "react-icons/md";
 
 export { FaWifi } from "react-icons/fa6";
 export { GrLocation } from "react-icons/gr";
