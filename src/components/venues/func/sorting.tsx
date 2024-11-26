@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-    MdFilterList,
-    MdFilterListOff,
-    SortingContainer,
-    SortOptions,
-} from "../../../styles";
+import { MdFilterList, SortingContainer, SortOptions } from "../../../styles";
 
 interface SortingComponentProps {
     onSortChange: (sort: string, sortOrder: string) => void;
