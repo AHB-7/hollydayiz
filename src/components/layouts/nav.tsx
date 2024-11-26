@@ -39,6 +39,7 @@ export function Navbar() {
             setOtherUsersName(null);
         }
     }, [setOtherUsersName]);
+    const path = window.location.pathname;
 
     const toggleActiveState = () => {
         setNavbarState(!navbarState);
@@ -106,17 +107,28 @@ export function Navbar() {
                         {navbarState && (
                             <LowerNav>
                                 <Link
+                                    style={
+                                        path ===
+                                        `/holidaze/profiles/${otherUsersName}`
+                                            ? { color: "#2ecc71" }
+                                            : { color: "white" }
+                                    }
                                     onClick={() => {
                                         handleProfileClick();
                                         setNavbarState(false);
                                     }}
-                                    to={`/holidaze/profiles/${otherUsersName}`}
+                                    to={`/holidaze/profiles/${name}`}
                                 >
                                     Profile
                                 </Link>
                                 <Link
                                     to="/"
                                     onClick={() => setNavbarState(false)}
+                                    style={
+                                        path === "/"
+                                            ? { color: "#2ecc71" }
+                                            : { color: "white" }
+                                    }
                                 >
                                     Venues
                                 </Link>

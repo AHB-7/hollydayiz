@@ -88,10 +88,10 @@ export const LogOut = styled.a`
     font-size: 1rem;
     justify-self: end;
     cursor: pointer;
-    color: red;
     background-color: transparent;
     border: none;
     transition: 0.2s;
+    color: ${({ theme }) => theme.colors.dangerous};
     &:hover {
         color: grey;
     }

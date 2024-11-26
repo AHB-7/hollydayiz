@@ -7,7 +7,6 @@ export const NavContainer = styled.div`
     position: relative;
     width: 100%;
     max-width: 1200px;
-    background-color: red;
 `;
 export const Navbar = styled.nav`
     background-color: ${({ theme }) => theme.colors.text};
@@ -37,7 +36,7 @@ export const LowerNav = styled.div`
     font-weight: 900;
     padding: 4rem 1rem 0.5rem 1rem;
     gap: 1rem;
-    > * {
+    > * not(:last-child) {
         color: ${({ theme }) => theme.colors.background};
     }
     @media screen and (${({ theme }) => theme.breakpoints.md}) {

@@ -33,8 +33,9 @@ export function LocationFields({
                             required: "City is required",
                             minLength: {
                                 value: 2,
-                                message: "City must be at least 2 characters long",
-                            }
+                                message:
+                                    "City must be at least 2 characters long",
+                            },
                         })}
                         type="text"
                         placeholder="City"
@@ -77,7 +78,13 @@ export function LocationFields({
                 <Label>
                     Latitude:
                     <FormInputVenue
-                        {...register("location.lat", { valueAsNumber: true })}
+                        {...register("location.lat", {
+                            valueAsNumber: true,
+                            required: "Latitude is required",
+                            validate: (value: number) =>
+                                (value >= -90 && value <= 90) ||
+                                "Latitude must be between -90 and 90",
+                        })}
                         type="number"
                         placeholder="Latitude"
                     />
@@ -88,7 +95,13 @@ export function LocationFields({
                 <Label>
                     Longitude:
                     <FormInputVenue
-                        {...register("location.lng", { valueAsNumber: true })}
+                        {...register("location.lng", {
+                            valueAsNumber: true,
+                            required: "Longitude is required",
+                            validate: (value: number) =>
+                                (value >= -180 && value <= 180) ||
+                                "Longitude must be between -180 and 180",
+                        })}
                         type="number"
                         placeholder="Longitude"
                     />

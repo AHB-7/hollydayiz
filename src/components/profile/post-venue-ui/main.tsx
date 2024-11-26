@@ -140,6 +140,10 @@ export function PostVenue({
                                     value: 1,
                                     message: "Price must be greater than 0",
                                 },
+                                max: {
+                                    value: 10000,
+                                    message: "Price must be less than 100000",
+                                },
                                 valueAsNumber: true,
                             })}
                             type="number"
@@ -156,6 +160,11 @@ export function PostVenue({
                                 min: {
                                     value: 1,
                                     message: "Max guests must be at least 1",
+                                },
+                                max: {
+                                    value: 100,
+                                    message:
+                                        "A venue cannot accommodate more than 100 guests",
                                 },
                                 valueAsNumber: true,
                             })}

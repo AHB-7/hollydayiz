@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
     Error,
@@ -13,6 +13,7 @@ import {
 import { useApi } from "../../util/hooks/use-fetch";
 import { ApiResponseRegister, RegistrationFormData } from "../../types/global";
 import { useUserPreferences } from "../../util/global/zustand-store";
+import { EditCheckbox } from "../profile/edit/checkbox";
 
 export function Register() {
     const {
@@ -28,6 +29,8 @@ export function Register() {
     const setMail = useUserPreferences((state) => state.setMail);
     const setNavbarState = useUserPreferences((state) => state.setNavbarState);
 
+    const [isManager, setIsManager] = useState(false);
+
     useEffect(() => {
         if (data && data.email) {
             setMail(data.email);
@@ -37,7 +40,32 @@ export function Register() {
     }, [data, setMail]);
 
     const onSubmit: SubmitHandler<RegistrationFormData> = async (formData) => {
-        await request("POST", formData);
+        const payload: Partial<RegistrationFormData> & {
+            avatar?: { url: string; alt: string };
+            banner?: { url: string; alt: string };
+            venueManager: boolean;
+        } = {
+            ...formData,
+            bio: formData.bio || "",
+            avatar: {
+                url: formData.avatarUrl || "",
+                alt: formData.avatarAlt || "",
+            },
+            banner: {
+                url: formData.bannerUrl || "",
+                alt: formData.bannerAlt || "",
+            },
+            venueManager: isManager,
+        };
+
+        if (!formData.avatarUrl && !formData.avatarAlt) {
+            delete payload.avatar;
+        }
+        if (!formData.bannerUrl && !formData.bannerAlt) {
+            delete payload.banner;
+        }
+
+        await request("POST", payload);
     };
 
     return (
@@ -144,7 +172,12 @@ export function Register() {
                 </TwoInputsInRow>
                 {errors.bannerUrl && <Error>{errors.bannerUrl.message}</Error>}
                 {errors.bannerAlt && <Error>{errors.bannerAlt.message}</Error>}
-                {/* Display API error message */}
+
+                <EditCheckbox
+                    checked={isManager}
+                    onChange={(e) => setIsManager(e.target.checked)}
+                />
+
                 {error && (
                     <Error>
                         {error.message || "An unknown error occurred."}

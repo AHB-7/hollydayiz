@@ -129,8 +129,7 @@ export const Span = styled.span`
 `;
 export const EditInput = styled.input`
     width: 100%;
-    min-width: 18rem;
-    max-width: 25rem;
+    min-width: 10rem;
     font-size: 1.1rem;
     padding: 0.5rem;
     border-radius: 0.5rem;
@@ -169,17 +168,11 @@ export const EditProfileContainer = styled.div`
     top: 0;
     display: flex;
     width: 100%;
-    max-width: 30rem;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-width: 40rem;
     margin: 5rem 0.5rem;
     padding: 3rem 0.5rem;
     gap: 1rem;
     border-radius: 0.5rem;
-    > div {
-        flex: 1;
-    }
 `;
 export const TwoButtonsInARow = styled(ToInputsInARow)`
     flex-direction: column;

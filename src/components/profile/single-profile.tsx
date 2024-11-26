@@ -9,12 +9,10 @@ import {
     NotLoggedInContainer,
     VenueBookingsButton,
     IoMdSettings,
-    EditProfileContainer,
     VenuesContainerStyled,
     ToggleDown,
     IoEye,
     IoEyeOff,
-    CloseButton,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser, VenueFormData } from "../../types/global";
@@ -25,13 +23,7 @@ import { useParams } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
 import { PostVenue } from "./post-venue-ui/main";
 import { VenueCardComponent } from "../venues/venue-card";
-import {
-    EditInput,
-    EditTextArea,
-    InputContainerForProfile,
-    TwoButtonsInARow,
-} from "../../styles/profile/edit-profile";
-import { EditCheckbox } from "./edit/checkbox";
+import { EditProfile } from "./edit/edit-profile";
 
 export function SingleProfile() {
     const {
@@ -111,15 +103,22 @@ export function SingleProfile() {
             setVenueManager(user.venueManager);
         }
     }, [user]);
-
-    const handleSave = async () => {
+    const handleSave = async (data: any) => {
         try {
+            const updatedProfileData = {
+                bio: data.bio,
+                banner: { url: data.bannerUrl, alt: data.bannerAlt },
+                avatar: { url: data.avatarUrl, alt: data.avatarAlt },
+                venueManager: data.venueManager,
+            };
+
             const response = await updateProfileRequest.request(
                 "PUT",
-                updatedProfile,
+                updatedProfileData,
                 undefined,
                 accessToken || undefined
             );
+
             setEditing(false);
             await request(
                 "GET",
@@ -280,113 +279,18 @@ export function SingleProfile() {
                 {toggleBooking && <UserBooking />}
             </ProfileInfo>
             {editing && (
-                <EditProfileContainer>
-                    <CloseButton color="#fff" onClick={() => setEditing(false)}>
-                        X
-                    </CloseButton>
-                    <h3>Edit Profile</h3>
-                    <InputContainerForProfile>
-                        <label>Banner URL:</label>
-                        <EditInput
-                            type="text"
-                            title="Banner URL"
-                            placeholder="Enter banner URL"
-                            value={updatedProfile.banner.url}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    banner: {
-                                        ...prev.banner,
-                                        url: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                        <label>Banner Alt:</label>
-                        <EditInput
-                            type="text"
-                            title="Banner Alt"
-                            placeholder="Enter banner alt text"
-                            value={updatedProfile.banner.alt}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    banner: {
-                                        ...prev.banner,
-                                        alt: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <label>Avatar URL:</label>
-                        <EditInput
-                            type="text"
-                            title="Avatar URL"
-                            placeholder="Enter avatar URL"
-                            value={updatedProfile.avatar.url}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    avatar: {
-                                        ...prev.avatar,
-                                        url: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                        <label>Avatar Alt:</label>
-                        <EditInput
-                            type="text"
-                            title="Avatar Alt"
-                            placeholder="Enter avatar alt text"
-                            value={updatedProfile.avatar.alt}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    avatar: {
-                                        ...prev.avatar,
-                                        alt: e.target.value,
-                                    },
-                                }))
-                            }
-                        />
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <label>Bio:</label>
-                        <EditTextArea
-                            title="Bio"
-                            placeholder="Enter your bio"
-                            value={updatedProfile.bio}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    bio: e.target.value,
-                                }))
-                            }
-                        />
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <EditCheckbox
-                            checked={updatedProfile.venueManager}
-                            onChange={(e) =>
-                                setUpdatedProfile((prev) => ({
-                                    ...prev,
-                                    venueManager: e.target.checked,
-                                }))
-                            }
-                        />
-                    </InputContainerForProfile>
-                    <TwoButtonsInARow>
-                        <VenueBookingsButton onClick={handleSave}>
-                            Save
-                        </VenueBookingsButton>
-                        <VenueBookingsButton onClick={() => setEditing(false)}>
-                            Cancel
-                        </VenueBookingsButton>
-                    </TwoButtonsInARow>
-                </EditProfileContainer>
+                <EditProfile
+                    initialData={{
+                        bio: updatedProfile.bio,
+                        bannerUrl: updatedProfile.banner.url,
+                        bannerAlt: updatedProfile.banner.alt,
+                        avatarUrl: updatedProfile.avatar.url,
+                        avatarAlt: updatedProfile.avatar.alt,
+                        venueManager: updatedProfile.venueManager,
+                    }}
+                    onSave={handleSave}
+                    onCancel={() => setEditing(false)}
+                />
             )}
         </ProfileContainer>
     );
