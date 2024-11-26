@@ -112,3 +112,15 @@ export const VenueBookingsButton = styled.button`
         background-color: ${({ theme }) => theme.colors.secondary};
     }
 `;
+export const DisabledButton = styled.button`
+    background-color: grey;
+    color: ${({ theme }) => theme.colors.background};
+    border: none;
+    border-radius: 0.3rem;
+    padding: 0.6rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 100%;
+    margin: 1rem 0;
+`;

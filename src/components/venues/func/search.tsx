@@ -17,7 +17,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
 }) => {
     const [query, setQuery] = useState<string>("");
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const { data, loading, error, request } = useApi<Accommodation[]>(
+    const { loading, request } = useApi<Accommodation[]>(
         `${baseUrl}/${searchType}/search`
     );
 
@@ -27,9 +27,17 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             return;
         }
         try {
-            await request("GET", {}, { params: { q: searchQuery } });
-            console.log("Search API response:", data);
-            onSearch(data || []);
+            const response = await request(
+                "GET",
+                {},
+                { params: { q: searchQuery } }
+            );
+
+            if (response !== undefined) {
+                onSearch(response);
+            } else {
+                onSearch([]);
+            }
         } catch (err) {
             console.error("Search error:", err);
             onSearch([]);
@@ -49,12 +57,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             if (debounceTimer.current) clearTimeout(debounceTimer.current);
         };
     }, [query]);
-    {
-        loading && <p>Loading...</p>;
-    }
-    {
-        error && <p>{error.message}</p>;
-    }
+
     return (
         <SearchContainer>
             <SearchInput

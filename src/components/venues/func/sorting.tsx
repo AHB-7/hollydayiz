@@ -10,15 +10,24 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
     const [sortOrder, setSortOrder] = useState<string>("desc");
     const [sortCompActive, setSortCompActive] = useState<boolean>(false);
 
+    const [tempSort, setTempSort] = useState<string>(sort);
+    const [tempSortOrder, setTempSortOrder] = useState<string>(sortOrder);
+
     const handleSortChange = (newSort: string) => {
-        setSort(newSort);
-        onSortChange(newSort, sortOrder);
+        setTempSort(newSort);
     };
 
-    const toggleSortOrder = () => {
-        const newOrder = sortOrder === "asc" ? "desc" : "asc";
-        setSortOrder(newOrder);
-        onSortChange(sort, newOrder);
+    const handleSortOrderChange = (order: string) => {
+        setTempSortOrder(order);
+    };
+
+    const handleDone = () => {
+        setSort(tempSort);
+        setSortOrder(tempSortOrder);
+
+        onSortChange(tempSort, tempSortOrder);
+
+        setSortCompActive(false);
     };
 
     return (
@@ -27,7 +36,7 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                 title="filter"
                 onClick={() => setSortCompActive(!sortCompActive)}
             >
-                {sortCompActive ? <MdFilterList /> : <MdFilterList />}
+                <MdFilterList />
             </button>
 
             {sortCompActive && (
@@ -35,7 +44,7 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                     <label htmlFor="sort">Sort By:</label>
                     <select
                         id="sort"
-                        value={sort}
+                        value={tempSort}
                         onChange={(e) => handleSortChange(e.target.value)}
                     >
                         <option value="created">Created</option>
@@ -44,10 +53,35 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                         <option value="rating">Rating</option>
                     </select>
 
-                    <button onClick={toggleSortOrder}>
-                        Sort Order:{" "}
-                        {sortOrder === "asc" ? "Ascending" : "Descending"}
-                    </button>
+                    <fieldset>
+                        <legend>Sort Order:</legend>
+                        <label>
+                            <input
+                                type="radio"
+                                name="sortOrder"
+                                value="asc"
+                                checked={tempSortOrder === "asc"}
+                                onChange={(e) =>
+                                    handleSortOrderChange(e.target.value)
+                                }
+                            />
+                            Ascending
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="sortOrder"
+                                value="desc"
+                                checked={tempSortOrder === "desc"}
+                                onChange={(e) =>
+                                    handleSortOrderChange(e.target.value)
+                                }
+                            />
+                            Descending
+                        </label>
+                    </fieldset>
+
+                    <button onClick={handleDone}>Done</button>
                 </SortOptions>
             )}
         </SortingContainer>
