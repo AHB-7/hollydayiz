@@ -27,6 +27,7 @@ import { VenueCardComponent } from "../venues/venue-card";
 import { EditProfile } from "./edit/edit-profile";
 import { Loading } from "../global/loading";
 import { ErrorMessage } from "../global/error-message";
+import { Helmet } from "react-helmet-async";
 
 export function SingleProfile() {
     const {
@@ -169,6 +170,84 @@ export function SingleProfile() {
     if (error) return <ErrorMessage message={error.message} />;
     return (
         <ProfileContainer>
+            <Helmet>
+                <title>
+                    {user?.name
+                        ? `${user.name}'s Profile - Discover Venues and Bookings`
+                        : "User Profile"}
+                </title>
+                <meta
+                    name="description"
+                    content={
+                        user?.bio
+                            ? `${user.name}'s profile. ${user.bio}`
+                            : "Explore user profiles, their venues, and bookings."
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={
+                        user?.name
+                            ? `${user.name}, user profile, venues, venue manager, travel, bookings`
+                            : "user profile, venues, venue manager, travel, bookings"
+                    }
+                />
+                <meta name="author" content={user?.name || "Unknown User"} />
+                <meta
+                    property="og:title"
+                    content={
+                        user?.name
+                            ? `${user.name}'s Profile - Venues and Bookings`
+                            : "User Profile"
+                    }
+                />
+                <meta
+                    property="og:description"
+                    content={
+                        user?.bio
+                            ? `${user.bio}`
+                            : "View user details, venues, and bookings."
+                    }
+                />
+                <meta
+                    property="og:image"
+                    content={user?.avatar?.url || "/default-avatar.jpg"}
+                />
+                <meta
+                    property="og:url"
+                    content={`https://yourwebsite.com/profiles/${username}`}
+                />
+                <meta property="og:type" content="profile" />
+                <meta
+                    property="profile:username"
+                    content={username || "unknown"}
+                />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content={
+                        user?.name
+                            ? `${user.name}'s Profile - Venues and Bookings`
+                            : "User Profile"
+                    }
+                />
+                <meta
+                    name="twitter:description"
+                    content={
+                        user?.bio
+                            ? `${user.bio}`
+                            : "View user details, venues, and bookings."
+                    }
+                />
+                <meta
+                    name="twitter:image"
+                    content={user?.avatar?.url || "/default-avatar.jpg"}
+                />
+                <link
+                    rel="canonical"
+                    href={`https://yourwebsite.com/profiles/${username}`}
+                />
+            </Helmet>
             <ProfileBannerContainer>
                 <ProfileBannerImage
                     src={user?.banner?.url || "/default-banner.jpg"}

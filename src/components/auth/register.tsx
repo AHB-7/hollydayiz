@@ -14,6 +14,7 @@ import { useApi } from "../../util/hooks/use-fetch";
 import { ApiResponseRegister, RegistrationFormData } from "../../types/global";
 import { useUserPreferences } from "../../util/global/zustand-store";
 import { EditCheckbox } from "../profile/edit/checkbox";
+import { Helmet } from "react-helmet-async";
 
 export function Register() {
     const {
@@ -70,6 +71,52 @@ export function Register() {
 
     return (
         <RegistrationContainer>
+            <Helmet>
+                <title>Register</title>
+                <meta
+                    name="description"
+                    content="Create an account on our platform to explore venues, manage bookings, and enjoy a personalized experience. Registration is quick, easy, and secure."
+                />
+                <meta
+                    name="keywords"
+                    content="register, sign up, create account, venue registration, user registration, bookings, noroff stud registration"
+                />
+                <meta name="author" content="Venue's Home" />
+
+                <meta
+                    property="og:title"
+                    content="Register - Create Your Account"
+                />
+                <meta
+                    property="og:description"
+                    content="Join our platform to access personalized features, explore venues, and manage your bookings. Register now for a secure and tailored experience."
+                />
+                <meta
+                    property="og:url"
+                    content="https://hollydays.netlify.app/register"
+                />
+                <meta property="og:image" content="/logo.svg" />
+                <meta property="og:type" content="website" />
+
+                {/* Twitter Meta */}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content="Register - Create Your Account"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Sign up to explore and book venues, manage your account, and access tailored features."
+                />
+                <meta name="twitter:image" content="/logo.svg" />
+
+                {/* Canonical URL */}
+                <link
+                    rel="canonical"
+                    href="https://hollydays.netlify.app/register"
+                />
+            </Helmet>
+
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Register</h1>
                 <FormInput

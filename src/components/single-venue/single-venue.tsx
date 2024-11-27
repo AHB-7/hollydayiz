@@ -42,6 +42,7 @@ import { BookingCardComponent } from "../profile/users-bookings/booking-card";
 import { PostVenue } from "../profile/post-venue-ui/main";
 import { Loading } from "../global/loading";
 import ConfirmationModal from "../global/confirmation";
+import { Helmet } from "react-helmet-async";
 
 export function SingleVenue() {
     const { venueId } = useParams();
@@ -142,6 +143,81 @@ export function SingleVenue() {
 
     return (
         <MainContainer>
+            <Helmet>
+                <title>{venue?.name || "Venue Details"}</title>
+                <meta
+                    name="description"
+                    content={
+                        venue?.description ||
+                        "Explore venue details, amenities, pricing, and availability for your ideal accommodation."
+                    }
+                />
+                <meta
+                    name="keywords"
+                    content={
+                        venue?.name
+                            ? `${venue.name}, accommodation, travel, booking, venues`
+                            : "accommodation, travel, booking, venues"
+                    }
+                />
+                <meta
+                    name="author"
+                    content={venue?.owner.name || "Venue Owner"}
+                />
+
+                {/* OpenGraph Meta */}
+                <meta
+                    property="og:title"
+                    content={venue?.name || "Venue Details"}
+                />
+                <meta
+                    property="og:description"
+                    content={
+                        venue?.description ||
+                        "Find detailed information about this venue, including pricing, features, and location."
+                    }
+                />
+                <meta
+                    property="og:image"
+                    content={
+                        venue?.media && venue.media.length > 0
+                            ? venue.media[0].url
+                            : ""
+                    }
+                />
+                <meta
+                    property="og:url"
+                    content={`https://yourwebsite.com/venues/${venueId}`}
+                />
+                <meta property="og:type" content="website" />
+
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content={venue?.name || "Venue Details"}
+                />
+                <meta
+                    name="twitter:description"
+                    content={
+                        venue?.description ||
+                        "Explore venue details, amenities, pricing, and availability."
+                    }
+                />
+                <meta
+                    name="twitter:image"
+                    content={
+                        venue?.media && venue.media.length > 0
+                            ? venue.media[0].url
+                            : ""
+                    }
+                />
+
+                <link
+                    rel="canonical"
+                    href={`https://yourwebsite.com/venues/${venueId}`}
+                />
+            </Helmet>
+
             {isVenueOwner && (
                 <>
                     <FunctionsContainer>

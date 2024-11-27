@@ -16,6 +16,7 @@ import { Accommodation } from "../../types/global";
 import { SortingComponent } from "./func/sorting";
 import { SearchComponent } from "./func/search";
 import { Loading } from "../global/loading";
+import { Helmet } from "react-helmet-async";
 
 export function Venues() {
     const [sort, setSort] = useState<string>("created");
@@ -103,6 +104,34 @@ export function Venues() {
 
     return (
         <VenuesContainer>
+            <Helmet>
+                <title>Venue's Home</title>
+                <meta
+                    name="description"
+                    content="Discover the best venues for your next holiday, sorted by your preferences. Browse through an extensive collection of accommodations tailored to your needs."
+                />
+                <meta
+                    name="keywords"
+                    content="venues, holiday venues, accommodations, travel, bookings, vacation, holiday planning"
+                />
+                <meta name="author" content="Your Company Name" />
+                <meta
+                    property="og:title"
+                    content="Venues - Perfect Accommodations for Your Holiday"
+                />
+                <meta
+                    property="og:description"
+                    content="Explore a wide range of venues and accommodations for your perfect holiday experience. Book now and make your travel hassle-free."
+                />
+                <meta property="og:image" content="/logo.svg" />
+                <meta
+                    property="og:url"
+                    content="https://hollydays.netlify.app/"
+                />
+                <meta property="og:type" content="website" />
+                <meta property="twitter:card" content="summary_large_image" />
+            </Helmet>
+
             <SearchSortingContainer>
                 <SearchComponent
                     searchType="venues"

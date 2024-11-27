@@ -13,6 +13,7 @@ import { ApiResponseLogin, LoginFormData } from "../../types/global";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useUserPreferences } from "../../util/global/zustand-store";
+import { Helmet } from "react-helmet-async";
 
 export function Login() {
     const {
@@ -44,6 +45,46 @@ export function Login() {
 
     return (
         <FormContainer>
+            <Helmet>
+                <title>Login - Access Your Account</title>
+                <meta
+                    name="description"
+                    content="Login to your account on our platform to access your personalized dashboard, manage your bookings, and more. Secure and easy login for users."
+                />
+                <meta
+                    name="keywords"
+                    content="login, user login, account access, secure login, noroff stud login"
+                />
+                <meta name="author" content="Venue's Home" />
+
+                <meta
+                    property="og:title"
+                    content="Login - Access Your Account"
+                />
+                <meta
+                    property="og:description"
+                    content="Securely login to your account to access personalized features, manage bookings, and more."
+                />
+                <meta
+                    property="og:url"
+                    content="https://hollydays.netlify.app/"
+                />
+                <meta property="og:type" content="website" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta
+                    name="twitter:title"
+                    content="Login - Access Your Account"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Log in securely to access your personalized dashboard and manage your account."
+                />
+                <meta
+                    name="twitter:image"
+                    content="/images/login-preview.jpg"
+                />
+                <link rel="canonical" href="https://hollydays.netlify.app" />
+            </Helmet>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Login</h1>
 
