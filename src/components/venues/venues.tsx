@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import {
     DisabledButton,
+    IoReload,
+    SearchResult,
     SearchSortingContainer,
+    SortButton,
     VenueBookingsButton,
     VenuesContainer,
 } from "../../styles/index";
@@ -11,6 +14,7 @@ import { VenueCardComponent } from "./venue-card";
 import { Accommodation } from "../../types/global";
 import { SortingComponent } from "./func/sorting";
 import { SearchComponent } from "./func/search";
+import { Loading } from "../global/loading";
 
 export function Venues() {
     const [sort, setSort] = useState<string>("created");
@@ -21,7 +25,7 @@ export function Venues() {
     const [limit] = useState<number>(18);
     const [page, setPage] = useState<number>(1);
     const [venues, setVenues] = useState<Accommodation[]>([]);
-    const [hasMore, setHasMore] = useState<boolean>(true); // Track if more venues are available
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     const {
         data: posts = [],
@@ -60,11 +64,22 @@ export function Venues() {
         setPage(1);
         setVenues([]);
         setHasMore(true);
+        setSearchResults(null);
     };
 
     const handleSearch = (results: Accommodation[]) => {
-        setSearchResults(results);
+        if (results.length === 0) {
+            setSearchResults([]);
+        } else {
+            setSearchResults(results);
+        }
         setHasMore(false);
+    };
+
+    const handleClearSearch = () => {
+        setSearchResults(null);
+        setPage(1);
+        setHasMore(true);
     };
 
     const handleLoadMore = () => {
@@ -74,19 +89,15 @@ export function Venues() {
     };
 
     const venuesToDisplay =
-        Array.isArray(searchResults) && searchResults.length > 0
+        Array.isArray(searchResults) && searchResults.length >= 0
             ? searchResults
             : venues;
 
-    if (loading && page === 1) return <p>Loading...</p>;
+    if (loading && page === 1) return <Loading />;
 
     if (error) {
         console.error("Error fetching venues:", error);
         return <p>Error: {error.message}</p>;
-    }
-
-    if (!Array.isArray(venuesToDisplay) || venuesToDisplay.length === 0) {
-        return <p>No venues available.</p>;
     }
 
     return (
@@ -95,27 +106,40 @@ export function Venues() {
                 <SearchComponent
                     searchType="venues"
                     baseUrl={baseUrl}
-                    renderResult={(result) => (
+                    renderResult={(result: Accommodation) => (
                         <VenueCardComponent venue={result} showOwner={false} />
                     )}
                     onSearch={handleSearch}
                 />
+                <SortButton
+                    title="clear the search results"
+                    onClick={handleClearSearch}
+                    disabled={!searchResults}
+                >
+                    <IoReload />
+                </SortButton>
                 <SortingComponent onSortChange={handleSortChange} />
             </SearchSortingContainer>
-            {venuesToDisplay.map((venue) => (
-                <VenueCardComponent
-                    key={venue.id}
-                    venue={venue}
-                    showOwner={!searchResults || searchResults.length === 0}
-                />
-            ))}
+
+            {venuesToDisplay.length === 0 ? (
+                <SearchResult>No results found.</SearchResult>
+            ) : (
+                venuesToDisplay.map((venue) => (
+                    <VenueCardComponent
+                        key={venue.id}
+                        venue={venue}
+                        showOwner={!searchResults || searchResults.length === 0}
+                    />
+                ))
+            )}
+
             <SearchSortingContainer>
-                {hasMore ? (
+                {hasMore && !searchResults ? (
                     <VenueBookingsButton
                         onClick={handleLoadMore}
                         disabled={loading}
                     >
-                        {loading ? "Loading..." : "Load More"}
+                        {loading ? "loading more..." : "Load More"}
                     </VenueBookingsButton>
                 ) : (
                     <DisabledButton>Nothing more to load</DisabledButton>

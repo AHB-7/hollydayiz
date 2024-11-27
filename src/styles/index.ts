@@ -29,3 +29,4 @@ export { IoMdSettings } from "react-icons/io";
 export { MdDelete } from "react-icons/md";
 export { IoEye } from "react-icons/io5";
 export { IoEyeOff } from "react-icons/io5";
+export { IoReload } from "react-icons/io5";

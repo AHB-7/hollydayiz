@@ -55,30 +55,31 @@ export const SortingContainer = styled.div`
     align-items: center;
     justify-content: center;
     position: relative;
-    > button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.6rem;
-        border-radius: 0.5rem;
-        background: ${({ theme }) => theme.colors.background};
-        border: 0.05rem solid ${({ theme }) => theme.colors.text};
-        outline: none;
-        cursor: pointer;
-        transition: all 0.3s;
-        &:hover {
-            background: ${({ theme }) => theme.colors.text};
-        }
+`;
+export const SortButton = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => theme.colors.background};
+    border: 0.05rem solid ${({ theme }) => theme.colors.text};
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+        background: ${({ theme }) => theme.colors.text};
+    }
 
-        > * {
-            fill: ${({ theme }) => theme.colors.text};
-            font-size: 1.1rem;
-            transition: fill 0.3s;
-        }
+    > * {
+        fill: ${({ theme }) => theme.colors.text};
+        font-size: 1.1rem;
+        transition: fill 0.3s;
+    }
 
-        &:hover > * {
-            fill: ${({ theme }) => theme.colors.background};
-        }
+    &:hover > * {
+        fill: ${({ theme }) => theme.colors.background};
+        stroke: ${({ theme }) => theme.colors.background};
     }
 `;
 export const SortOptions = styled.div`
@@ -86,14 +87,16 @@ export const SortOptions = styled.div`
     flex-direction: column;
     align-items: start;
     justify-content: center;
-    min-width: 15rem;
     height: 100%;
-    min-height: 18rem;
+    min-height: 20rem;
     gap: 0.5rem;
     border-radius: 0.5rem;
     padding: 0.5rem;
     position: absolute;
     top: 2.5rem;
+    width: 100%;
+    max-width: 32rem;
+    min-width: 18rem;
     right: 0;
     z-index: 1;
     > label {
@@ -150,4 +153,17 @@ export const SortOptions = styled.div`
             padding-left: 0.5rem;
         }
     }
+`;
+export const SearchResult = styled.div`
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: ${({ theme }) => theme.colors.background};
+    color: ${({ theme }) => theme.colors.text};
 `;

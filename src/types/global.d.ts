@@ -66,6 +66,7 @@ export type SingleVenue = {
     rating: number;
     created: string;
     updated: string;
+    bookings: Booking[];
     meta: {
         wifi: boolean;
         parking: boolean;
@@ -100,6 +101,30 @@ export type SingleVenue = {
         updated: string;
     }[];
 };
+export interface Customer {
+    name: string;
+    email: string;
+    bio: string | null;
+    avatar: {
+        url: string;
+        alt: string;
+    };
+    banner?: {
+        url: string;
+        alt: string;
+    };
+}
+
+export type Booking = {
+    id: string;
+    dateFrom: string;
+    dateTo: string;
+    guests: number;
+    created: string;
+    updated: string;
+    customer: Customer; // Include the customer field here
+};
+
 export type SingleVenueType = {
     id: string;
     name: string;
@@ -136,17 +161,9 @@ export type SingleVenueType = {
             alt: string;
         };
     };
-    created: string;
-    updated: string;
-    bookings: {
-        id: string;
-        dateFrom: string;
-        dateTo: string;
-        guests: number;
-        created: string;
-        updated: string;
-    }[];
+    bookings: Booking[];
 };
+
 export interface StarsProps {
     rating: number;
 }

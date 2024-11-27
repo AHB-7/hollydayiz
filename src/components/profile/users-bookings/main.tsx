@@ -4,6 +4,7 @@ import { BookingContainer } from "../../../styles/index";
 import { BookingList } from "./booking-list";
 import { UserBookingTypes } from "../../../types/global";
 import { baseUrl } from "../../../util/global/variables";
+import { Loading } from "../../global/loading";
 
 export function UserBooking() {
     const apiToken = localStorage.getItem("accessToken");
@@ -142,11 +143,11 @@ export function UserBooking() {
     };
     const isPastDate = (date: Date): boolean => {
         const today = new Date();
-        today.setHours(0, 0, 0, 0); 
+        today.setHours(0, 0, 0, 0);
         return date < today;
     };
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading />;
     if (error) return <p>Error: {error.message}</p>;
 
     return (
@@ -165,7 +166,7 @@ export function UserBooking() {
                 setEditGuests={setEditGuests}
                 isDateUnavailable={isDateUnavailable}
                 formatDate={formatDate}
-                isPastDate={isPastDate} 
+                isPastDate={isPastDate}
             />
         </BookingContainer>
     );

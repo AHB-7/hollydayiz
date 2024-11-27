@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
     MdFilterList,
+    SortButton,
     SortingContainer,
     SortOptions,
     VenueBookingsButton,
@@ -37,12 +38,12 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
 
     return (
         <SortingContainer>
-            <button
+            <SortButton
                 title="filter"
                 onClick={() => setSortCompActive(!sortCompActive)}
             >
                 <MdFilterList />
-            </button>
+            </SortButton>
 
             {sortCompActive && (
                 <SortOptions>

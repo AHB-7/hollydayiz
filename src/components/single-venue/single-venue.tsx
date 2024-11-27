@@ -32,10 +32,14 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { Booking, Stars, ProfileLink } from "../../components/index";
-import { VenueBookingsButton } from "../../styles/venues/cards";
+import {
+    VenueBookingsButton,
+    VenueInfoContainer,
+} from "../../styles/venues/cards";
 import { useUserPreferences } from "../../util/global/zustand-store";
 import { BookingCardComponent } from "../profile/users-bookings/booking-card";
 import { PostVenue } from "../profile/post-venue-ui/main";
+import { Loading } from "../global/loading";
 export function SingleVenue() {
     const { venueId } = useParams();
     const { accessToken, setNavbarState, navbarState, name } =
@@ -128,7 +132,7 @@ export function SingleVenue() {
 
     const isVenueOwner = venue?.owner.name === name;
 
-    if (venueLoading) return <p>Loading...</p>;
+    if (venueLoading) return <Loading />;
     if (venueError) return <p>Error: {venueError.message}</p>;
 
     return (
@@ -295,8 +299,19 @@ export function SingleVenue() {
             {isVenueOwner ? (
                 venue?.bookings && venue.bookings.length > 0 ? (
                     <BookingContainer>
+                        <h2>People booked your venues</h2>
                         {venue.bookings.map((booking) => (
                             <BookingCard key={booking.id}>
+                                <VenueInfoContainer>
+                                    <ProfileLink
+                                        name={booking.customer.name}
+                                        url={booking.customer.avatar?.url}
+                                        alt={
+                                            booking.customer.avatar?.alt ||
+                                            `Profile picture of ${booking.customer.name}`
+                                        }
+                                    />
+                                </VenueInfoContainer>
                                 <BookingCardComponent
                                     booking={{
                                         ...booking,

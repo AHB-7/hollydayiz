@@ -13,6 +13,7 @@ import {
     ToggleDown,
     IoEye,
     IoEyeOff,
+    Error,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleUser, VenueFormData } from "../../types/global";
@@ -24,6 +25,8 @@ import { useUserPreferences } from "../../util/global/zustand-store";
 import { PostVenue } from "./post-venue-ui/main";
 import { VenueCardComponent } from "../venues/venue-card";
 import { EditProfile } from "./edit/edit-profile";
+import { Loading } from "../global/loading";
+import { ErrorMessage } from "../global/error-message";
 
 export function SingleProfile() {
     const {
@@ -112,7 +115,7 @@ export function SingleProfile() {
                 venueManager: data.venueManager,
             };
 
-            const response = await updateProfileRequest.request(
+            await updateProfileRequest.request(
                 "PUT",
                 updatedProfileData,
                 undefined,
@@ -126,9 +129,8 @@ export function SingleProfile() {
                 undefined,
                 accessToken || undefined
             );
-            console.log("Profile updated:", response);
         } catch (err) {
-            console.error("Error updating profile:", err);
+            <ErrorMessage message={(err as Error).message} />;
         }
     };
     const handleCreateVenue = async (formData: VenueFormData) => {
@@ -148,13 +150,13 @@ export function SingleProfile() {
                 accessToken || undefined
             );
         } catch (err) {
-            console.error("Error creating venue:", err);
+            <Error> {(err as Error).message} </Error>;
         }
     };
 
     const toggleActiveState = () => setNavbarState(!navbarState);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <Loading />;
     if (!accessToken)
         return (
             <NotLoggedInContainer>
@@ -164,8 +166,7 @@ export function SingleProfile() {
                 </VenueBookingsButton>
             </NotLoggedInContainer>
         );
-    if (error) return <p>Error: {error.message}</p>;
-
+    if (error) return <ErrorMessage message={error.message} />;
     return (
         <ProfileContainer>
             <ProfileBannerContainer>

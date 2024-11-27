@@ -4,9 +4,13 @@ export const BookingContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 100%;
+    max-width: 1200px;
     gap: 1rem;
     @media (max-width: 850px) {
         grid-template-columns: 1fr;
+    }
+    > h2 {
+        grid-column: 1 / -1;
     }
     padding: 0.5rem 0;
     padding-bottom: 3rem;

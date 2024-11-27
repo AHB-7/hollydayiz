@@ -184,7 +184,7 @@ export function Register() {
                     </Error>
                 )}
                 <SubmitBtn type="submit" disabled={loading}>
-                    {loading ? "Registering..." : "Register"}
+                    {loading ? "Just a sec!" : "Register"}
                 </SubmitBtn>
                 {data && (
                     <SuccessMessage>

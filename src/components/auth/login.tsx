@@ -58,7 +58,7 @@ export function Login() {
                     type="text"
                     name="email"
                     placeholder="Email"
-                    defaultValue={savedMail || ""} 
+                    defaultValue={savedMail || ""}
                 />
                 {errors.email && <Error>{errors.email.message}</Error>}
 
@@ -80,7 +80,7 @@ export function Login() {
                 {error && <Error>{error.message}</Error>}
 
                 <SubmitBtn type="submit" disabled={loading}>
-                    {loading ? "Logging in..." : "Login"}
+                    {loading ? "Working on it..." : "Login"}
                 </SubmitBtn>
 
                 {data && <IoCheckmarkDoneCircleSharp fill="green" />}

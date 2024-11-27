@@ -92,13 +92,6 @@ export function PostVenue({
     return (
         <VenueContainer>
             <VenueForm onSubmit={handleSubmit(onSubmit)}>
-                {error && <Error>{error.message}</Error>}
-                {successMessage && (
-                    <SuccessMessageForPost>
-                        <p>{successMessage}</p>
-                        <IoCheckmarkDoneCircleSharp fill="green" />
-                    </SuccessMessageForPost>
-                )}
                 <Label>
                     Name:
                     <FormInputVenue
@@ -190,6 +183,13 @@ export function PostVenue({
 
                 {onClose && <CloseButton onClick={onClose}>x</CloseButton>}
             </VenueForm>
+            {error && <Error>{error.message}</Error>}
+            {successMessage && (
+                <SuccessMessageForPost>
+                    <p>{successMessage}</p>
+                    <IoCheckmarkDoneCircleSharp fill="green" />
+                </SuccessMessageForPost>
+            )}
         </VenueContainer>
     );
 }
