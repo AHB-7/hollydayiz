@@ -42,11 +42,11 @@ export const EditProfile: React.FC<EditProfileProps> = ({
         defaultValues: initialData,
     });
 
-    const [confirmationOpen, setConfirmationOpen] = useState(false); 
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [formData, setFormData] = useState<any>(null);
 
     const handleFormSubmit = (data: any) => {
-        setFormData(data); 
+        setFormData(data);
         setConfirmationOpen(true);
     };
 
