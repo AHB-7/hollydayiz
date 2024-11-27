@@ -116,15 +116,15 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                 if (response.data && typeof response.data === "object") {
                     if ("data" in response.data) {
                         setData((response.data as any).data);
-                        return (response.data as any).data; // Return parsed data
+                        return (response.data as any).data;
                     } else {
                         setData(response.data);
-                        return response.data; // Return raw response
+                        return response.data;
                     }
                 }
 
                 setData(null);
-                return null; // Ensure null is returned if no data
+                return null; 
             } catch (err: any) {
                 if (err.response) {
                     const apiError =
@@ -136,7 +136,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                 } else {
                     setError(err);
                 }
-                throw err; // Re-throw to allow calling code to handle errors
+                throw err; 
             } finally {
                 setLoading(false);
             }

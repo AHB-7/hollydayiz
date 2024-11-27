@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
     FormInputVenue,
     Error,
@@ -17,6 +17,7 @@ import { VenueFormData } from "../../../types/global";
 import { MediaFields } from "./media-field";
 import { MetaFields } from "./meta-field";
 import { LocationFields } from "./location-field";
+import ConfirmationModal from "../../global/confirmation";
 
 interface PostVenueProps {
     mode: "create" | "edit";
@@ -71,6 +72,8 @@ export function PostVenue({
     });
 
     const media = watch("media");
+    const [confirmationOpen, setConfirmationOpen] = useState(false); 
+    const [formData, setFormData] = useState<VenueFormData | null>(null); 
 
     const addMedia = () => {
         setValue("media", [...media, { url: "", alt: "" }]);
@@ -89,9 +92,21 @@ export function PostVenue({
         }
     }, [defaultValues, reset]);
 
+    const handleFormSubmit = (data: VenueFormData) => {
+        setFormData(data); 
+        setConfirmationOpen(true);
+    };
+
+    const confirmSubmit = () => {
+        if (formData) {
+            onSubmit(formData); 
+        }
+        setConfirmationOpen(false);
+    };
+
     return (
         <VenueContainer>
-            <VenueForm onSubmit={handleSubmit(onSubmit)}>
+            <VenueForm onSubmit={handleSubmit(handleFormSubmit)}>
                 <Label>
                     Name:
                     <FormInputVenue
@@ -190,6 +205,14 @@ export function PostVenue({
                     <IoCheckmarkDoneCircleSharp fill="green" />
                 </SuccessMessageForPost>
             )}
+            <ConfirmationModal
+                isOpen={confirmationOpen}
+                message={`Are you sure you want to ${
+                    mode === "create" ? "create" : "update"
+                } this venue?`}
+                onConfirm={confirmSubmit}
+                onCancel={() => setConfirmationOpen(false)}
+            />
         </VenueContainer>
     );
 }

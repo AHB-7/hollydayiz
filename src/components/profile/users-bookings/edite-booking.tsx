@@ -4,6 +4,8 @@ import {
     GuestNumber,
     GuestNumberContainer,
 } from "../../../styles/index";
+import ConfirmationModal from "../../global/confirmation";
+import { useState } from "react";
 
 export function EditBookingForm({
     editDateRange,
@@ -22,6 +24,13 @@ export function EditBookingForm({
     handleCancelEdit: () => void;
     isDateUnavailable: (date: Date) => boolean;
 }) {
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+
+    const confirmSaveChanges = () => {
+        handleSaveChanges(); // Save changes after confirmation
+        setConfirmationOpen(false); // Close the modal
+    };
+
     return (
         <div>
             <h3>Edit Booking Details</h3>
@@ -52,8 +61,17 @@ export function EditBookingForm({
             </div>
             <EditContainer>
                 <span onClick={handleCancelEdit}>Cancel</span>
-                <p onClick={handleSaveChanges}>Save Changes</p>
+                <p onClick={() => setConfirmationOpen(true)}>
+                    Save Changes
+                </p>{" "}
+                {/* Open confirmation */}
             </EditContainer>
+            <ConfirmationModal
+                isOpen={confirmationOpen}
+                message="Are you sure you want to save these changes?"
+                onConfirm={confirmSaveChanges} 
+                onCancel={() => setConfirmationOpen(false)} 
+            />
         </div>
     );
 }

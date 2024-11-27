@@ -30,21 +30,22 @@ export const FunctionsContainer = styled.div`
     }
 `;
 export const EditAndSaveBtn = styled.button<{
-    btnColor?: string;
-    hoverColor?: string;
-    margin?: string;
+    $btnColor?: string;
+    $hoverColor?: string;
+    $margin?: string;
 }>`
-    background: ${({ theme, btnColor }) => btnColor || theme.colors.background};
+    background: ${({ theme, $btnColor }) =>
+        $btnColor || theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     border: none;
-    margin: ${({ margin }) => margin || "0"};
+    margin: ${({ $margin }) => $margin || "0"};
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: 0.3s;
     &:hover {
-        background: ${({ theme, hoverColor }) =>
-            hoverColor || theme.colors.secondary};
+        background: ${({ theme, $hoverColor }) =>
+            $hoverColor || theme.colors.secondary};
         color: ${({ theme }) => theme.colors.text};
     }
 `;

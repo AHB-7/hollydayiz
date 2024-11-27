@@ -31,7 +31,7 @@ const Loader = styled.div`
         grid-area: 1 / 1;
         background: linear-gradient(#000 0 0) left,
             linear-gradient(#000 0 0) right;
-        background-size: 10px 20px; /* Reduced size for smaller loader */
+        background-size: 10px 20px; 
         background-origin: content-box;
         background-repeat: no-repeat;
     }

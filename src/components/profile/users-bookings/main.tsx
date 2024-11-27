@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useApi } from "../../../util/hooks/use-fetch";
-import { BookingContainer } from "../../../styles/index";
+import { BookingContainer, Error } from "../../../styles/index";
 import { BookingList } from "./booking-list";
 import { UserBookingTypes } from "../../../types/global";
 import { baseUrl } from "../../../util/global/variables";
 import { Loading } from "../../global/loading";
+import ConfirmationModal from "../../global/confirmation";
 
 export function UserBooking() {
     const apiToken = localStorage.getItem("accessToken");
@@ -18,6 +19,8 @@ export function UserBooking() {
     );
     const [editGuests, setEditGuests] = useState(1);
     const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+    const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+    const [bookingToDelete, setBookingToDelete] = useState<string | null>(null);
 
     const {
         data: user,
@@ -64,22 +67,29 @@ export function UserBooking() {
         }
     }, [user]);
 
-    const handleDelete = async (bookingId: string) => {
-        if (apiToken) {
+    const confirmDelete = async () => {
+        if (apiToken && bookingToDelete) {
             try {
                 await deleteRequest.request(
                     "DELETE",
                     undefined,
                     {
-                        url: `${baseUrl}/bookings/${bookingId}`,
+                        url: `${baseUrl}/bookings/${bookingToDelete}`,
                     },
                     apiToken
                 );
+                setBookingToDelete(null);
+                setDeleteConfirmationOpen(false);
                 await apiRequest("GET", undefined, undefined, apiToken);
             } catch (err) {
-                console.error("Error deleting booking:", err);
+                console.error(err);
             }
         }
+    };
+
+    const handleDelete = (bookingId: string) => {
+        setBookingToDelete(bookingId);
+        setDeleteConfirmationOpen(true);
     };
 
     const handleEdit = (booking: UserBookingTypes) => {
@@ -113,7 +123,7 @@ export function UserBooking() {
                 setEditingBooking(null);
                 await apiRequest("GET", undefined, undefined, apiToken);
             } catch (err) {
-                console.error("Error updating booking:", err);
+                console.error(err);
             }
         }
     };
@@ -148,7 +158,7 @@ export function UserBooking() {
     };
 
     if (loading) return <Loading />;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) return <Error> {(error as Error).message} </Error>;
 
     return (
         <BookingContainer>
@@ -167,6 +177,12 @@ export function UserBooking() {
                 isDateUnavailable={isDateUnavailable}
                 formatDate={formatDate}
                 isPastDate={isPastDate}
+            />
+            <ConfirmationModal
+                isOpen={deleteConfirmationOpen}
+                message="Are you sure you want to delete this booking?"
+                onConfirm={confirmDelete}
+                onCancel={() => setDeleteConfirmationOpen(false)}
             />
         </BookingContainer>
     );

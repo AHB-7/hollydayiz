@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {
     DisabledButton,
+    Error,
     IoReload,
     SearchResult,
     SearchSortingContainer,
@@ -97,7 +98,7 @@ export function Venues() {
 
     if (error) {
         console.error("Error fetching venues:", error);
-        return <p>Error: {error.message}</p>;
+        return <Error> {(error as Error).message} </Error>;
     }
 
     return (

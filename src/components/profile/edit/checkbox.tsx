@@ -1,26 +1,31 @@
+import React, { forwardRef } from "react";
 import { CheckboxWrapper, Span } from "../../../styles";
 
-export const EditCheckbox = ({
-    checked,
-    onChange,
-}: {
+interface EditCheckboxProps {
     checked: boolean;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}) => (
-    <>
-        {" "}
-        <Span>You want to be a manger?</Span>
-        <CheckboxWrapper>
-            <input
-                type="checkbox"
-                id="_checkbox"
-                checked={checked}
-                onChange={onChange}
-                title="Checkbox"
-            />
-            <label htmlFor="_checkbox">
-                <div className="tick_mark"></div>
-            </label>
-        </CheckboxWrapper>
-    </>
+}
+
+export const EditCheckbox = forwardRef<HTMLInputElement, EditCheckboxProps>(
+    ({ checked, onChange }, ref) => (
+        <>
+            <Span>Do you want to be a manager?</Span>
+            <CheckboxWrapper>
+                <input
+                    type="checkbox"
+                    id="_checkbox"
+                    checked={checked}
+                    onChange={onChange}
+                    ref={ref}
+                    title="Checkbox"
+                />
+                <label htmlFor="_checkbox">
+                    <div className="tick_mark"></div>
+                </label>
+            </CheckboxWrapper>
+        </>
+    )
 );
+
+// Set the display name for debugging
+EditCheckbox.displayName = "EditCheckbox";

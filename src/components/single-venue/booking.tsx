@@ -18,6 +18,7 @@ import { baseUrl } from "../../util/global/variables";
 import { calculateDays } from "../../util/global/calculator";
 import { BookingProps } from "../../types/global";
 import CalendarComponent from "../global/calender";
+import ConfirmationModal from "../global/confirmation";
 
 export function Booking({ maxGuests, price, venueData }: BookingProps) {
     const { venueId } = useParams<{ venueId: string }>();
@@ -28,6 +29,13 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
     const [guests, setGuests] = useState(1);
     const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
     const [formError, setFormError] = useState<string | null>(null);
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+    const [bookingData, setBookingData] = useState<null | {
+        dateFrom: string;
+        dateTo: string;
+        guests: number;
+        venueId: string;
+    }>(null);
 
     const createBooking = useApi(`${baseUrl}/bookings`);
 
@@ -58,7 +66,7 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
         }
     }, [venueData]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!dateRange) {
@@ -74,18 +82,26 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
             dateFrom: dateFrom.toISOString(),
             dateTo: dateTo.toISOString(),
             guests,
-            venueId,
+            venueId: venueId ?? "",
         };
+
+        setBookingData(requestBody);
+        setConfirmationOpen(true);
+    };
+
+    const confirmBooking = async () => {
+        if (!bookingData) return;
 
         try {
             await createBooking.request(
                 "POST",
-                requestBody,
+                bookingData,
                 undefined,
                 apiToken || ""
             );
+            setConfirmationOpen(false);
         } catch (err) {
-            console.error("Error submitting booking:", err);
+            console.error(err);
         }
     };
 
@@ -168,6 +184,12 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                     </Loging>
                 </BookingInfo>
             </form>
+            <ConfirmationModal
+                isOpen={confirmationOpen}
+                message="Are you sure you want to confirm this booking?"
+                onConfirm={confirmBooking}
+                onCancel={() => setConfirmationOpen(false)}
+            />
             <div ref={messageRef}>
                 {createBooking.data && (
                     <StateMessage>

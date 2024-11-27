@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
     CarouselComponent,
     Row,
@@ -23,6 +23,7 @@ import {
     EditAndSaveBtn,
     BookingCard,
     BookingContainer,
+    Error,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
 import { SingleVenueType, VenueFormData } from "../../types/global";
@@ -40,15 +41,21 @@ import { useUserPreferences } from "../../util/global/zustand-store";
 import { BookingCardComponent } from "../profile/users-bookings/booking-card";
 import { PostVenue } from "../profile/post-venue-ui/main";
 import { Loading } from "../global/loading";
+import ConfirmationModal from "../global/confirmation";
+
 export function SingleVenue() {
     const { venueId } = useParams();
+    const navigate = useNavigate();
     const { accessToken, setNavbarState, navbarState, name } =
         useUserPreferences();
     const verified = Boolean(accessToken);
-    const toggleActiveState = () => setNavbarState(!navbarState);
 
     const [isEditing, setIsEditing] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [editConfirmationOpen, setEditConfirmationOpen] = useState(false);
+    const [pendingEditData, setPendingEditData] =
+        useState<VenueFormData | null>(null);
 
     const {
         data: venue,
@@ -65,52 +72,50 @@ export function SingleVenue() {
         fetchVenue("GET");
     }, [venueId]);
 
-    const handleEditVenue = async (formData: VenueFormData) => {
-        if (!venue) return;
+    const toggleActiveState = () => setNavbarState(!navbarState);
+
+    const confirmEdit = async (formData?: VenueFormData) => {
+        const data = formData || pendingEditData; // Fallback to pendingEditData
+        if (!data || !venue) return;
 
         try {
             await venueRequest.request(
                 "PUT",
-                formData,
+                data,
                 { url: `${baseUrl}/venues/${venue.id}` },
                 accessToken || undefined
             );
             setSuccessMessage("Venue updated successfully!");
             setIsEditing(false);
+            setEditConfirmationOpen(false);
             fetchVenue("GET");
         } catch (err) {
-            console.error("Error updating venue:", err);
+            console.error(err);
+            setEditConfirmationOpen(false);
         }
     };
 
-    const handleDelete = async (venueId: string) => {
-        if (!accessToken) {
-            console.error("No access token found.");
-            return;
-        }
-
-        const confirmDelete = window.confirm(
-            "Are you sure you want to delete this venue? This action cannot be undone."
-        );
-
-        if (!confirmDelete) {
-            return;
-        }
-
+    const confirmDelete = async () => {
         try {
             await venueRequest.request(
                 "DELETE",
                 undefined,
                 { url: `${baseUrl}/venues/${venueId}` },
-                accessToken
+                accessToken || undefined
             );
-            console.log("Venue deleted successfully.");
-            window.location.href = `/holidaze/profiles/${name}`;
+            navigate(`/holidaze/profiles/${name}`);
         } catch (err) {
-            console.error("Error deleting venue:", err);
+            console.error(err);
         }
     };
 
+    const handleDelete = () => {
+        setModalOpen(true);
+    };
+    const handleEditVenue = (formData: VenueFormData) => {
+        setPendingEditData(formData);
+        setEditConfirmationOpen(true);
+    };
     const formatDate = (isoString: string) =>
         new Date(isoString).toLocaleString("en-US", {
             dateStyle: "medium",
@@ -133,7 +138,7 @@ export function SingleVenue() {
     const isVenueOwner = venue?.owner.name === name;
 
     if (venueLoading) return <Loading />;
-    if (venueError) return <p>Error: {venueError.message}</p>;
+    if (venueError) return <Error> {(venueError as Error).message} </Error>;
 
     return (
         <MainContainer>
@@ -141,9 +146,7 @@ export function SingleVenue() {
                 <>
                     <FunctionsContainer>
                         <div>
-                            <div>
-                                <p>Venue Owner</p>
-                            </div>
+                            <p>Venue Owner</p>
                             <div>
                                 {isEditing ? (
                                     <EditAndSaveBtn
@@ -159,19 +162,30 @@ export function SingleVenue() {
                                     </EditAndSaveBtn>
                                 )}
                                 <EditAndSaveBtn
-                                    btnColor="red"
-                                    hoverColor="darkred"
-                                    margin="0 0.5rem"
-                                    onClick={() =>
-                                        venueId && handleDelete(venueId)
-                                    }
+                                    $btnColor="red"
+                                    $hoverColor="darkred"
+                                    $margin="0 0.5rem"
+                                    onClick={handleDelete}
                                 >
                                     Delete
                                 </EditAndSaveBtn>
+                                <ConfirmationModal
+                                    isOpen={isModalOpen}
+                                    message="Are you sure you want to delete this venue? This action cannot be undone."
+                                    onConfirm={confirmDelete}
+                                    onCancel={() => setModalOpen(false)}
+                                />{" "}
+                                <ConfirmationModal
+                                    isOpen={editConfirmationOpen}
+                                    message="Are you sure you want to save these changes?"
+                                    onConfirm={() => confirmEdit()} // Explicitly pass no arguments
+                                    onCancel={() =>
+                                        setEditConfirmationOpen(false)
+                                    }
+                                />
                             </div>
                         </div>
                     </FunctionsContainer>
-
                     {isEditing && venue && (
                         <PostVenue
                             mode="edit"
@@ -219,10 +233,7 @@ export function SingleVenue() {
             </CarouselComponent>
             <Row>
                 <VenuePrice>
-                    <strong>Price:</strong>
-                </VenuePrice>
-                <VenuePrice>
-                    <strong>${venue?.price}</strong>
+                    <strong>Price:</strong> ${venue?.price}
                 </VenuePrice>
             </Row>
             <VenueInfo>
@@ -230,7 +241,7 @@ export function SingleVenue() {
                 <VenueDescription>{venue?.description}</VenueDescription>
             </VenueInfo>
             <MetaTitle>
-                <h3>This services are included in the price: </h3>
+                <h3>This services are included in the price:</h3>
             </MetaTitle>
             <MetaInfo>
                 {venue?.meta?.wifi && (
@@ -251,7 +262,6 @@ export function SingleVenue() {
                         <span>Parking included</span>
                     </MetaInfoItem>
                 )}
-
                 {venue?.meta?.pets && (
                     <MetaInfoItem>
                         <MdOutlinePets />
@@ -278,65 +288,60 @@ export function SingleVenue() {
                     Max Guests <strong>{venue?.maxGuests}</strong>
                 </h3>
             </PriceAndDate>
-            {!isVenueOwner && (
-                <>
-                    {verified ? (
-                        <Booking
-                            maxGuests={venue?.maxGuests}
-                            price={venue?.price}
-                            venueData={venue}
-                        />
-                    ) : (
-                        <Loging>
-                            <VenueBookingsButton onClick={toggleActiveState}>
-                                Log in to book
-                            </VenueBookingsButton>
-                        </Loging>
-                    )}
-                </>
-            )}
-
-            {isVenueOwner ? (
-                venue?.bookings && venue.bookings.length > 0 ? (
-                    <BookingContainer>
-                        <h2>People booked your venues</h2>
-                        {venue.bookings.map((booking) => (
-                            <BookingCard key={booking.id}>
-                                <VenueInfoContainer>
-                                    <ProfileLink
-                                        name={booking.customer.name}
-                                        url={booking.customer.avatar?.url}
-                                        alt={
-                                            booking.customer.avatar?.alt ||
-                                            `Profile picture of ${booking.customer.name}`
-                                        }
-                                    />
-                                </VenueInfoContainer>
-                                <BookingCardComponent
-                                    booking={{
-                                        ...booking,
-                                        venue: {
-                                            ...venue,
-                                            media: venue.media.length
-                                                ? [venue.media[0]]
-                                                : [],
-                                        },
-                                    }}
-                                    profileOwner={false}
-                                    handleDelete={() => {}}
-                                    handleEdit={() => {}}
-                                    formatDate={formatDate}
-                                    isPastDate={isPastDate}
-                                />
-                            </BookingCard>
-                        ))}
-                    </BookingContainer>
+            {!isVenueOwner &&
+                (verified ? (
+                    <Booking
+                        maxGuests={venue?.maxGuests}
+                        price={venue?.price}
+                        venueData={venue}
+                    />
                 ) : (
-                    <PriceAndDate>
-                        <h3>No booking has been placed yet</h3>
-                    </PriceAndDate>
-                )
-            ) : null}
+                    <Loging>
+                        <VenueBookingsButton onClick={toggleActiveState}>
+                            Log in to book
+                        </VenueBookingsButton>
+                    </Loging>
+                ))}
+            {isVenueOwner && venue?.bookings && venue.bookings.length > 0 && (
+                <BookingContainer>
+                    <h2>People booked your venues</h2>
+                    {venue.bookings.map((booking) => (
+                        <BookingCard key={booking.id}>
+                            <VenueInfoContainer>
+                                <ProfileLink
+                                    name={booking.customer.name}
+                                    url={booking.customer.avatar?.url}
+                                    alt={
+                                        booking.customer.avatar?.alt ||
+                                        `Profile picture of ${booking.customer.name}`
+                                    }
+                                />
+                            </VenueInfoContainer>
+                            <BookingCardComponent
+                                booking={{
+                                    ...booking,
+                                    venue: {
+                                        ...venue,
+                                        media: venue.media.length
+                                            ? [venue.media[0]]
+                                            : [],
+                                    },
+                                }}
+                                profileOwner={false}
+                                handleDelete={() => {}}
+                                handleEdit={() => {}}
+                                formatDate={formatDate}
+                                isPastDate={isPastDate}
+                            />
+                        </BookingCard>
+                    ))}
+                </BookingContainer>
+            )}
+            {!venue?.bookings?.length && isVenueOwner && (
+                <PriceAndDate>
+                    <h3>No booking has been placed yet</h3>
+                </PriceAndDate>
+            )}
         </MainContainer>
     );
 }
