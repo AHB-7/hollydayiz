@@ -233,8 +233,9 @@ export function SingleVenue() {
             </CarouselComponent>
             <Row>
                 <VenuePrice>
-                    <strong>Price:</strong> ${venue?.price}
+                    <strong>Price:</strong>
                 </VenuePrice>
+                <VenuePrice>{venue?.price} NOK</VenuePrice>
             </Row>
             <VenueInfo>
                 <VenueTitle>{venue?.name}</VenueTitle>

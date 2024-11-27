@@ -108,7 +108,7 @@ export const RegBtn = styled(LogOut)`
     }
 `;
 export const Error = styled.p`
-    color: red;
+    color: ${({ theme }) => theme.colors.dangerous};
     font-weight: 400;
     font-size: 1rem;
     text-align: center;

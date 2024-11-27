@@ -182,7 +182,7 @@ export const TwoButtonsInARow = styled(ToInputsInARow)`
         color: ${({ theme }) => theme.colors.background};
         transition: 0.2s ease color;
         &:hover {
-            color: red;
+            color: ${({ theme }) => theme.colors.dangerous};
         }
     }
     > * {

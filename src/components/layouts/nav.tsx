@@ -58,18 +58,10 @@ export function Navbar() {
         setName(null);
         window.location.href = "/";
     };
-    const navigate = (path: string) => {
-        window.location.href = path;
-    };
+    const userName = localStorage.getItem("name");
+
     const handleProfileClick = () => {
-        const name = localStorage.getItem("name");
-        if (name) {
-            setOtherUsersName(name);
-            navigate(`/holidaze/profiles/${name}`);
-        } else {
-            setOtherUsersName(null);
-            navigate(`/holidaze/profiles/`);
-        }
+        setOtherUsersName(userName);
     };
     const verified = Boolean(accessToken);
 
@@ -78,7 +70,11 @@ export function Navbar() {
             <NavbarSc>
                 <UpperNav>
                     <Link to="/">
-                        <img src="/logo.svg" alt="asa" />
+                        <img
+                            src="/logo.svg"
+                            alt="asa"
+                            onClick={() => setNavbarState(false)}
+                        />
                     </Link>
                     {!verified ? (
                         <LogInContainer onClick={toggleLogIn}>
@@ -109,15 +105,15 @@ export function Navbar() {
                                 <Link
                                     style={
                                         path ===
-                                        `/holidaze/profiles/${otherUsersName}`
+                                        `/holidaze/profiles/${userName}`
                                             ? { color: "#2ecc71" }
                                             : { color: "white" }
                                     }
                                     onClick={() => {
-                                        handleProfileClick();
                                         setNavbarState(false);
                                     }}
-                                    to={`/holidaze/profiles/${name}`}
+                                    onMouseDown={() => handleProfileClick()}
+                                    to={`/holidaze/profiles/${otherUsersName}`}
                                 >
                                     Profile
                                 </Link>

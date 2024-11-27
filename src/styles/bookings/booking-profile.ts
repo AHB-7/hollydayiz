@@ -32,7 +32,7 @@ export const BookingDelete = styled.p`
     cursor: pointer;
     > svg {
         font-size: 1.5rem;
-        fill: #ff6a74;
+        fill: ${({ theme }) => theme.colors.dangerous};
         :hover {
             fill: darkgrey;
         }
@@ -59,7 +59,7 @@ export const CardInfo = styled.div`
     }
 `;
 export const PastDate = styled.span`
-    color: red;
+    color: ${({ theme }) => theme.colors.dangerous};
     font-weight: bold;
 `;
 
@@ -97,7 +97,7 @@ export const EditContainer = styled.div`
     > span {
         font-size: 1.2rem;
         cursor: pointer;
-        color: red;
+        color: ${({ theme }) => theme.colors.dangerous};
     }
     > p {
         font-size: 1.2rem;

@@ -59,8 +59,12 @@ export const ProfileBioContainer = styled.div`
         top: 0;
         right: 0;
         padding: 0.5rem;
+        cursor: pointer;
+        :hover {
+        opacity: 0.8;}
         > svg {
             font-size: 1.5rem;
+            :hover {
         }
     }
     > h2 {

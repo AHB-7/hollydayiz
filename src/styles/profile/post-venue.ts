@@ -119,16 +119,16 @@ export const MetaContainer = styled.div`
             height: 0;
             width: 0;
             &:checked + svg {
-                fill: lightgreen;
+                fill: ${({ theme }) => theme.colors.secondary};
             }
             &:checked ~ p {
-                color: lightgreen;
+                color: ${({ theme }) => theme.colors.secondary};
             }
         }
 
         > svg {
             fill: ${({ theme }) => theme.colors.background};
-            transition: fill 0.3s ease; /* Smooth transition for color change */
+            transition: fill 0.3s ease;
             width: 24px;
             height: 24px;
         }
