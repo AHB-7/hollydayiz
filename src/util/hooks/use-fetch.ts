@@ -85,6 +85,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<Error | null>(null);
+    const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
     const request = useCallback(
         async (
@@ -99,8 +100,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                 const headers = token
                     ? {
                           Authorization: `Bearer ${token}`,
-                          "X-Noroff-API-Key":
-                              "cda1b6c4-89c7-41ec-9483-1fdbf3d819ec",
+                          "X-Noroff-API-Key": apiKey,
                           ...config?.headers,
                       }
                     : config?.headers;
@@ -124,7 +124,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                 }
 
                 setData(null);
-                return null; 
+                return null;
             } catch (err: any) {
                 if (err.response) {
                     const apiError =
@@ -136,7 +136,7 @@ export function useApi<T = any>(url: string): UseApiReturn<T> {
                 } else {
                     setError(err);
                 }
-                throw err; 
+                throw err;
             } finally {
                 setLoading(false);
             }
