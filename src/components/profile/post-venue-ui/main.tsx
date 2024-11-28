@@ -72,8 +72,8 @@ export function PostVenue({
     });
 
     const media = watch("media");
-    const [confirmationOpen, setConfirmationOpen] = useState(false); 
-    const [formData, setFormData] = useState<VenueFormData | null>(null); 
+    const [confirmationOpen, setConfirmationOpen] = useState(false);
+    const [formData, setFormData] = useState<VenueFormData | null>(null);
 
     const addMedia = () => {
         setValue("media", [...media, { url: "", alt: "" }]);
@@ -93,13 +93,13 @@ export function PostVenue({
     }, [defaultValues, reset]);
 
     const handleFormSubmit = (data: VenueFormData) => {
-        setFormData(data); 
+        setFormData(data);
         setConfirmationOpen(true);
     };
 
     const confirmSubmit = () => {
         if (formData) {
-            onSubmit(formData); 
+            onSubmit(formData);
         }
         setConfirmationOpen(false);
     };

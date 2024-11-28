@@ -34,6 +34,7 @@ export const VenueDescriptionPost = styled.textarea`
     font-size: 1.1rem;
     border-radius: 1rem;
     padding: 0.7rem;
+    margin-top: 0.5rem;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     outline: none;

@@ -199,12 +199,14 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                                 fill="green"
                                 fontSize="4rem"
                             />
-                            <VenueBookingsButton
-                                as={Link}
-                                to={`/holidaze/profiles/${name}`}
-                            >
-                                View your bookings history
-                            </VenueBookingsButton>
+                            <Loging>
+                                <VenueBookingsButton
+                                    as={Link}
+                                    to={`/`}
+                                >
+                                    View More Venues
+                                </VenueBookingsButton>
+                            </Loging>
                         </SuccessMessage>
                     </StateMessage>
                 )}
