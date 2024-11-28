@@ -1,51 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-    CloseButton,
-    EditInput,
-    EditTextArea,
-    InputContainerForProfile,
-    TwoButtonsInARow,
+    FormInputVenue as FormInput,
     Error,
-    VenueBookingsButton,
-    Form,
     VenueForm,
     VenueContainer,
+    CloseButton,
+    Label,
+    SubmitBtnVenue as SubmitButton,
+    SuccessMessageForPost,
+    EditTextArea,
 } from "../../../styles/index";
-import { Controller, useForm } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { EditCheckbox } from "./checkbox";
 import ConfirmationModal from "../../global/confirmation";
 
+interface EditProfileData {
+    bio: string;
+    bannerUrl: string;
+    bannerAlt: string;
+    avatarUrl: string;
+    avatarAlt: string;
+    venueManager: boolean;
+}
+
 interface EditProfileProps {
-    initialData: {
-        bio: string;
-        bannerUrl: string;
-        bannerAlt: string;
-        avatarUrl: string;
-        avatarAlt: string;
-        venueManager: boolean;
-    };
-    onSave: (data: any) => Promise<void>;
+    initialData: EditProfileData;
+    onSave: SubmitHandler<EditProfileData>;
     onCancel: () => void;
+    loading?: boolean;
+    error?: { message: string };
+    successMessage?: string;
 }
 
 export const EditProfile: React.FC<EditProfileProps> = ({
     initialData,
     onSave,
     onCancel,
+    loading = false,
+    error,
+    successMessage,
 }) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
         control,
-    } = useForm({
+        reset,
+    } = useForm<EditProfileData>({
         defaultValues: initialData,
     });
 
     const [confirmationOpen, setConfirmationOpen] = useState(false);
-    const [formData, setFormData] = useState<any>(null);
+    const [formData, setFormData] = useState<EditProfileData | null>(null);
 
-    const handleFormSubmit = (data: any) => {
+    useEffect(() => {
+        reset(initialData);
+    }, [initialData, reset]);
+
+    const handleFormSubmit: SubmitHandler<EditProfileData> = (data) => {
         setFormData(data);
         setConfirmationOpen(true);
     };
@@ -53,116 +65,130 @@ export const EditProfile: React.FC<EditProfileProps> = ({
     const confirmSave = () => {
         if (formData) {
             onSave(formData);
-            setConfirmationOpen(false);
         }
+        setConfirmationOpen(false);
     };
 
     return (
         <VenueContainer>
-            <VenueForm as="div">
-                <CloseButton color="#fff" onClick={onCancel}>
-                    X
-                </CloseButton>
-                <Form onSubmit={handleSubmit(handleFormSubmit)}>
-                    <InputContainerForProfile>
-                        <label>Banner URL:</label>
-                        <EditInput
-                            {...register("bannerUrl", {
-                                required: "Banner URL is required",
-                                pattern: {
-                                    value: /^https?:\/\/.+$/,
-                                    message: "Invalid URL format",
-                                },
-                            })}
-                            placeholder="Enter banner URL"
-                        />
-                        {errors.bannerUrl && (
-                            <Error>{errors.bannerUrl.message}</Error>
+            <VenueForm onSubmit={handleSubmit(handleFormSubmit)}>
+                <Label>
+                    Banner URL:
+                    <FormInput
+                        {...register("bannerUrl", {
+                            required: "Banner URL is required",
+                            pattern: {
+                                value: /^https?:\/\/.+$/,
+                                message: "Invalid URL format",
+                            },
+                        })}
+                        type="text"
+                        placeholder="Enter banner URL"
+                    />
+                    {errors.bannerUrl && (
+                        <Error>{errors.bannerUrl.message}</Error>
+                    )}
+                </Label>
+
+                <Label>
+                    Banner Alt:
+                    <FormInput
+                        {...register("bannerAlt", {
+                            maxLength: {
+                                value: 120,
+                                message:
+                                    "Alt text must be 120 characters or less",
+                            },
+                        })}
+                        type="text"
+                        placeholder="Enter banner alt text"
+                    />
+                    {errors.bannerAlt && (
+                        <Error>{errors.bannerAlt.message}</Error>
+                    )}
+                </Label>
+
+                <Label>
+                    Avatar URL:
+                    <FormInput
+                        {...register("avatarUrl", {
+                            required: "Avatar URL is required",
+                            pattern: {
+                                value: /^https?:\/\/.+$/,
+                                message: "Invalid URL format",
+                            },
+                        })}
+                        type="text"
+                        placeholder="Enter avatar URL"
+                    />
+                    {errors.avatarUrl && (
+                        <Error>{errors.avatarUrl.message}</Error>
+                    )}
+                </Label>
+
+                <Label>
+                    Avatar Alt:
+                    <FormInput
+                        {...register("avatarAlt", {
+                            maxLength: {
+                                value: 160,
+                                message:
+                                    "Alt text must be 160 characters or less",
+                            },
+                        })}
+                        type="text"
+                        placeholder="Enter avatar alt text"
+                    />
+                    {errors.avatarAlt && (
+                        <Error>{errors.avatarAlt.message}</Error>
+                    )}
+                </Label>
+
+                <Label>
+                    Bio:
+                    <EditTextArea
+                        as="textarea"
+                        {...register("bio", {
+                            maxLength: {
+                                value: 160,
+                                message: "Bio must be 160 characters or less",
+                            },
+                        })}
+                        placeholder="Enter your bio"
+                    />
+                    {errors.bio && <Error>{errors.bio.message}</Error>}
+                </Label>
+
+                <Label>
+                    <Controller
+                        name="venueManager"
+                        control={control}
+                        render={({ field }) => (
+                            <EditCheckbox
+                                {...field}
+                                checked={field.value}
+                                onChange={(e) =>
+                                    field.onChange(e.target.checked)
+                                }
+                            />
                         )}
-                        <label>Banner Alt:</label>
-                        <EditInput
-                            {...register("bannerAlt", {
-                                maxLength: {
-                                    value: 120,
-                                    message:
-                                        "Alt text must be 120 characters or less",
-                                },
-                            })}
-                            placeholder="Enter banner alt text"
-                        />
-                        {errors.bannerAlt && (
-                            <Error>{errors.bannerAlt.message}</Error>
-                        )}
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <label>Avatar URL:</label>
-                        <EditInput
-                            {...register("avatarUrl", {
-                                required: "Avatar URL is required",
-                                pattern: {
-                                    value: /^https?:\/\/.+$/,
-                                    message: "Invalid URL format",
-                                },
-                            })}
-                            placeholder="Enter avatar URL"
-                        />
-                        {errors.avatarUrl && (
-                            <Error>{errors.avatarUrl.message}</Error>
-                        )}
-                        <label>Avatar Alt:</label>
-                        <EditInput
-                            {...register("avatarAlt", {
-                                maxLength: {
-                                    value: 160,
-                                    message:
-                                        "Alt text must be 160 characters or less",
-                                },
-                            })}
-                            placeholder="Enter avatar alt text"
-                        />
-                        {errors.avatarAlt && (
-                            <Error>{errors.avatarAlt.message}</Error>
-                        )}
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <label>Bio:</label>
-                        <EditTextArea
-                            {...register("bio", {
-                                maxLength: {
-                                    value: 160,
-                                    message:
-                                        "Bio must be 160 characters or less",
-                                },
-                            })}
-                            placeholder="Enter your bio"
-                        />
-                        {errors.bio && <Error>{errors.bio.message}</Error>}
-                    </InputContainerForProfile>
-                    <InputContainerForProfile>
-                        <Controller
-                            name="venueManager"
-                            control={control}
-                            render={({ field }) => (
-                                <EditCheckbox
-                                    {...field}
-                                    checked={field.value}
-                                    onChange={(e) =>
-                                        field.onChange(e.target.checked)
-                                    }
-                                />
-                            )}
-                        />
-                    </InputContainerForProfile>
-                    <TwoButtonsInARow>
-                        <VenueBookingsButton type="submit">
-                            Save
-                        </VenueBookingsButton>
-                        <VenueBookingsButton onClick={onCancel}>
-                            Cancel
-                        </VenueBookingsButton>
-                    </TwoButtonsInARow>
-                </Form>
+                    />
+                </Label>
+
+                <SubmitButton type="submit" disabled={loading}>
+                    {loading ? "Saving..." : "Save Profile"}
+                </SubmitButton>
+
+                <CloseButton onClick={onCancel}>x</CloseButton>
             </VenueForm>
+
+            {error && <Error>{error.message}</Error>}
+            {successMessage && (
+                <SuccessMessageForPost>
+                    <p>{successMessage}</p>
+                </SuccessMessageForPost>
+            )}
+
             <ConfirmationModal
                 isOpen={confirmationOpen}
                 message="Are you sure you want to save these changes?"

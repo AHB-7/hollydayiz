@@ -30,7 +30,6 @@ export function LocationFields({
                     City:
                     <FormInputVenue
                         {...register("location.city", {
-                            required: "City is required",
                             minLength: {
                                 value: 2,
                                 message:

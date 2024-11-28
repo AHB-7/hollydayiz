@@ -82,8 +82,9 @@ export const Loging = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 95%;
+    width: 100%;
     max-width: 45rem;
+    padding: 0.5rem;
     margin: 0 0 2rem 0;
 `;
 export const StateMessage = styled.div`

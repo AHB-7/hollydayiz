@@ -104,7 +104,7 @@ export const VenueBookingsButton = styled.button`
     cursor: pointer;
     transition: background-color 0.2s;
     width: 100%;
-    margin: 0 0 4rem 0;
+    margin: 2rem 0 2rem 0;
     &:hover {
         background-color: ${({ theme }) => theme.colors.primary};
     }

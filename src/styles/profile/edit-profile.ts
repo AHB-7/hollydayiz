@@ -1,20 +1,4 @@
 import styled from "styled-components";
-import { ToInputsInARow } from "../profile/post-venue";
-
-export const InputContainerForProfile = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    padding: 0.5rem;
-    > label {
-        width: 100%;
-        max-width: 30rem;
-        font-size: 1.1rem;
-        padding-left: 1rem;
-        color: ${({ theme }) => theme.colors.background};
-    }
-`;
 
 export const CheckboxWrapper = styled.div`
     padding: 0.5rem;
@@ -130,26 +114,13 @@ export const Span = styled.span`
     text-align: center;
     color: ${({ theme }) => theme.colors.background};
 `;
-export const EditInput = styled.input`
-    width: 100%;
-    min-width: 10rem;
-    font-size: 1.1rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    background: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.text};
-    outline: none;
-    border: 0.05rem solid ${({ theme }) => theme.colors.text};
-    margin: 0 auto 0.5rem auto;
-`;
+
 export const EditTextArea = styled.textarea`
     font-size: 1.1rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 1rem;
     width: 100%;
     min-height: 10rem;
-    min-width: 18rem;
-    max-width: 25rem;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     outline: none;
@@ -158,40 +129,5 @@ export const EditTextArea = styled.textarea`
     resize: vertical;
     ::placeholder {
         color: rgba(0, 0, 0, 0.5);
-    }
-`;
-export const EditProfileContainer = styled.div`
-    background: ${({ theme }) => theme.colors.text};
-    color: ${({ theme }) => theme.colors.background};
-    > h3 {
-        font-size: 2rem;
-        color: ${({ theme }) => theme.colors.background};
-    }
-    position: absolute;
-    top: 0;
-    display: flex;
-    width: 100%;
-    max-width: 40rem;
-    margin: 5rem 0.5rem;
-    padding: 3rem 0.5rem;
-    gap: 1rem;
-    border-radius: 0.5rem;
-`;
-export const TwoButtonsInARow = styled(ToInputsInARow)`
-    flex-direction: column;
-    width: 100%;
-    :last-child {
-        background: transparent;
-        color: ${({ theme }) => theme.colors.background};
-        transition: 0.2s ease color;
-        &:hover {
-            color: ${({ theme }) => theme.colors.dangerous};
-        }
-    }
-    > * {
-        margin: 0;
-        width: 100%;
-        background: ${({ theme }) => theme.colors.background};
-        color: ${({ theme }) => theme.colors.text};
     }
 `;
