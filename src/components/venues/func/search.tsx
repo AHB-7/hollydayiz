@@ -1,39 +1,51 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useApi } from "../../../util/hooks/use-fetch";
-import { Accommodation } from "../../../types/global";
 import { SearchContainer, SearchInput } from "../../../styles";
-
 interface SearchComponentProps {
-    searchType: "venues" | "profiles";
     baseUrl: string;
-    renderResult?: (result: any) => JSX.Element;
     onSearch: (results: any[]) => void;
+    onQueryChange: (query: string) => void;
+    searchType: "venues" | "profiles"; // Pass searchType explicitly
 }
 
 export const SearchComponent: React.FC<SearchComponentProps> = ({
-    searchType,
     baseUrl,
     onSearch,
+    onQueryChange,
+    searchType, // Use searchType from props
 }) => {
     const [query, setQuery] = useState<string>("");
     const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const { loading, request } = useApi<Accommodation[]>(
-        `${baseUrl}/${searchType}/search`
+    const accessToken = localStorage.getItem("accessToken");
+    const { loading, request } = useApi(
+        `${baseUrl}/${searchType}/search` // Use searchType from props in the URL
     );
+    const apiKey = import.meta.env.VITE_NOROFF_API_KEY;
 
     const handleSearch = async (searchQuery: string) => {
+        onQueryChange(searchQuery);
         if (!searchQuery.trim()) {
             onSearch([]);
             return;
         }
-        try {
-            const response = await request(
-                "GET",
-                {},
-                { params: { q: searchQuery } }
-            );
 
-            if (response !== undefined) {
+        try {
+            const headers = {
+                "X-Noroff-API-Key": apiKey,
+                ...(searchType === "profiles" && accessToken
+                    ? { Authorization: `Bearer ${accessToken}` }
+                    : {}),
+            };
+
+            const response = await request("GET", undefined, {
+                params: { q: searchQuery },
+                headers,
+            }).catch((err) => {
+                console.error("Search error:", err);
+                return null;
+            });
+
+            if (response) {
                 onSearch(response);
             } else {
                 onSearch([]);
@@ -45,7 +57,9 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     };
 
     useEffect(() => {
-        if (debounceTimer.current) clearTimeout(debounceTimer.current);
+        if (debounceTimer.current) {
+            clearTimeout(debounceTimer.current);
+        }
 
         debounceTimer.current = setTimeout(() => {
             if (query) {
@@ -54,7 +68,9 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
         }, 500);
 
         return () => {
-            if (debounceTimer.current) clearTimeout(debounceTimer.current);
+            if (debounceTimer.current) {
+                clearTimeout(debounceTimer.current);
+            }
         };
     }, [query]);
 
@@ -70,7 +86,7 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
             <button onClick={() => handleSearch(query)} disabled={loading}>
                 <label htmlFor="search">
                     {loading ? "Searching..." : "Search"}
-                </label>{" "}
+                </label>
             </button>
         </SearchContainer>
     );

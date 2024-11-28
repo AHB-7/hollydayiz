@@ -128,6 +128,17 @@ export function Navbar() {
                                 >
                                     Venues
                                 </Link>
+                                <Link
+                                    to="/users"
+                                    onClick={() => setNavbarState(false)}
+                                    style={
+                                        path === "/users"
+                                            ? { color: "#2ecc71" }
+                                            : { color: "white" }
+                                    }
+                                >
+                                    Users
+                                </Link>
                                 <LogOut onClick={logOut}>Logout</LogOut>
                             </LowerNav>
                         )}

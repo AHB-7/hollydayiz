@@ -136,10 +136,8 @@ export function Venues() {
                 <SearchComponent
                     searchType="venues"
                     baseUrl={baseUrl}
-                    renderResult={(result: Accommodation) => (
-                        <VenueCardComponent venue={result} showOwner={false} />
-                    )}
                     onSearch={handleSearch}
+                    onQueryChange={(query: string) => console.log(query)}
                 />
                 <SortButton
                     title="clear the search results"
