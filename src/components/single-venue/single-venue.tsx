@@ -321,28 +321,58 @@ export function SingleVenue() {
                 <h3>This services are included in the price:</h3>
             </MetaTitle>
             <MetaInfo>
-                {venue?.meta?.wifi && (
+                {venue?.meta?.wifi === true ? (
                     <MetaInfoItem>
                         <FaWifi />
                         <span>Wifi included</span>
                     </MetaInfoItem>
+                ) : (
+                    <MetaInfoItem>
+                        <FaWifi />
+                        <strong>
+                            <s>Wifi included</s>
+                        </strong>
+                    </MetaInfoItem>
                 )}
-                {venue?.meta?.breakfast && (
+                {venue?.meta?.breakfast === true ? (
                     <MetaInfoItem>
                         <MdOutlineEmojiFoodBeverage />
                         <span>Breakfast included</span>
                     </MetaInfoItem>
+                ) : (
+                    <>
+                        <MetaInfoItem>
+                            <MdOutlineEmojiFoodBeverage />
+                            <strong>
+                                <s>Breakfast included</s>
+                            </strong>
+                        </MetaInfoItem>
+                    </>
                 )}
-                {venue?.meta?.parking && (
+                {venue?.meta?.parking === true ? (
                     <MetaInfoItem>
                         <MdLocalParking />
                         <span>Parking included</span>
                     </MetaInfoItem>
+                ) : (
+                    <MetaInfoItem>
+                        <MdLocalParking />
+                        <strong>
+                            <s>Parking included</s>
+                        </strong>
+                    </MetaInfoItem>
                 )}
-                {venue?.meta?.pets && (
+                {venue?.meta?.pets === true ? (
                     <MetaInfoItem>
                         <MdOutlinePets />
                         <span>Pets allowed</span>
+                    </MetaInfoItem>
+                ) : (
+                    <MetaInfoItem>
+                        <MdOutlinePets />
+                        <strong>
+                            <s>Pets allowed</s>
+                        </strong>
                     </MetaInfoItem>
                 )}
             </MetaInfo>
@@ -354,10 +384,28 @@ export function SingleVenue() {
                 />
                 <div>
                     <GrLocation />
-                    <p>
-                        {venue?.location.address}, {venue?.location.city},{" "}
-                        {venue?.location.zip}, {venue?.location.country}
-                    </p>
+                    {venue?.location && (
+                        <>
+                            {venue?.location.address && (
+                                <p>{venue?.location.address},</p>
+                            )}
+                            {venue?.location.city && (
+                                <p>{venue?.location.city},</p>
+                            )}
+                            {venue?.location.zip && (
+                                <p>{venue?.location.zip},</p>
+                            )}
+                            {venue?.location.country && (
+                                <p>{venue?.location.country}.</p>
+                            )}
+                            {venue?.location.lat && (
+                                <p>{venue?.location.lat}</p>
+                            )}
+                            {venue?.location.lng && (
+                                <p>{venue?.location.lng}</p>
+                            )}
+                        </>
+                    )}
                 </div>
             </Row>
             <PriceAndDate>
@@ -374,7 +422,12 @@ export function SingleVenue() {
                     />
                 ) : (
                     <Loging>
-                        <VenueBookingsButton onClick={toggleActiveState}>
+                        <VenueBookingsButton
+                            onClick={() => {
+                                toggleActiveState();
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                            }}
+                        >
                             Log in to book
                         </VenueBookingsButton>
                     </Loging>

@@ -48,7 +48,6 @@ export const BookingInfo = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 0 2rem 2rem 2rem;
 `;
 export const PriceAndDate = styled.div`
     width: 100%;
@@ -58,7 +57,8 @@ export const PriceAndDate = styled.div`
     align-items: center;
     > h3 {
         margin: 0 auto;
-        padding: 4rem 0.5rem;
+        padding: 2rem 0.5rem;
+        font-size: 1.8rem;
         > strong {
             color: ${({ theme }) => theme.colors.primary};
     }
@@ -82,9 +82,9 @@ export const Loging = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 100%;
+    width: 95%;
     max-width: 45rem;
-    margin: 2rem 0;
+    margin: 0 0 2rem 0;
 `;
 export const StateMessage = styled.div`
     display: flex;

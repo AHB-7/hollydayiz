@@ -139,5 +139,7 @@ export const NotLoggedInContainer = styled.section`
     gap: 1.4rem;
     width: 100%;
     height: 100vh;
+    max-width: 30rem;
+    margin: 0 auto;
     align-items: center;
 `;
