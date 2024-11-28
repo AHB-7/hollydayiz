@@ -22,7 +22,6 @@ import ConfirmationModal from "../global/confirmation";
 
 export function Booking({ maxGuests, price, venueData }: BookingProps) {
     const { venueId } = useParams<{ venueId: string }>();
-    const name = localStorage.getItem("name");
     const apiToken = localStorage.getItem("accessToken");
     const messageRef = useRef<HTMLDivElement>(null);
     const [dateRange, setDateRange] = useState<[Date, Date] | null>(null);
@@ -200,10 +199,7 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                                 fontSize="4rem"
                             />
                             <Loging>
-                                <VenueBookingsButton
-                                    as={Link}
-                                    to={`/`}
-                                >
+                                <VenueBookingsButton as={Link} to={`/`}>
                                     View More Venues
                                 </VenueBookingsButton>
                             </Loging>
