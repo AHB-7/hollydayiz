@@ -40,7 +40,7 @@ export const LowerNav = styled.div`
         color: ${({ theme }) => theme.colors.background};
     }
     @media screen and (${({ theme }) => theme.breakpoints.md}) {
-        padding: 4rem 0 0.5rem 0;
+        padding: 2rem 0 0.5rem 0;
     }
 `;
 

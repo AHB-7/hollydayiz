@@ -17,6 +17,7 @@ export const InputContainerForProfile = styled.div`
 `;
 
 export const CheckboxWrapper = styled.div`
+    padding: 0.5rem;
     --size: 50px;
     --shadow: calc(var(--size) * 0.07) calc(var(--size) * 0.1);
 
@@ -122,6 +123,8 @@ export const CheckboxWrapper = styled.div`
     }
 `;
 export const Span = styled.span`
+    display: block;
+    margin-top: 1rem;
     font-size: 1.1rem;
     width: 100%;
     text-align: center;

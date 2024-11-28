@@ -61,13 +61,16 @@ export const SearchComponent: React.FC<SearchComponentProps> = ({
     return (
         <SearchContainer>
             <SearchInput
+                id="search"
                 type="text"
                 placeholder={`Search ${searchType}...`}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
             />
             <button onClick={() => handleSearch(query)} disabled={loading}>
-                {loading ? "Searching..." : "Search"}
+                <label htmlFor="search">
+                    {loading ? "Searching..." : "Search"}
+                </label>{" "}
             </button>
         </SearchContainer>
     );

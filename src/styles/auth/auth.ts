@@ -22,7 +22,7 @@ export const RegistrationContainer = styled.section`
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    padding-top: 12rem;
+    padding-top: 5rem;
     padding-bottom: 15rem;
     background-color: ${({ theme }) => theme.colors.text};
     border-radius: 0.8rem;
@@ -34,7 +34,7 @@ export const RegistrationContainer = styled.section`
 export const Form = styled.form`
     display: flex;
     flex-direction: column;
-    gap: 1.4rem;
+    gap: 0.5rem;
     width: 100%;
     max-width: 30rem;
     align-items: center;
@@ -48,15 +48,22 @@ export const Form = styled.form`
         padding: 4rem 0.5rem;
     }
     > h1 {
-        color: ${({ theme }) => theme.colors.background};
-        margin-bottom: 3rem;
+        color: ${({ theme }) => theme.colors.secondary};
+        margin-bottom: 1rem;
         font-size: 4rem;
+    }
+    > label {
+        width: 100%;
+        text-align: start;
+        font-size: 1rem;
+        color: ${({ theme }) => theme.colors.background};
     }
 `;
 export const FormInput = styled.input`
     border: none;
     border-radius: 0.8rem;
     border: 0.05rem solid white;
+    margin: 0 0 0.9rem 0;
     padding: 0.65rem;
     font-size: 1rem;
     width: 100%;
@@ -118,6 +125,17 @@ export const TwoInputsInRow = styled.div`
     gap: 1rem;
     width: 100%;
     justify-content: space-between;
+    > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    > div > label {
+        width: 100%;
+        text-align: start;
+        font-size: 1rem;
+        color: ${({ theme }) => theme.colors.background};
+    }
 `;
 export const SuccessMessage = styled.div`
     > h2 {

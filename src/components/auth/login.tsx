@@ -87,8 +87,9 @@ export function Login() {
             </Helmet>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Login</h1>
-
+                <label htmlFor="mail">mail</label>
                 <FormInput
+                    id="mail"
                     {...register("email", {
                         required: "Email is required",
                         pattern: {
@@ -102,8 +103,9 @@ export function Login() {
                     defaultValue={savedMail || ""}
                 />
                 {errors.email && <Error>{errors.email.message}</Error>}
-
+                <label htmlFor="password">Password</label>
                 <FormInput
+                    id="password"
                     {...register("password", {
                         required: "Password is required",
                         minLength: {

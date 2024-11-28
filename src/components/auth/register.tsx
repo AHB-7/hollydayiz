@@ -119,7 +119,9 @@ export function Register() {
 
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <h1>Register</h1>
+                <label htmlFor="name">Name</label>
                 <FormInput
+                    id="name"
                     {...register("name", {
                         required: "Name is required.",
                         minLength: {
@@ -133,7 +135,9 @@ export function Register() {
                     placeholder="Name"
                 />
                 {errors.name && <Error>{errors.name.message}</Error>}
+                <label htmlFor="email">Email</label>
                 <FormInput
+                    id="email"
                     {...register("email", {
                         required: "Email is required",
                         pattern: {
@@ -146,7 +150,9 @@ export function Register() {
                     placeholder="Email"
                 />
                 {errors.email && <Error>{errors.email.message}</Error>}
+                <label htmlFor="password">Password</label>
                 <FormInput
+                    id="password"
                     {...register("password", {
                         required: "Password is required",
                         minLength: {
@@ -160,7 +166,9 @@ export function Register() {
                     placeholder="Password"
                 />
                 {errors.password && <Error>{errors.password.message}</Error>}
+                <label htmlFor="bio">Bio</label>
                 <FormInput
+                    id="bio"
                     {...register("bio", {
                         validate: (value) =>
                             !value ||
@@ -172,50 +180,72 @@ export function Register() {
                 />
                 {errors.bio && <Error>{errors.bio.message}</Error>}
                 <TwoInputsInRow>
-                    <FormInput
-                        {...register("avatarUrl", {
-                            validate: (value) =>
-                                !value ||
-                                /^https?:\/\/.+$/.test(value) ||
-                                "Avatar URL must be a valid URL.",
-                        })}
-                        type="text"
-                        placeholder="Avatar URL"
-                    />
-                    <FormInput
-                        {...register("avatarAlt", {
-                            validate: (value, { avatarUrl }) =>
-                                !value ||
-                                (avatarUrl && value.length <= 120) ||
-                                "Avatar Alt Text must be less than 120 characters and requires Avatar URL.",
-                        })}
-                        type="text"
-                        placeholder="Avatar Alt Text"
-                    />
+                    <div>
+                        <label htmlFor="avatarUrl">Avatar</label>
+                        <FormInput
+                            id="avatarUrl"
+                            {...register("avatarUrl", {
+                                validate: (value) =>
+                                    !value ||
+                                    /^https?:\/\/.+$/.test(value) ||
+                                    "Avatar URL must be a valid URL.",
+                            })}
+                            type="text"
+                            placeholder="Avatar URL"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="avatarAlt">Alt Text</label>
+                        <FormInput
+                            id="avatarAlt"
+                            {...register("avatarAlt", {
+                                validate: (value, { avatarUrl }) =>
+                                    !value ||
+                                    (avatarUrl && value.length <= 120) ||
+                                    "Avatar Alt Text must be less than 120 characters and requires Avatar URL.",
+                            })}
+                            type="text"
+                            placeholder="Avatar Alt Text"
+                        />
+                    </div>
+                    {errors.avatarUrl && (
+                        <Error>{errors.avatarUrl.message}</Error>
+                    )}
+                    {errors.avatarAlt && (
+                        <Error>{errors.avatarAlt.message}</Error>
+                    )}
                 </TwoInputsInRow>
-                {errors.avatarUrl && <Error>{errors.avatarUrl.message}</Error>}
-                {errors.avatarAlt && <Error>{errors.avatarAlt.message}</Error>}
+
                 <TwoInputsInRow>
-                    <FormInput
-                        {...register("bannerUrl", {
-                            validate: (value) =>
-                                !value ||
-                                /^https?:\/\/.+$/.test(value) ||
-                                "Banner URL must be a valid URL.",
-                        })}
-                        type="text"
-                        placeholder="Banner URL"
-                    />
-                    <FormInput
-                        {...register("bannerAlt", {
-                            validate: (value, { bannerUrl }) =>
-                                !value ||
-                                (bannerUrl && value.length <= 120) ||
-                                "Banner Alt Text must be less than 120 characters and requires Banner URL.",
-                        })}
-                        type="text"
-                        placeholder="Banner Alt Text"
-                    />
+                    <div>
+                        {" "}
+                        <label htmlFor="bannerUrl">Banner</label>
+                        <FormInput
+                            id="bannerUrl"
+                            {...register("bannerUrl", {
+                                validate: (value) =>
+                                    !value ||
+                                    /^https?:\/\/.+$/.test(value) ||
+                                    "Banner URL must be a valid URL.",
+                            })}
+                            type="text"
+                            placeholder="Banner URL"
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="bannerAlt">Alt Text</label>
+                        <FormInput
+                            id="bannerAlt"
+                            {...register("bannerAlt", {
+                                validate: (value, { bannerUrl }) =>
+                                    !value ||
+                                    (bannerUrl && value.length <= 120) ||
+                                    "Banner Alt Text must be less than 120 characters and requires Banner URL.",
+                            })}
+                            type="text"
+                            placeholder="Banner Alt Text"
+                        />
+                    </div>
                 </TwoInputsInRow>
                 {errors.bannerUrl && <Error>{errors.bannerUrl.message}</Error>}
                 {errors.bannerAlt && <Error>{errors.bannerAlt.message}</Error>}
