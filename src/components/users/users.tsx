@@ -4,6 +4,7 @@ import {
     SearchResult,
     SortButton,
     IoReload,
+    VenueBookingsButton,
 } from "../../styles";
 import { baseUrl } from "../../util/global/variables";
 import { SearchComponent } from "../venues/func/search";
@@ -20,6 +21,9 @@ export function Users() {
     const [users, setUsers] = useState<User[]>([]);
     const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
     const [searchResults, setSearchResults] = useState<User[] | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [usersPerPage] = useState(10);
+    const [hasMore, setHasMore] = useState<boolean>(true);
     const accessToken = localStorage.getItem("accessToken");
 
     const {
@@ -27,28 +31,39 @@ export function Users() {
         loading: usersLoading,
         error: userError,
         request: fetchUsers,
-    } = useApi<User[]>(`${baseUrl}/profiles`);
+    } = useApi<User[]>(
+        `${baseUrl}/profiles?limit=${usersPerPage}&page=${currentPage}`
+    );
 
     useEffect(() => {
         const fetchData = async () => {
             if (accessToken) {
-                await fetchUsers("GET", undefined, undefined, accessToken);
+                const response = await fetchUsers(
+                    "GET",
+                    undefined,
+                    undefined,
+                    accessToken
+                );
+                if (Array.isArray(response) && response.length < usersPerPage) {
+                    setHasMore(false);
+                }
             }
         };
         fetchData();
-    }, [accessToken, fetchUsers]);
+    }, [accessToken, fetchUsers, currentPage]);
 
     useEffect(() => {
         if (fetchedUsers) {
-            setUsers(fetchedUsers);
-            setFilteredUsers(fetchedUsers);
-            setSearchResults(fetchedUsers);
+            setUsers((prevUsers) => [...prevUsers, ...fetchedUsers]);
+            setFilteredUsers((prevUsers) => [...prevUsers, ...fetchedUsers]);
         }
     }, [fetchedUsers]);
 
     const handleSearch = (results: User[] | null) => {
         setSearchResults(results);
         setFilteredUsers(results ?? users);
+        setCurrentPage(1);
+        setHasMore(false);
     };
 
     const handleSortChange = (sort: string, sortOrder: string) => {
@@ -69,12 +84,25 @@ export function Users() {
         });
 
         setFilteredUsers(sortedUsers);
+        setCurrentPage(1);
+        setHasMore(true);
     };
 
     const handleClearSearch = () => {
         setFilteredUsers(users);
         setSearchResults(null);
+        setCurrentPage(1);
+        setHasMore(true);
     };
+
+    const handleLoadMore = () => {
+        if (hasMore) {
+            setCurrentPage((prevPage) => prevPage + 1);
+        }
+    };
+
+    // Pagination logic
+    const currentUsers = filteredUsers;
 
     if (usersLoading) return <Loading />;
     if (userError) return <ErrorMessage message={userError.message} />;
@@ -127,13 +155,27 @@ export function Users() {
                     <IoReload />
                 </SortButton>
             </SearchSortingContainer>
-            {filteredUsers.length === 0 ? (
+            {currentUsers.length === 0 ? (
                 <SearchResult>No users found.</SearchResult>
             ) : (
-                filteredUsers.map((user, index) => (
+                currentUsers.map((user, index) => (
                     <UserCard key={`${user.id}+${index}`} user={user} />
                 ))
             )}
+            <SearchSortingContainer>
+                {hasMore && !searchResults ? (
+                    <VenueBookingsButton
+                        onClick={handleLoadMore}
+                        disabled={usersLoading}
+                    >
+                        Load More
+                    </VenueBookingsButton>
+                ) : (
+                    <VenueBookingsButton disabled={true}>
+                        Nothing more to load
+                    </VenueBookingsButton>
+                )}
+            </SearchSortingContainer>
         </UsersSection>
     );
 }
