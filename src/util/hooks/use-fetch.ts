@@ -2,85 +2,90 @@ import axios, { AxiosRequestConfig, AxiosResponse, Method } from "axios";
 import { useCallback, useState } from "react";
 import { UseApiReturn } from "../../types/global";
 /**
- * Custom hook to perform API requests using Axios.
+ * Custom hook for performing API requests with Axios.
+ * Provides a simple interface for managing data, loading states, and errors in React components.
  *
  * @template T - The type of the response data.
  * @param {string} url - The base URL for the API request.
- * @returns {UseApiReturn<T>} An object containing:
+ * @returns {UseApiReturn<T>} - An object containing:
  *
  * ### State Variables:
- * - **`data`** (`T | null`):
- *   - The response data from the API request.
+ * - **`data`** (`T | null`): The API response data or `null` if no data is available.
  *   - Example:
  *     ```typescript
- *     const { data } = useApi<MyDataType>("https://api.example.com/data");
- *     console.log(data); // { id: 1, name: "Item 1" } or null
+ *     const { data } = useApi<MyResponseType>("https://api.example.com/resource");
+ *     console.log(data); // { id: 1, name: "Item" } or null
  *     ```
  *
- * - **`loading`** (`boolean`):
- *   - Indicates if the request is in progress.
+ * - **`loading`** (`boolean`): Indicates whether the API request is in progress.
  *   - Example:
  *     ```typescript
- *     const { loading } = useApi<MyDataType>("https://api.example.com/data");
+ *     const { loading } = useApi<MyResponseType>("https://api.example.com/resource");
  *     if (loading) console.log("Loading...");
  *     ```
  *
- * - **`error`** (`Error | null`):
- *   - Contains an error object if the request fails.
+ * - **`error`** (`Error | null`): An error object if the request fails, or `null` if no error occurred.
  *   - Example:
  *     ```typescript
- *     const { error } = useApi<MyDataType>("https://api.example.com/data");
+ *     const { error } = useApi<MyResponseType>("https://api.example.com/resource");
  *     if (error) console.error(error.message);
  *     ```
  *
  * ### `request` Method:
- * - **Description**:
- *   - A function to make the API request.
+ * - **Description**: A function to initiate an API request.
+ * - **Parameters**:
+ *   - `method` (`Method`): The HTTP method to use (e.g., `"GET"`, `"POST"`, `"PUT"`, `"DELETE"`).
+ *   - `body` (`any`, optional): The request payload for methods like `POST` or `PUT`.
+ *   - `config` (`AxiosRequestConfig`, optional): Additional Axios configuration options.
+ *   - `token` (`string`, optional): A Bearer token for authorization, added to the request headers.
+ * - **Returns**: The API response data (`T`) or `null` if no data is returned.
+ * - **Example**:
+ *   ```typescript
+ *   const { request } = useApi<MyResponseType>("https://api.example.com/resource");
+ *
+ *   useEffect(() => {
+ *     const fetchData = async () => {
+ *       try {
+ *         const data = await request("GET");
+ *         console.log(data); // Response data
+ *       } catch (error) {
+ *         console.error(error.message);
+ *       }
+ *     };
+ *     fetchData();
+ *   }, [request]);
+ *   ```
+ *
+ * ### Features:
+ * - **Error Handling**: Extracts error messages from the API response and provides a fallback message if unavailable.
  *   - Example:
  *     ```typescript
- *     const { request } = useApi<MyDataType>("https://api.example.com/data");
- *     await request("GET");
+ *     const { error } = useApi<MyResponseType>("https://api.example.com/resource");
+ *     if (error) console.error(error.message); // e.g., "Invalid credentials"
  *     ```
  *
- * - **Parameters**:
- *   - `method` (`Method`):
- *     - The HTTP method for the request (e.g., `"GET"`, `"POST"`, `"PUT"`).
- *   - `body` (`any`, optional):
- *     - The request payload for methods like `POST` or `PUT`.
- *   - `config` (`AxiosRequestConfig`, optional):
- *     - Additional Axios configuration options.
- *   - `token` (`string`, optional):
- *     - Bearer token for authorization, appended to the request headers.
- *
- * ### Example Usage:
- * ```tsx
- * const { data, loading, error, request } = useApi<MyResponseType>("https://api.example.com/resource");
- *
- * useEffect(() => {
- *   request("GET");
- * }, []);
- *
- * if (loading) return <p>Loading...</p>;
- * if (error) return <p>Error: {error.message}</p>;
- * return <div>{JSON.stringify(data)}</div>;
- * ```
- *
- * ### Error Handling:
- * - Errors returned by the API are parsed to extract a meaningful message, if available.
- * - If no error message is provided by the API, a default message `"An error occurred"` is used.
- *
- * ### Special Header Example:
- * - The hook includes a custom header:
- *   ```typescript
- *   headers: {
- *       "X-Noroff-API-Key": "cda1b6c4-89c7-41ec-9483-1fdbf3d819ec"
- *   }
- *   ```
+ * - **Headers with API Key**: Automatically includes an `X-Noroff-API-Key` header.
  *   - Example:
  *     ```typescript
  *     await request("GET", null, { headers: { CustomHeader: "value" } });
  *     ```
+ *
+ * - **State Management**: Simplifies the handling of loading and error states in React components.
+ *   - Example:
+ *     ```tsx
+ *     const { loading, error, data } = useApi<MyResponseType>("https://api.example.com/resource");
+ *
+ *     if (loading) return <p>Loading...</p>;
+ *     if (error) return <p>Error: {error.message}</p>;
+ *     return <div>{JSON.stringify(data)}</div>;
+ *     ```
+ *
+ * ### Special Notes:
+ * - Clones and extends `config.headers` with the `Authorization` header if a `token` is provided.
+ * - Automatically manages `data`, `loading`, and `error` state transitions for requests.
+ * - Ensures safe error handling for both API and network errors.
  */
+
 export function useApi<T = any>(url: string): UseApiReturn<T> {
     const [data, setData] = useState<T | null>(null);
     const [loading, setLoading] = useState(false);

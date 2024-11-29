@@ -12,7 +12,45 @@ export type RegistrationFormData = {
     venueManager: boolean;
 };
 export type LoginFormData = Pick<RegistrationFormData, "email" | "password">;
+export interface ConfirmationModalProps {
+    isOpen: boolean;
+    message: string;
+    onConfirm: (formData?: VenueFormData) => void;
+    onCancel: () => void;
+}
+export interface SortingComponentProps {
+    onSortChange: (
+        sort: "created" | "name" | "price" | "rating",
+        sortOrder: "asc" | "desc"
+    ) => void;
+    defaultSort?: "created" | "name" | "price" | "rating";
+    defaultSortOrder?: "asc" | "desc";
+}
+export interface CalendarComponentProps {
+    dateRange: [Date, Date] | null;
+    setDateRange: (range: [Date, Date]) => void;
+    isDateUnavailable: (date: Date) => boolean;
+    getTileClassName: ({ date }: { date: Date }) => string;
+}
 
+export type User = {
+    id: number;
+    name: string;
+    email: string;
+    avatar: {
+        url: string;
+        alt: string;
+    };
+    banner: {
+        url: string;
+        alt: string;
+    };
+    venueManager: boolean;
+    _count: {
+        venues: number;
+        bookings: number;
+    };
+};
 export type Accommodation = {
     id: string;
     name: string;

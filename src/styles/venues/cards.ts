@@ -34,6 +34,10 @@ export const OwnerNameImg = styled.div`
     align-items: end;
     gap: 0.5rem;
     position: relative;
+    transition: scale 0.1s;
+    &:hover {
+        scale: 1.01;
+    }
     > img {
         width: 3rem;
         height: 3rem;
@@ -43,6 +47,11 @@ export const OwnerNameImg = styled.div`
     > p {
         padding-bottom: 0.5rem;
         font-size: 1.5rem;
+        width: 100%;
+        max-width: 12rem;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 `;
 export const VenueImageContainer = styled.div`

@@ -6,6 +6,7 @@ export * from "../styles/venues/search-sorting";
 export * from "../styles/venues/container";
 export * from "../styles/auth/auth";
 export * from "../styles/layout/nav";
+export * from "../styles/layout/boxes";
 export * from "../styles/profile/profile";
 export * from "./bookings/booking-profile";
 export * from "./layout/nav";

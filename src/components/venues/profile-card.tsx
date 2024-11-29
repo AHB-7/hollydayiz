@@ -1,5 +1,6 @@
 import { VenueCard, VenueInfoContainer } from "../../styles/index";
-import { ProfileLink } from "./func/link-to-profiles";
+import { ProfileLink } from "../global/link-to-profiles";
+
 export function ProfilesCardsLinks({
     profile,
 }: {

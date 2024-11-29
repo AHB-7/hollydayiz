@@ -1,3 +1,17 @@
+/**
+ * SortingComponent allows users to select a sorting field and order for data.
+ * It manages sorting options and triggers a callback with the selected sorting parameters.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {(sort: string, sortOrder: string) => void} props.onSortChange - Callback function triggered when sorting is applied.
+ *
+ * @example
+ * <SortingComponent
+ *   onSortChange={(sort, sortOrder) => console.log("Sort:", sort, "Order:", sortOrder)}
+ * />
+ */
+
 import { useState } from "react";
 import {
     MdFilterList,
@@ -6,24 +20,35 @@ import {
     SortOptions,
     VenueBookingsButton,
 } from "../../../styles";
+import { SortingComponentProps } from "../../../types/global";
 
-interface SortingComponentProps {
-    onSortChange: (sort: string, sortOrder: string) => void;
-}
+export function SortingComponent({
+    onSortChange,
+    defaultSort = "created",
+    defaultSortOrder = "desc",
+}: SortingComponentProps) {
+    const [sort, setSort] = useState<"created" | "name" | "price" | "rating">(
+        defaultSort
+    );
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">(
+        defaultSortOrder
+    );
+    const [isSortingVisible, setIsSortingVisible] = useState<boolean>(false);
 
-export function SortingComponent({ onSortChange }: SortingComponentProps) {
-    const [sort, setSort] = useState<string>("created");
-    const [sortOrder, setSortOrder] = useState<string>("desc");
-    const [sortCompActive, setSortCompActive] = useState<boolean>(false);
+    const [tempSort, setTempSort] = useState<
+        "created" | "name" | "price" | "rating"
+    >(sort);
+    const [tempSortOrder, setTempSortOrder] = useState<"asc" | "desc">(
+        sortOrder
+    );
 
-    const [tempSort, setTempSort] = useState<string>(sort);
-    const [tempSortOrder, setTempSortOrder] = useState<string>(sortOrder);
-
-    const handleSortChange = (newSort: string) => {
+    const handleSortChange = (
+        newSort: "created" | "name" | "price" | "rating"
+    ) => {
         setTempSort(newSort);
     };
 
-    const handleSortOrderChange = (order: string) => {
+    const handleSortOrderChange = (order: "asc" | "desc") => {
         setTempSortOrder(order);
     };
 
@@ -33,25 +58,33 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
 
         onSortChange(tempSort, tempSortOrder);
 
-        setSortCompActive(false);
+        setIsSortingVisible(false);
     };
 
     return (
         <SortingContainer>
             <SortButton
-                title="filter"
-                onClick={() => setSortCompActive(!sortCompActive)}
+                title="Toggle sorting options"
+                onClick={() => setIsSortingVisible(!isSortingVisible)}
             >
                 <MdFilterList />
             </SortButton>
 
-            {sortCompActive && (
+            {isSortingVisible && (
                 <SortOptions>
                     <label htmlFor="sort">Sort By:</label>
                     <select
                         id="sort"
                         value={tempSort}
-                        onChange={(e) => handleSortChange(e.target.value)}
+                        onChange={(e) =>
+                            handleSortChange(
+                                e.target.value as
+                                    | "created"
+                                    | "name"
+                                    | "price"
+                                    | "rating"
+                            )
+                        }
                     >
                         <option value="created">Created</option>
                         <option value="name">Name</option>
@@ -68,7 +101,9 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                                 value="asc"
                                 checked={tempSortOrder === "asc"}
                                 onChange={(e) =>
-                                    handleSortOrderChange(e.target.value)
+                                    handleSortOrderChange(
+                                        e.target.value as "asc" | "desc"
+                                    )
                                 }
                             />
                             Ascending
@@ -80,7 +115,9 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                                 value="desc"
                                 checked={tempSortOrder === "desc"}
                                 onChange={(e) =>
-                                    handleSortOrderChange(e.target.value)
+                                    handleSortOrderChange(
+                                        e.target.value as "asc" | "desc"
+                                    )
                                 }
                             />
                             Descending
@@ -88,7 +125,7 @@ export function SortingComponent({ onSortChange }: SortingComponentProps) {
                     </fieldset>
 
                     <VenueBookingsButton
-                        title="Click to confirm sorting"
+                        title="Apply sorting"
                         onClick={handleDone}
                     >
                         Done

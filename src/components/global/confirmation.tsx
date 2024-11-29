@@ -1,13 +1,36 @@
+/**
+ * ConfirmationModal is a reusable modal component for confirming or canceling an action.
+ * It displays a message and provides buttons for "Cancel" and "Confirm".
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {boolean} props.isOpen - Controls whether the modal is displayed.
+ * @param {string} props.message - The confirmation message to display in the modal.
+ * @param {(formData?: VenueFormData) => void} props.onConfirm - Callback function triggered when the "Confirm" button is clicked.
+ * @param {() => void} props.onCancel - Callback function triggered when the "Cancel" button is clicked.
+ *
+ * @example
+ * const [isModalOpen, setIsModalOpen] = useState(false);
+ * const handleConfirm = () => {
+ *   console.log("Confirmed!");
+ *   setIsModalOpen(false);
+ * };
+ * const handleCancel = () => {
+ *   console.log("Canceled!");
+ *   setIsModalOpen(false);
+ * };
+ *
+ * <ConfirmationModal
+ *   isOpen={isModalOpen}
+ *   message="Are you sure you want to proceed?"
+ *   onConfirm={handleConfirm}
+ *   onCancel={handleCancel}
+ * />
+ */
+
 import React from "react";
 import styled from "styled-components";
-import { VenueFormData } from "../../types/global";
-
-interface ConfirmationModalProps {
-    isOpen: boolean;
-    message: string;
-    onConfirm: (formData?: VenueFormData) => void;
-    onCancel: () => void;
-}
+import { ConfirmationModalProps } from "../../types/global";
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
     isOpen,

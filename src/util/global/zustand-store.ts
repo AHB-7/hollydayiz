@@ -2,69 +2,52 @@ import { create } from "zustand";
 import { Store } from "../../types/global";
 
 /**
- * Zustand store for managing global state with persistent localStorage integration.
+ * Zustand store for managing user preferences and global application state.
+ *
+ * This store provides persistent state management by integrating `localStorage` to save and retrieve values.
+ * The state includes user-specific data such as authentication, profile details, and application preferences.
  *
  * ### State Variables:
+ * - **`accessToken`**: Authentication token for the user.
+ *   - **Type**: `string | null`
+ *   - **Description**: Stores the user's access token for API authentication.
+ *   - **Persistence**: Saved to `localStorage` with key `"accessToken"`.
  *
- * - **`accessToken`**:
- *   - Description: Authentication token for the user.
- *   - Type: `string | null`
- *   - Example:
- *     ```typescript
- *     const { accessToken } = useUserPreferences();
- *     console.log(accessToken); // "abcd1234" or null
- *     ```
+ * - **`navbarState`**: Tracks the visibility of the navigation bar.
+ *   - **Type**: `boolean`
+ *   - **Description**: `true` if the navigation bar is open; otherwise, `false`.
+ *   - **Persistence**: Saved to `localStorage` with key `"navbarState"`.
  *
- * - **`navbarState`**:
- *   - Description: Boolean indicating if the navbar is open or closed.
- *   - Type: `boolean`
- *   - Example:
- *     ```typescript
- *     const { navbarState } = useUserPreferences();
- *     console.log(navbarState); // true or false
- *     ```
+ * - **`mail`**: The user's email address.
+ *   - **Type**: `string | null`
+ *   - **Description**: Email address of the authenticated user.
+ *   - **Persistence**: Saved to `localStorage` with key `"mail"`.
  *
- * - **`mail`**:
- *   - Description: Email address of the user.
- *   - Type: `string | null`
- *   - Example:
- *     ```typescript
- *     const { mail } = useUserPreferences();
- *     console.log(mail); // "user@example.com" or null
- *     ```
+ * - **`name`**: The user's name.
+ *   - **Type**: `string | null`
+ *   - **Description**: Name of the authenticated user.
+ *   - **Persistence**: Saved to `localStorage` with key `"name"`.
  *
- * - **`name`**:
- *   - Description: Name of the user.
- *   - Type: `string | null`
- *   - Example:
- *     ```typescript
- *     const { name } = useUserPreferences();
- *     console.log(name); // "John Doe" or null
- *     ```
+ * - **`otherUsersName`**: Tracks the name of another user's profile being viewed.
+ *   - **Type**: `string | null`
+ *   - **Description**: Name of the profile currently being interacted with.
+ *   - **Persistence**: Saved to `localStorage` with key `"otherUsersName"`.
  *
- * - **`otherUsersName`**:
- *   - Description: Stores the name of the profile being viewed.
- *   - Type: `string | null`
- *   - Example:
- *     ```typescript
- *     const { otherUsersName } = useUserPreferences();
- *     console.log(otherUsersName); // "Jane Smith" or null
- *     ```
+ * - **`venueManager`**: Indicates whether the user is a venue manager.
+ *   - **Type**: `boolean`
+ *   - **Description**: `true` if the user manages venues; otherwise, `false`.
+ *   - **Persistence**: Saved to `localStorage` with key `"venueManager"`.
  *
- * - **`venueManager`**:
- *   - Description: Boolean indicating if the user is a venue manager.
- *   - Type: `boolean`
- *   - Example:
- *     ```typescript
- *     const { venueManager } = useUserPreferences();
- *     console.log(venueManager); // true or false
- *     ```
+ * - **`venueContainer`**: Tracks the state of the venue container.
+ *   - **Type**: `boolean`
+ *   - **Description**: Custom state for managing venue-related container visibility or logic.
+ *   - **Persistence**: Saved to `localStorage` with key `"venueContainer"`.
  *
  * ### Methods:
- *
  * - **`setAccessToken(token: string | null)`**:
- *   - Description: Updates and persists the authentication token in `localStorage`.
- *   - Example:
+ *   - **Description**: Updates and persists the user's authentication token.
+ *   - **Parameters**: `token` - The access token or `null` to remove it.
+ *   - **Example**:
  *     ```typescript
  *     const { setAccessToken } = useUserPreferences();
  *     setAccessToken("abcd1234"); // Save token
@@ -72,17 +55,19 @@ import { Store } from "../../types/global";
  *     ```
  *
  * - **`setNavbarState(state: boolean)`**:
- *   - Description: Updates and persists the navbar's visibility state.
- *   - Example:
+ *   - **Description**: Updates and persists the navigation bar's visibility state.
+ *   - **Parameters**: `state` - `true` to show the navbar; `false` to hide it.
+ *   - **Example**:
  *     ```typescript
  *     const { setNavbarState } = useUserPreferences();
- *     setNavbarState(true); // Navbar is open
- *     setNavbarState(false); // Navbar is closed
+ *     setNavbarState(true); // Open navbar
+ *     setNavbarState(false); // Close navbar
  *     ```
  *
  * - **`setMail(mail: string | null)`**:
- *   - Description: Updates and persists the user's email in `localStorage`.
- *   - Example:
+ *   - **Description**: Updates and persists the user's email address.
+ *   - **Parameters**: `mail` - The user's email address or `null` to remove it.
+ *   - **Example**:
  *     ```typescript
  *     const { setMail } = useUserPreferences();
  *     setMail("user@example.com"); // Save email
@@ -90,8 +75,9 @@ import { Store } from "../../types/global";
  *     ```
  *
  * - **`setName(name: string | null)`**:
- *   - Description: Updates and persists the user's name in `localStorage`.
- *   - Example:
+ *   - **Description**: Updates and persists the user's name.
+ *   - **Parameters**: `name` - The user's name or `null` to remove it.
+ *   - **Example**:
  *     ```typescript
  *     const { setName } = useUserPreferences();
  *     setName("John Doe"); // Save name
@@ -99,29 +85,40 @@ import { Store } from "../../types/global";
  *     ```
  *
  * - **`setOtherUsersName(name: string | null)`**:
- *   - Description: Updates the name of the profile being viewed.
- *   - Example:
+ *   - **Description**: Updates the name of another user's profile being viewed.
+ *   - **Parameters**: `name` - The name of the other user or `null` to clear it.
+ *   - **Example**:
  *     ```typescript
  *     const { setOtherUsersName } = useUserPreferences();
- *     setOtherUsersName("Jane Smith"); // Save other user's name
- *     setOtherUsersName(null); // Remove other user's name
+ *     setOtherUsersName("Jane Smith"); // Save name
+ *     setOtherUsersName(null); // Clear name
  *     ```
  *
  * - **`setVenueManager(venueManager: boolean)`**:
- *   - Description: Updates and persists the venue manager status.
- *   - Example:
+ *   - **Description**: Updates and persists whether the user is a venue manager.
+ *   - **Parameters**: `venueManager` - `true` if the user is a venue manager; otherwise, `false`.
+ *   - **Example**:
  *     ```typescript
  *     const { setVenueManager } = useUserPreferences();
  *     setVenueManager(true); // User is a venue manager
  *     setVenueManager(false); // User is not a venue manager
  *     ```
  *
+ * - **`setVenueContainer(venueContainer: boolean)`**:
+ *   - **Description**: Updates the state of the venue container.
+ *   - **Parameters**: `venueContainer` - `true` or `false`.
+ *   - **Example**:
+ *     ```typescript
+ *     const { setVenueContainer } = useUserPreferences();
+ *     setVenueContainer(true); // Update state
+ *     ```
+ *
  * - **`initializeFromStorage()`**:
- *   - Description: Initializes the state from `localStorage` values.
- *   - Example:
+ *   - **Description**: Initializes the store's state from `localStorage` values.
+ *   - **Example**:
  *     ```typescript
  *     const { initializeFromStorage } = useUserPreferences();
- *     initializeFromStorage(); // Load initial state from localStorage
+ *     initializeFromStorage(); // Load initial state
  *     ```
  */
 export const useUserPreferences = create<Store>((set) => ({

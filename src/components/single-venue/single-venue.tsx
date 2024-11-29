@@ -32,7 +32,8 @@ import "react-calendar/dist/Calendar.css";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { Booking, Stars, ProfileLink } from "../../components/index";
+import { Booking, Stars } from "../../components/index";
+import { ProfileLink } from "../../components/global/link-to-profiles";
 import {
     VenueBookingsButton,
     VenueInfoContainer,

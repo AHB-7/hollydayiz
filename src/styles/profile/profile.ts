@@ -32,7 +32,7 @@ export const ProfileAvatar = styled.img`
     border-radius: 50%;
     object-fit: cover;
 `;
-export const ProfileInfo = styled.div`
+export const ProfileInfo = styled.section`
     display: flex;
     flex-direction: column;
     align-items: center;

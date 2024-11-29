@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const NavContainer = styled.div`
+export const NavContainer = styled.nav`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@ export const NavContainer = styled.div`
     width: 100%;
     max-width: 1200px;
 `;
-export const Navbar = styled.nav`
+export const Navbar = styled.div`
     background-color: ${({ theme }) => theme.colors.text};
     position: absolute;
     padding: 0.5rem 0.7rem;

@@ -66,7 +66,7 @@ export function Navbar() {
     const verified = Boolean(accessToken);
 
     return (
-        <NavContainer>
+        <NavContainer >
             <NavbarSc>
                 <UpperNav>
                     <Link to="/">

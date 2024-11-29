@@ -12,7 +12,7 @@ import {
 import { Stars } from "../global/rating";
 import { IoPeopleSharp } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { ProfileLink } from "./func/link-to-profiles";
+import { ProfileLink } from "../global/link-to-profiles";
 import { Accommodation } from "../../types/global";
 
 export function VenueCardComponent({

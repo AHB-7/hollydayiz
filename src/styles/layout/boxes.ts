@@ -1,0 +1,73 @@
+import styled, { keyframes } from "styled-components";
+
+export const CenteredContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    background-color: ${({ theme }) => theme.colors.background};
+`;
+
+export const ErrorContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #f44336;
+    border-radius: 5px;
+    background-color: #ffebee;
+    color: #d32f2f;
+    font-size: 14px;
+    font-weight: 500;
+`;
+
+export const ErrorIcon = styled.span`
+    margin-right: 8px;
+    font-size: 16px;
+`;
+export const l10 = keyframes`
+  90%, 100% {
+    transform: translate(300%);
+  }
+`;
+
+export const LoaderContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+`;
+
+export const Loader = styled.div`
+    width: 40px;
+    aspect-ratio: 1;
+    padding: 5px;
+    box-sizing: border-box;
+    display: grid;
+    background: #fff;
+    filter: blur(4px) contrast(10);
+    mix-blend-mode: darken;
+
+    &::before,
+    &::after {
+        content: "";
+        grid-area: 1 / 1;
+        background: linear-gradient(#000 0 0) left,
+            linear-gradient(#000 0 0) right;
+        background-size: 10px 20px;
+        background-origin: content-box;
+        background-repeat: no-repeat;
+    }
+
+    &::after {
+        height: 10px; /* Smaller circle */
+        width: 10px;
+        margin: auto 0;
+        border-radius: 50%;
+        background: #000;
+        animation: ${l10} 1s infinite;
+    }
+`;

@@ -1,33 +1,17 @@
+/**
+ * ErrorMessage is a reusable component that displays an error message
+ * inside a styled container with an accompanying icon.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {string} props.message - The error message to display.
+ *
+ * @example
+ * <ErrorMessage message="An unexpected error occurred." />
+ */
+
 import React from "react";
-import styled from "styled-components";
-
-const CenteredContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    width: 100%;
-    background-color: ${({ theme }) => theme.colors.background};
-`;
-
-const ErrorContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #f44336;
-    border-radius: 5px;
-    background-color: #ffebee;
-    color: #d32f2f;
-    font-size: 14px;
-    font-weight: 500;
-`;
-
-const ErrorIcon = styled.span`
-    margin-right: 8px;
-    font-size: 16px;
-`;
+import { CenteredContainer, ErrorContainer, ErrorIcon } from "../../styles";
 
 interface ErrorMessageProps {
     message: string;
