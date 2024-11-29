@@ -14,6 +14,7 @@ import { ErrorMessage } from "../global/error-message";
 import { Loading } from "../global/loading";
 import { SortingComponent } from "../venues/func/sorting";
 import { User } from "../../types/global";
+import { Helmet } from "react-helmet-async";
 
 export function Users() {
     const [users, setUsers] = useState<User[]>([]);
@@ -79,6 +80,36 @@ export function Users() {
 
     return (
         <UsersSection>
+            <Helmet>
+                <title>Users - Explore Profiles</title>
+                <meta
+                    name="description"
+                    content="Browse user profiles, connect with venue managers, and explore the profiles of our vibrant community. Find detailed user information tailored for your interactions."
+                />
+                <meta
+                    name="keywords"
+                    content="users, profiles, venue managers, community, travel connections, user information, social connections"
+                />
+                <meta name="author" content="Your Company Name" />
+                <meta
+                    property="og:title"
+                    content="Users - Connect with Our Community"
+                />
+                <meta
+                    property="og:description"
+                    content="Explore user profiles and connect with venue managers for your travel plans. Discover a diverse community of users ready to assist you."
+                />
+                <meta
+                    property="og:image"
+                    content="/user-profile-placeholder.png"
+                />
+                <meta
+                    property="og:url"
+                    content="https://hollydays.netlify.app/users"
+                />
+                <meta property="og:type" content="website" />
+                <meta property="twitter:card" content="summary_large_image" />
+            </Helmet>
             <SearchSortingContainer>
                 <SearchComponent
                     baseUrl={baseUrl}
