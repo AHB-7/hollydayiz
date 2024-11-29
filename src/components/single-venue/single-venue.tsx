@@ -77,7 +77,7 @@ export function SingleVenue() {
     const toggleActiveState = () => setNavbarState(!navbarState);
 
     const confirmEdit = async (formData?: VenueFormData) => {
-        const data = formData || pendingEditData; // Fallback to pendingEditData
+        const data = formData || pendingEditData; 
         if (!data || !venue) return;
 
         try {
@@ -255,7 +255,7 @@ export function SingleVenue() {
                                 <ConfirmationModal
                                     isOpen={editConfirmationOpen}
                                     message="Are you sure you want to save these changes?"
-                                    onConfirm={() => confirmEdit()} // Explicitly pass no arguments
+                                    onConfirm={() => confirmEdit()} 
                                     onCancel={() =>
                                         setEditConfirmationOpen(false)
                                     }

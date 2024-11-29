@@ -3,6 +3,7 @@ import { Venues } from "../components/venues/venues";
 import { Register } from "../components/auth/register";
 import { SingleProfile } from "../components/profile/single-profile";
 import { Users } from "../components/users/users";
+import { SingleVenue } from "../components";
 
 export function AppRouter() {
     return (
@@ -14,7 +15,7 @@ export function AppRouter() {
                 path="/holidaze/profiles/:username"
                 element={<SingleProfile />}
             />
-            <Route path="/holidaze/venues/:venueId" element={<Venues />} />
+            <Route path="/holidaze/venues/:venueId" element={<SingleVenue />} />
         </Routes>
     );
 }

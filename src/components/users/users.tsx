@@ -57,19 +57,20 @@ export function Users() {
             let bValue = b[sort as keyof User];
 
             if (sort === "name") {
-                aValue = aValue.toString().toLowerCase();
-                bValue = bValue.toString().toLowerCase();
+                aValue = aValue ? aValue.toString().toLowerCase() : "";
+                bValue = bValue ? bValue.toString().toLowerCase() : "";
             }
 
-            if (aValue < bValue) return sortOrder === "asc" ? -1 : 1;
-            if (aValue > bValue) return sortOrder === "asc" ? 1 : -1;
+            if ((aValue ?? "") < (bValue ?? ""))
+                return sortOrder === "asc" ? -1 : 1;
+            if ((aValue ?? "") > (bValue ?? ""))
+                return sortOrder === "asc" ? 1 : -1;
             return 0;
         });
 
         setFilteredUsers(sortedUsers);
     };
 
-    // Clear search results
     const handleClearSearch = () => {
         setFilteredUsers(users);
         setSearchResults(null);
@@ -129,8 +130,8 @@ export function Users() {
             {filteredUsers.length === 0 ? (
                 <SearchResult>No users found.</SearchResult>
             ) : (
-                filteredUsers.map((user) => (
-                    <UserCard key={user.id} user={user} />
+                filteredUsers.map((user, index) => (
+                    <UserCard key={`${user.id}+${index}`} user={user} />
                 ))
             )}
         </UsersSection>

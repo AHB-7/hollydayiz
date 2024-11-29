@@ -1,30 +1,36 @@
 import { GiPlagueDoctorProfile } from "react-icons/gi";
-import { FirstRow, SecondRow, SingleUserCard } from "../../styles/users/users";
-import { ProfileLink } from "../global/link-to-profiles";
+import {
+    FirstRow,
+    IfManager,
+    SingleUserCard,
+    UserImage,
+    UserInfo,
+} from "../../styles/users/users";
+import { User } from "../../types/global";
+import { Link } from "react-router-dom";
 
-export function UserCard({ user }: { user: any }) {
+export function UserCard({ user }: { user: User }) {
     return (
-        <SingleUserCard backgroundImage={`${user.banner.url}`}>
+        <SingleUserCard as={Link} to={`/holidaze/profiles/${user.name}`}>
+            <UserImage src={`${user.avatar.url}`} alt={`${user.avatar.alt}`} />
             <FirstRow>
-                <ProfileLink
-                    name={user.name}
-                    url={user.avatar.url}
-                    alt={user.name.alt}
-                />{" "}
-                {user.venueManager && (
-                    <div>
-                        <p>Manager</p>
-                        <GiPlagueDoctorProfile />
-                    </div>
-                )}
+                <IfManager>
+                    <h2>{user.name}</h2>
+                    {user.venueManager && (
+                        <div>
+                            <GiPlagueDoctorProfile />
+                            <p>Manager</p>
+                        </div>
+                    )}
+                </IfManager>
+                <UserInfo>
+                    <p>
+                        <strong>{user.email}</strong>
+                    </p>
+                    <p>Venues: {user._count.venues}</p>
+                    <p>Bookings: {user._count.bookings}</p>
+                </UserInfo>
             </FirstRow>
-            <p>
-                <strong>{user.email}</strong>
-            </p>
-            <SecondRow>
-                <p>Venues: {user._count.venues}</p>
-                <p>Bookings: {user._count.bookings}</p>
-            </SecondRow>
         </SingleUserCard>
     );
 }

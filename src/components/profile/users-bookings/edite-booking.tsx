@@ -27,8 +27,8 @@ export function EditBookingForm({
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
     const confirmSaveChanges = () => {
-        handleSaveChanges(); // Save changes after confirmation
-        setConfirmationOpen(false); // Close the modal
+        handleSaveChanges();
+        setConfirmationOpen(false); 
     };
 
     return (

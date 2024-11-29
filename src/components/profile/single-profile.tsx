@@ -16,7 +16,7 @@ import {
     Error,
 } from "../../styles/index";
 import { useApi } from "../../util/hooks/use-fetch";
-import { SingleUser, VenueFormData } from "../../types/global";
+import { Accommodation, SingleUser, VenueFormData } from "../../types/global";
 import { useEffect, useState } from "react";
 import { UserBooking } from "./users-bookings/main";
 import { baseUrl } from "../../util/global/variables";
@@ -28,6 +28,19 @@ import { EditProfile } from "./edit/edit-profile";
 import { Loading } from "../global/loading";
 import { ErrorMessage } from "../global/error-message";
 import { Helmet } from "react-helmet-async";
+
+const mapAccommodationToVenueFormData = (
+    accommodation: Accommodation
+): VenueFormData => ({
+    name: accommodation.name,
+    description: accommodation.description,
+    media: accommodation.media,
+    price: accommodation.price,
+    maxGuests: accommodation.maxGuests,
+    rating: accommodation.rating,
+    meta: accommodation.meta,
+    location: accommodation.location,
+});
 
 export function SingleProfile() {
     const {
@@ -260,6 +273,7 @@ export function SingleProfile() {
             </ProfileBannerContainer>
             <ProfileInfo>
                 <ProfileName>{user?.name}</ProfileName>
+                <p>{user?.email}</p>
                 <ProfileBioContainer>
                     <h2>Bio</h2>
                     <p>{user?.bio || "No bio available"}</p>
@@ -333,7 +347,11 @@ export function SingleProfile() {
                                             venue={venue}
                                             showOwner={false}
                                             onEdit={() => {
-                                                setEditingVenue(venue);
+                                                const venueFormData =
+                                                    mapAccommodationToVenueFormData(
+                                                        venue
+                                                    );
+                                                setEditingVenue(venueFormData);
                                                 setVenueContainer(true);
                                             }}
                                         />

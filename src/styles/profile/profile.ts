@@ -43,7 +43,7 @@ export const ProfileInfo = styled.section`
 export const ProfileName = styled.h1`
     margin-top: 3rem;
     font-size: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.2rem;
 `;
 export const ProfileBioContainer = styled.div`
     margin-top: 1rem;
@@ -79,6 +79,7 @@ export const ProfileBioContainer = styled.div`
 `;
 export const VenuesContainerStyled = styled(VenuesContainer)`
     padding: 0.5rem 0;
+    width: 100%;
 `;
 export const ToggleDown = styled.button`
     color: ${(props) => props.theme.colors.text};

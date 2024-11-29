@@ -71,3 +71,57 @@ export const Loader = styled.div`
         animation: ${l10} 1s infinite;
     }
 `;
+
+export const Overlay = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+`;
+
+export const Modal = styled.div`
+    background-color: ${({ theme }) => theme.colors.text};
+    padding: 2rem;
+    border-radius: 0.5rem;
+    width: 300px;
+    text-align: center;
+`;
+
+export const Message = styled.p`
+    font-size: 16px;
+    color: ${({ theme }) => theme.colors.background};
+`;
+
+export const Actions = styled.div`
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+`;
+
+export const Button = styled.button`
+    background-color: ${({ theme }) => theme.colors.dangerous};
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+
+    &:hover {
+        background-color: #0056b3;
+    }
+
+    &:last-child {
+        background-color: ${({ theme }) => theme.colors.primary};
+
+        &:hover {
+            background-color: #a71d2a;
+        }
+    }
+`;

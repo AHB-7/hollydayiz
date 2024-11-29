@@ -31,5 +31,4 @@ export const EditCheckbox = forwardRef<HTMLInputElement, EditCheckboxProps>(
     )
 );
 
-// Set the display name for debugging
 EditCheckbox.displayName = "EditCheckbox";

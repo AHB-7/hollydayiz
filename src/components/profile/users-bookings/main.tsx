@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useApi } from "../../../util/hooks/use-fetch";
 import { BookingContainer, Error } from "../../../styles/index";
 import { BookingList } from "./booking-list";
@@ -8,10 +9,10 @@ import { Loading } from "../../global/loading";
 import ConfirmationModal from "../../global/confirmation";
 
 export function UserBooking() {
+    const { username } = useParams<{ username: string }>(); 
     const apiToken = localStorage.getItem("accessToken");
-    const userProfileName = localStorage.getItem("otherUsersName");
+    const loggedInUserName = localStorage.getItem("name");
     const [profileOwner, setProfileOwner] = useState(false);
-    const name = localStorage.getItem("name");
     const [editingBooking, setEditingBooking] =
         useState<UserBookingTypes | null>(null);
     const [editDateRange, setEditDateRange] = useState<[Date, Date] | null>(
@@ -28,16 +29,14 @@ export function UserBooking() {
         error,
         request: apiRequest,
     } = useApi<UserBookingTypes[]>(
-        `${baseUrl}/profiles/${userProfileName}/bookings?_venue=true`
+        `${baseUrl}/profiles/${username}/bookings?_venue=true`
     );
     const deleteRequest = useApi(`${baseUrl}/bookings`);
     const updateRequest = useApi(`${baseUrl}/bookings`);
 
     useEffect(() => {
-        if (name === userProfileName) {
-            setProfileOwner(true);
-        }
-    }, [name, userProfileName]);
+        setProfileOwner(loggedInUserName === username);
+    }, [loggedInUserName, username]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,7 +45,7 @@ export function UserBooking() {
             }
         };
         fetchData();
-    }, [apiToken]);
+    }, [apiToken, username]); 
 
     useEffect(() => {
         if (user) {
