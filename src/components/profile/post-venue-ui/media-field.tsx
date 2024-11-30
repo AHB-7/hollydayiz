@@ -1,6 +1,8 @@
 import {
     Error,
     FormInputVenue,
+    ImageReview,
+    ImageReviewContainer,
     Label,
     MediaContainer,
     SubmitBtnVenue,
@@ -64,6 +66,14 @@ export function MediaFields({
                                 <Error>{errors.media[index].alt.message}</Error>
                             )}
                         </Label>
+                        {media[index].url && (
+                            <ImageReviewContainer>
+                                <ImageReview
+                                    src={`${media[index].url}`}
+                                    alt={`${media[index].alt}`}
+                                />
+                            </ImageReviewContainer>
+                        )}
                         <button
                             type="button"
                             onClick={() => removeMedia(index)}

@@ -149,3 +149,25 @@ export const SuccessMessageForPost = styled.div`
         font-size: 5rem;
     }
 `;
+export const ImageReviewContainer = styled.div`
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex: 0.4;
+`;
+export const ImageReview = styled.img`
+    width: 100%;
+    height: 9rem;
+    object-fit: cover;
+    border-radius: 1rem;
+`;
+export const AvatarReview = styled.img`
+    width: 100%;
+    height: 6rem;
+    width: 6rem;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-top: 0.5rem;
+`;

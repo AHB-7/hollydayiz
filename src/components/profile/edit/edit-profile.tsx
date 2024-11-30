@@ -9,6 +9,10 @@ import {
     SubmitBtnVenue as SubmitButton,
     SuccessMessageForPost,
     EditTextArea,
+    ImageReviewContainer,
+    ImageReview,
+    TwoInputsInRow,
+    AvatarReview,
 } from "../../../styles/index";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { EditCheckbox } from "./checkbox";
@@ -46,12 +50,16 @@ export const EditProfile: React.FC<EditProfileProps> = ({
         formState: { errors },
         control,
         reset,
+        watch,
     } = useForm<EditProfileData>({
         defaultValues: initialData,
     });
 
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const [formData, setFormData] = useState<EditProfileData | null>(null);
+
+    const [bannerError, setBannerError] = useState(false);
+    const [avatarError, setAvatarError] = useState(false);
 
     useEffect(() => {
         reset(initialData);
@@ -68,6 +76,9 @@ export const EditProfile: React.FC<EditProfileProps> = ({
         }
         setConfirmationOpen(false);
     };
+
+    const bannerUrl = watch("bannerUrl");
+    const avatarUrl = watch("avatarUrl");
 
     return (
         <VenueContainer>
@@ -89,7 +100,6 @@ export const EditProfile: React.FC<EditProfileProps> = ({
                         <Error>{errors.bannerUrl.message}</Error>
                     )}
                 </Label>
-
                 <Label>
                     Banner Alt:
                     <FormInput
@@ -107,43 +117,67 @@ export const EditProfile: React.FC<EditProfileProps> = ({
                         <Error>{errors.bannerAlt.message}</Error>
                     )}
                 </Label>
-
-                <Label>
-                    Avatar URL:
-                    <FormInput
-                        {...register("avatarUrl", {
-                            required: "Avatar URL is required",
-                            pattern: {
-                                value: /^https?:\/\/.+$/,
-                                message: "Invalid URL format",
-                            },
-                        })}
-                        type="text"
-                        placeholder="Enter avatar URL"
+                <ImageReviewContainer>
+                    <ImageReview
+                        src={
+                            bannerError
+                                ? "/default-banner.jpg"
+                                : bannerUrl || initialData.bannerUrl
+                        }
+                        alt={initialData.bannerAlt || "Banner Image"}
+                        onError={() => setBannerError(false)}
                     />
-                    {errors.avatarUrl && (
-                        <Error>{errors.avatarUrl.message}</Error>
-                    )}
-                </Label>
-
-                <Label>
-                    Avatar Alt:
-                    <FormInput
-                        {...register("avatarAlt", {
-                            maxLength: {
-                                value: 160,
-                                message:
-                                    "Alt text must be 160 characters or less",
-                            },
-                        })}
-                        type="text"
-                        placeholder="Enter avatar alt text"
-                    />
-                    {errors.avatarAlt && (
-                        <Error>{errors.avatarAlt.message}</Error>
-                    )}
-                </Label>
-
+                </ImageReviewContainer>
+                <TwoInputsInRow>
+                    <div>
+                        {" "}
+                        <Label>
+                            Avatar URL:
+                            <FormInput
+                                {...register("avatarUrl", {
+                                    required: "Avatar URL is required",
+                                    pattern: {
+                                        value: /^https?:\/\/.+$/,
+                                        message: "Invalid URL format",
+                                    },
+                                })}
+                                type="text"
+                                placeholder="Enter avatar URL"
+                            />
+                            {errors.avatarUrl && (
+                                <Error>{errors.avatarUrl.message}</Error>
+                            )}
+                        </Label>
+                        <Label>
+                            Avatar Alt:
+                            <FormInput
+                                {...register("avatarAlt", {
+                                    maxLength: {
+                                        value: 160,
+                                        message:
+                                            "Alt text must be 160 characters or less",
+                                    },
+                                })}
+                                type="text"
+                                placeholder="Enter avatar alt text"
+                            />
+                            {errors.avatarAlt && (
+                                <Error>{errors.avatarAlt.message}</Error>
+                            )}
+                        </Label>
+                    </div>
+                    <ImageReviewContainer>
+                        <AvatarReview
+                            src={
+                                avatarError
+                                    ? "/default-avatar.jpg"
+                                    : avatarUrl || initialData.avatarUrl
+                            }
+                            alt={initialData.avatarAlt || "Avatar Image"}
+                            onError={() => setAvatarError(false)}
+                        />
+                    </ImageReviewContainer>
+                </TwoInputsInRow>
                 <Label>
                     Bio:
                     <EditTextArea
@@ -158,7 +192,6 @@ export const EditProfile: React.FC<EditProfileProps> = ({
                     />
                     {errors.bio && <Error>{errors.bio.message}</Error>}
                 </Label>
-
                 <Label>
                     <Controller
                         name="venueManager"
@@ -174,11 +207,9 @@ export const EditProfile: React.FC<EditProfileProps> = ({
                         )}
                     />
                 </Label>
-
                 <SubmitButton type="submit" disabled={loading}>
                     {loading ? "Saving..." : "Save Profile"}
                 </SubmitButton>
-
                 <CloseButton onClick={onCancel}>x</CloseButton>
             </VenueForm>
 
