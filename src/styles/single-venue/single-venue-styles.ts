@@ -42,7 +42,7 @@ export const CarouselComponent = styled.div`
         max-width: 45rem;
         height: 35rem;
         object-fit: cover;
-        border-radius: 1.2rem;
+        border-radius: 0.8rem;
         @media screen and (${({ theme }) => theme.breakpoints.sm}) {
             height: 25rem;
         }
@@ -159,7 +159,7 @@ export const MetaInfoItem = styled.div`
     padding: 0.5rem;
     gap: 0.5rem;
     font-size: 1.2rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     height: 5rem;
     border: 1px solid ${({ theme }) => theme.colors.screenBackground};
     > span {

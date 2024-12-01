@@ -13,7 +13,7 @@ export const CloseButton = styled.a<{ color?: string }>`
 `;
 export const VenueContainer = styled(FormContainer)`
     background: ${({ theme }) => theme.colors.text};
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     position: absolute;
     top: 4rem;
     z-index: 5;
@@ -32,7 +32,7 @@ export const VenueDescriptionPost = styled.textarea`
     height: 10rem;
     resize: none;
     font-size: 1.1rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     padding: 0.7rem;
     margin-top: 0.5rem;
     background: ${({ theme }) => theme.colors.background};
@@ -161,7 +161,7 @@ export const ImageReview = styled.img`
     width: 100%;
     height: 9rem;
     object-fit: cover;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
 `;
 export const AvatarReview = styled.img`
     width: 100%;

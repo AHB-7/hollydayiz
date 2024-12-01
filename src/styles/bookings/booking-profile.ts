@@ -8,6 +8,7 @@ export const BookingContainer = styled.div`
     gap: 1rem;
     @media (max-width: 850px) {
         grid-template-columns: 1fr;
+        padding: 0 0.5rem;
     }
     > h2 {
         grid-column: 1 / -1;
@@ -19,7 +20,7 @@ export const BookingCard = styled.div`
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     border: 1px solid black;
     position: relative;
 `;
@@ -41,7 +42,7 @@ export const BookingDelete = styled.p`
 export const BookingCardImage = styled.img`
     width: 8rem;
     height: 8rem;
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     object-fit: cover;
 `;
 export const CardInfo = styled.div`
@@ -76,7 +77,7 @@ export const ViewVenue = styled.div`
         background-color: ${(props) => props.theme.colors.text};
         color: ${(props) => props.theme.colors.background};
         padding: 0.5rem 1rem;
-        border-radius: 0.5rem;
+        border-radius: 0.8rem;
         cursor: pointer;
         transition: all 0.3s;
         &:hover {
@@ -106,7 +107,7 @@ export const EditContainer = styled.div`
         color: ${(props) => props.theme.colors.background};
         transition: all 0.3s;
         padding: 0.5rem 2rem;
-        border-radius: 0.5rem;
+        border-radius: 0.8rem;
         &:hover {
             background-color: ${(props) => props.theme.colors.primary};
         }

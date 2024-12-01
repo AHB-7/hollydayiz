@@ -12,7 +12,7 @@ export const FunctionsContainer = styled.div`
         align-items: center;
         width: 100%;
         max-width: 24.5rem;
-        border-radius: 1.4rem;
+        border-radius: 0.8rem;
         padding: 0.5rem;
         background: ${({ theme }) => theme.colors.text};
         p {
@@ -39,7 +39,7 @@ export const EditAndSaveBtn = styled.button<{
     color: ${({ theme }) => theme.colors.text};
     border: none;
     margin: ${({ $margin }) => $margin || "0"};
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: 0.3s;

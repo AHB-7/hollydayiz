@@ -144,13 +144,12 @@ export function Booking({ maxGuests, price, venueData }: BookingProps) {
                             <strong>{calculateDays(dateRange)}</strong>
                         </p>
                         <p>
-                            Price:
                             <strong>
                                 {dateRange
-                                    ? `$${
+                                    ? `${
                                           calculateDays(dateRange) *
                                           (price ?? 0)
-                                      }`
+                                      } NOK`
                                     : "Select dates"}
                             </strong>
                         </p>

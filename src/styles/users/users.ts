@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const UsersSection = styled.section`
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
     gap: 1rem;
     padding: 4rem 1rem 0 1rem;
     justify-content: center;
@@ -20,6 +20,7 @@ export const SingleUserCard = styled.div`
     border: 1px solid ${(props) => props.theme.colors.text};
     border-radius: 1rem;
     transition: all 0.1s;
+    position: relative;
     &:hover {
         scale: 1.02;
     }
@@ -40,6 +41,18 @@ export const FirstRow = styled.div`
         white-space: nowrap;
     }
 `;
+export const Manager = styled.p`
+    position: absolute;
+    bottom: 0rem;
+    right: 0rem;
+    font-weight: 700;
+    padding: 0.4rem 0.4rem;
+    border: 1px solid ${(props) => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
+    border-right: none;
+    border-bottom: none;
+    border-bottom-right-radius: 1rem;
+`;
 export const IfManager = styled.div`
     display: flex;
     align-items: center;
@@ -54,27 +67,6 @@ export const IfManager = styled.div`
         width: 10rem;
         height: 3.5rem;
     }
-    > div {
-        display: flex;
-        gap: 0.2rem;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        border: 1px solid ${(props) => props.theme.colors.text};
-        padding: 0.6rem;
-        border-radius: 0.5rem;
-        width: 3.5rem;
-        height: 3.5rem;
-        margin-right: 0.5rem;
-        > p {
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        > svg {
-            font-size: 1.5rem;
-            fill: ${(props) => props.theme.colors.primary};
-        }
-    }
 `;
 export const UserImage = styled.img`
     width: 8rem;
@@ -86,12 +78,13 @@ export const UserInfo = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.2rem;
-    :first-child {
+    p {
         font-size: 0.8rem;
         overflow: hidden;
         text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 14rem;
+        white-space: wrap;
+        width: 100%;
+        max-width: 11rem;
     }
     > p {
         font-size: 1rem;

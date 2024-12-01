@@ -21,7 +21,7 @@ export const ContainerForCalendar = styled.section`
 `;
 export const StyledCalendar = styled(Calendar)`
     background: ${({ theme }) => theme.colors.background};
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     padding: 1rem;
     font-size: 1.2rem;
     font-weight: bold;
@@ -74,7 +74,7 @@ export const GuestNumber = styled.select`
     width: 100%;
     padding: 0.5rem;
     font-size: 1.2rem;
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     border: 1px solid ${({ theme }) => theme.colors.screenBackground};
     background: ${({ theme }) => theme.colors.background};
 `;
@@ -93,7 +93,7 @@ export const StateMessage = styled.div`
     align-items: center;
     gap: 1rem;
     padding: 1rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     background: ${({ theme }) => theme.colors.background};
     color: ${({ theme }) => theme.colors.text};
     font-size: 1.2rem;

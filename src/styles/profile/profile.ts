@@ -52,7 +52,7 @@ export const ProfileBioContainer = styled.div`
     width: 100%;
     padding: 0.5rem;
     border: 1px solid ${(props) => props.theme.colors.text};
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     position: relative;
     > span {
         position: absolute;
@@ -88,7 +88,7 @@ export const ToggleDown = styled.button`
     width: 100%;
     outline: none;
     border: 0.05rem solid ${(props) => props.theme.colors.text};
-    border-radius: 0.5rem;
+    border-radius: 0.8rem;
     cursor: pointer;
     padding: 0.5rem;
     margin: 0.5rem;
