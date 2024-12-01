@@ -1,7 +1,7 @@
-import { GiPlagueDoctorProfile } from "react-icons/gi";
 import {
     FirstRow,
     IfManager,
+    Manager,
     SingleUserCard,
     UserImage,
     UserInfo,
@@ -12,16 +12,11 @@ import { Link } from "react-router-dom";
 export function UserCard({ user }: { user: User }) {
     return (
         <SingleUserCard as={Link} to={`/holidaze/profiles/${user.name}`}>
+            {user.venueManager && <Manager>Manager</Manager>}
             <UserImage src={`${user.avatar.url}`} alt={`${user.avatar.alt}`} />
             <FirstRow>
                 <IfManager>
                     <h2>{user.name}</h2>
-                    {user.venueManager && (
-                        <div>
-                            <GiPlagueDoctorProfile />
-                            <p>Manager</p>
-                        </div>
-                    )}
                 </IfManager>
                 <UserInfo>
                     <p>

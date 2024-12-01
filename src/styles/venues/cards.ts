@@ -5,7 +5,7 @@ export const VenueCard = styled.div`
     flex-direction: column;
     padding: 0.5rem;
     gap: 0.5rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     border: 0.01rem solid ${({ theme }) => theme.colors.text};
     position: relative;
 `;
@@ -35,6 +35,7 @@ export const OwnerNameImg = styled.div`
     gap: 0.5rem;
     position: relative;
     transition: scale 0.1s;
+    width: 100%;
     &:hover {
         scale: 1.01;
     }
@@ -66,7 +67,7 @@ export const VenueImageContainer = styled.div`
         &:hover {
             scale: 1.01;
         }
-        border-radius: 1rem;
+        border-radius: 0.8rem;
     }
     position: relative;
 `;

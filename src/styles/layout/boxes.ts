@@ -16,7 +16,7 @@ export const ErrorContainer = styled.div`
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #f44336;
-    border-radius: 5px;
+    border-radius: 0.8rem;
     background-color: #ffebee;
     color: #d32f2f;
     font-size: 14px;

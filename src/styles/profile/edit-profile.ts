@@ -118,7 +118,7 @@ export const Span = styled.span`
 export const EditTextArea = styled.textarea`
     font-size: 1.1rem;
     padding: 0.8rem;
-    border-radius: 1rem;
+    border-radius: 0.8rem;
     width: 100%;
     min-height: 10rem;
     background: ${({ theme }) => theme.colors.background};
