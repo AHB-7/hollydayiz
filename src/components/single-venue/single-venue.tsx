@@ -77,7 +77,7 @@ export function SingleVenue() {
     const toggleActiveState = () => setNavbarState(!navbarState);
 
     const confirmEdit = async (formData?: VenueFormData) => {
-        const data = formData || pendingEditData; 
+        const data = formData || pendingEditData;
         if (!data || !venue) return;
 
         try {
@@ -255,7 +255,7 @@ export function SingleVenue() {
                                 <ConfirmationModal
                                     isOpen={editConfirmationOpen}
                                     message="Are you sure you want to save these changes?"
-                                    onConfirm={() => confirmEdit()} 
+                                    onConfirm={() => confirmEdit()}
                                     onCancel={() =>
                                         setEditConfirmationOpen(false)
                                     }
@@ -331,7 +331,7 @@ export function SingleVenue() {
                     <MetaInfoItem>
                         <FaWifi />
                         <strong>
-                            <s>Wifi included</s>
+                            <s>Wifi not included</s>
                         </strong>
                     </MetaInfoItem>
                 )}
@@ -345,7 +345,7 @@ export function SingleVenue() {
                         <MetaInfoItem>
                             <MdOutlineEmojiFoodBeverage />
                             <strong>
-                                <s>Breakfast included</s>
+                                <s>Breakfast not included</s>
                             </strong>
                         </MetaInfoItem>
                     </>
@@ -359,7 +359,7 @@ export function SingleVenue() {
                     <MetaInfoItem>
                         <MdLocalParking />
                         <strong>
-                            <s>Parking included</s>
+                            <s>Parking not included</s>
                         </strong>
                     </MetaInfoItem>
                 )}
@@ -372,7 +372,7 @@ export function SingleVenue() {
                     <MetaInfoItem>
                         <MdOutlinePets />
                         <strong>
-                            <s>Pets allowed</s>
+                            <s>Pets not allowed</s>
                         </strong>
                     </MetaInfoItem>
                 )}

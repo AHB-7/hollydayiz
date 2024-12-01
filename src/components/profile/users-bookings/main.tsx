@@ -9,7 +9,7 @@ import { Loading } from "../../global/loading";
 import ConfirmationModal from "../../global/confirmation";
 
 export function UserBooking() {
-    const { username } = useParams<{ username: string }>(); 
+    const { username } = useParams<{ username: string }>();
     const apiToken = localStorage.getItem("accessToken");
     const loggedInUserName = localStorage.getItem("name");
     const [profileOwner, setProfileOwner] = useState(false);
@@ -22,7 +22,7 @@ export function UserBooking() {
     const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
     const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
     const [bookingToDelete, setBookingToDelete] = useState<string | null>(null);
-
+    const [maxGuests, setMaxGuests] = useState(1);
     const {
         data: user,
         loading,
@@ -45,7 +45,7 @@ export function UserBooking() {
             }
         };
         fetchData();
-    }, [apiToken, username]); 
+    }, [apiToken, username]);
 
     useEffect(() => {
         if (user) {
@@ -63,8 +63,13 @@ export function UserBooking() {
                 return dates;
             });
             setUnavailableDates(bookedDates);
+
+            // Set maxGuests based on the selected venue
+            if (editingBooking) {
+                setMaxGuests(editingBooking.venue.maxGuests);
+            }
         }
-    }, [user]);
+    }, [user, editingBooking]);
 
     const confirmDelete = async () => {
         if (apiToken && bookingToDelete) {
@@ -98,6 +103,7 @@ export function UserBooking() {
             new Date(booking.dateTo),
         ]);
         setEditGuests(booking.guests);
+        setMaxGuests(booking.venue.maxGuests);
     };
 
     const handleSaveChanges = async () => {
@@ -176,6 +182,7 @@ export function UserBooking() {
                 isDateUnavailable={isDateUnavailable}
                 formatDate={formatDate}
                 isPastDate={isPastDate}
+                maxGuests={maxGuests}
             />
             <ConfirmationModal
                 isOpen={deleteConfirmationOpen}

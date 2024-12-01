@@ -162,12 +162,11 @@ export const MetaInfoItem = styled.div`
     border-radius: 0.8rem;
     height: 5rem;
     border: 1px solid ${({ theme }) => theme.colors.screenBackground};
-    > span {
-        text-align: center;
-        font-size: 1rem;
-        color: ${({ theme }) => theme.colors.text};
+    > strong > s {
+        color: ${({ theme }) => theme.colors.dangerous};
     }
     > svg {
         font-size: 3rem;
         fill: ${({ theme }) => theme.colors.text};
+    }
 `;

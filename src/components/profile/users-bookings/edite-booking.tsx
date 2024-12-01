@@ -15,6 +15,7 @@ export function EditBookingForm({
     handleSaveChanges,
     handleCancelEdit,
     isDateUnavailable,
+    maxGuests,
 }: {
     editDateRange: [Date, Date] | null;
     setEditDateRange: (range: [Date, Date] | null) => void;
@@ -23,12 +24,13 @@ export function EditBookingForm({
     handleSaveChanges: () => void;
     handleCancelEdit: () => void;
     isDateUnavailable: (date: Date) => boolean;
+    maxGuests: number;
 }) {
     const [confirmationOpen, setConfirmationOpen] = useState(false);
 
     const confirmSaveChanges = () => {
         handleSaveChanges();
-        setConfirmationOpen(false); 
+        setConfirmationOpen(false);
     };
 
     return (
@@ -49,7 +51,7 @@ export function EditBookingForm({
                         value={editGuests}
                         onChange={(e) => setEditGuests(Number(e.target.value))}
                     >
-                        {Array.from({ length: 10 }, (_, i) => i + 1).map(
+                        {Array.from({ length: maxGuests }, (_, i) => i + 1).map(
                             (guest) => (
                                 <option key={guest} value={guest}>
                                     {guest}
@@ -64,13 +66,12 @@ export function EditBookingForm({
                 <p onClick={() => setConfirmationOpen(true)}>
                     Save Changes
                 </p>{" "}
-                {/* Open confirmation */}
             </EditContainer>
             <ConfirmationModal
                 isOpen={confirmationOpen}
                 message="Are you sure you want to save these changes?"
-                onConfirm={confirmSaveChanges} 
-                onCancel={() => setConfirmationOpen(false)} 
+                onConfirm={confirmSaveChanges}
+                onCancel={() => setConfirmationOpen(false)}
             />
         </div>
     );

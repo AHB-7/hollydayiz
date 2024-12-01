@@ -64,7 +64,10 @@ export type Booking = {
 };
 
 export type UserBookingTypes = Omit<Booking, "customer"> & {
-    venue: Pick<Accommodation, "id" | "name" | "description" | "media">;
+    venue: Pick<
+        Accommodation,
+        "id" | "name" | "description" | "media" | "maxGuests"
+    >;
 };
 
 export type BookingProps = {

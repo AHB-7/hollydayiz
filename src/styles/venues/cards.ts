@@ -35,12 +35,12 @@ export const OwnerNameImg = styled.div`
     gap: 0.5rem;
     position: relative;
     transition: scale 0.1s;
-    width: 100%;
     &:hover {
         scale: 1.01;
     }
     > img {
-        width: 3rem;
+        width: 100%;
+        max-width: 3rem;
         height: 3rem;
         border-radius: 50%;
         object-fit: cover;

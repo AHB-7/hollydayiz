@@ -18,6 +18,7 @@ export function BookingList({
     isDateUnavailable,
     formatDate,
     isPastDate,
+    maxGuests,
 }: {
     bookings: UserBookingTypes[];
     profileOwner: boolean;
@@ -33,6 +34,7 @@ export function BookingList({
     isDateUnavailable: (date: Date) => boolean;
     formatDate: (isoString: string) => string;
     isPastDate: (date: Date) => boolean;
+    maxGuests: number;
 }) {
     return (
         <>
@@ -55,6 +57,7 @@ export function BookingList({
                             handleSaveChanges={handleSaveChanges}
                             handleCancelEdit={handleCancelEdit}
                             isDateUnavailable={isDateUnavailable}
+                            maxGuests={maxGuests}
                         />
                     )}
                 </BookingCard>
